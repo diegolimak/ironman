@@ -1,0 +1,7 @@
+.claude/
+Dados Garmin/
+Exames/
+*.py
+plano_js.js
+__pycache__/
+*.pyc

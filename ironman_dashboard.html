@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diego — IRONMAN 70.3 Rio 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #07090f;
+    --surface: #0f1420;
+    --surface2: #161d2e;
+    --border: rgba(255,255,255,0.07);
+    --orange: #e8501a;
+    --orange-dim: rgba(232,80,26,0.15);
+    --blue: #00d4ff;
+    --blue-dim: rgba(0,212,255,0.12);
+    --green: #00e676;
+    --green-dim: rgba(0,230,118,0.12);
+    --purple: #b39ddb;
+    --purple-dim: rgba(179,157,219,0.12);
+    --text: #e8eaf0;
+    --muted: #556070;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232,80,26,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 20%, rgba(0,212,255,0.06) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #fff 40%, var(--orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-athlete {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-athlete span { color: var(--orange); }
+
+  /* Countdown */
+  .countdown {
+    display: flex;
+    gap: clamp(1rem, 4vw, 3rem);
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .cd-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .cd-num {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    min-width: 2ch;
+    text-align: center;
+  }
+
+  .cd-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .cd-sep {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--orange);
+    line-height: 1;
+    align-self: flex-start;
+    padding-top: 0.2rem;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.5s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  .scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── METRICS CARDS ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .metric-card.orange::before { background: var(--orange); }
+  .metric-card.blue::before   { background: var(--blue); }
+  .metric-card.green::before  { background: var(--green); }
+  .metric-card.purple::before { background: var(--purple); }
+
+  .metric-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .metric-value {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .metric-card.orange .metric-value { color: var(--orange); }
+  .metric-card.blue   .metric-value { color: var(--blue); }
+  .metric-card.green  .metric-value { color: var(--green); }
+  .metric-card.purple .metric-value { color: var(--purple); }
+
+  .metric-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .metric-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+  }
+
+  /* Ring progress */
+  .ring-wrap {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    float: right;
+    margin-top: -0.5rem;
+  }
+
+  .ring-svg { transform: rotate(-90deg); }
+
+  .ring-bg { fill: none; stroke: var(--surface2); stroke-width: 4; }
+  .ring-fill { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
+
+  /* ── WEEKLY PLAN ── */
+  .weeks-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .week-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .week-card:hover { border-color: rgba(255,255,255,0.12); }
+
+  .week-header {
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .week-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .week-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+
+  .badge-build { background: var(--orange-dim); color: var(--orange); }
+  .badge-peak  { background: rgba(255,50,50,0.15); color: #ff6060; }
+  .badge-taper { background: var(--green-dim); color: var(--green); }
+
+  .week-progress-bar {
+    height: 3px;
+    background: var(--surface2);
+    position: relative;
+  }
+
+  .week-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), #ff8c42);
+    border-radius: 0 2px 2px 0;
+    transition: width 1s ease;
+  }
+
+  .week-pct {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--orange);
+  }
+
+  .week-days {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .day-row {
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .day-row:last-child { border-bottom: none; }
+  .day-row:hover { background: rgba(255,255,255,0.02); }
+  .day-row.done { opacity: 0.5; }
+
+  .day-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 0.7rem;
+  }
+
+  .day-row.done .day-check {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+
+  .discipline-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .disc-swim   { background: var(--blue-dim); }
+  .disc-bike   { background: var(--orange-dim); }
+  .disc-run    { background: var(--green-dim); }
+  .disc-brick  { background: var(--purple-dim); }
+  .disc-rest   { background: rgba(255,255,255,0.05); }
+
+  .day-info { flex: 1; min-width: 0; }
+
+  .day-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .day-meta {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  .zone-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .z1 { background: rgba(0,230,118,0.15); color: var(--green); }
+  .z2 { background: rgba(100,180,255,0.15); color: #64b4ff; }
+  .z3 { background: rgba(255,200,0,0.15); color: #ffc800; }
+  .z4 { background: rgba(255,100,0,0.15); color: #ff6400; }
+  .z5 { background: rgba(255,50,50,0.18); color: #ff5050; }
+  .zr { background: rgba(255,255,255,0.05); color: var(--muted); }
+  .zrace { background: rgba(255,50,50,0.2); color: #ff6060; font-weight:600; }
+
+  .badge-recovery { background: var(--blue-dim); color: var(--blue); }
+  .badge-race { background: rgba(255,50,50,0.15); color: #ff6060; }
+
+  .disc-strength { background: rgba(255,200,0,0.12); }
+  .disc-race { background: rgba(255,50,50,0.15); }
+
+  /* ── WEEK NAVIGATOR ── */
+  .week-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.8rem;
+    gap: 1rem;
+  }
+
+  .week-nav-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.45rem 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .week-nav-btn:hover { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+  .week-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; pointer-events:none; }
+
+  .week-nav-info { text-align: center; flex: 1; }
+  .week-nav-label { font-family: var(--font-display); font-size: 1.35rem; letter-spacing: 0.05em; display: block; }
+  .week-nav-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); display: block; margin-top: 0.1rem; }
+
+  /* ── WEEK STEPPER ── */
+  .week-stepper {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+    padding: 0 0.5rem;
+  }
+  .step-pip {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.12);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .step-pip.active { background: var(--orange); border-color: var(--orange); transform: scale(1.35); }
+  .step-pip.done { background: var(--green); border-color: var(--green); }
+  .step-pip.taper { background: var(--blue); border-color: var(--blue); }
+  .step-pip.peak { background: #ff6060; border-color: #ff6060; }
+  .step-pip:hover { transform: scale(1.5); }
+  .step-pip.active:hover { transform: scale(1.5); }
+
+  /* ── VOLUME TARGETS ── */
+  .week-volumes {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.7rem 1.5rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .vol-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+  }
+  .vol-item .vol-icon { font-size: 0.85rem; }
+  .vol-swim { color: var(--blue); }
+  .vol-bike { color: var(--orange); }
+  .vol-run  { color: var(--green); }
+  .vol-label { color: var(--muted); margin-right: 0.2rem; }
+
+  /* ── DAY ROW UPDATES ── */
+  .day-dow {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+    min-width: 34px;
+    flex-shrink: 0;
+  }
+  .day-dow strong { color: rgba(232,234,240,0.7); font-weight: 600; font-size: 0.65rem; }
+
+  .detail-toggle {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .detail-toggle:hover { color: var(--orange); border-color: var(--orange-dim); }
+  .day-row.expanded .detail-toggle { color: var(--orange); }
+
+  /* ── DETAIL PANEL ── */
+  .day-detail-panel {
+    display: none;
+    background: rgba(15,20,32,0.8);
+    border-top: 1px solid var(--border);
+    padding: 0.8rem 1.5rem 0.9rem 5.2rem;
+    column-span: all;
+  }
+  .day-detail-panel.open { display: block; }
+  .detail-steps { display: flex; flex-direction: column; gap: 0.25rem; }
+  .detail-step {
+    font-size: 0.76rem;
+    color: rgba(232,234,240,0.65);
+    line-height: 1.5;
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+  .detail-bullet { color: var(--orange); font-size: 0.6rem; flex-shrink: 0; margin-top: 0.3rem; }
+  .detail-step.highlight { color: rgba(232,180,80,0.9); font-weight: 500; }
+
+  /* ── CHART ── */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chart-wrap { position: relative; height: 300px; }
+
+  /* ── SUMMARY TABLE ── */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+
+  .table-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+
+  .summary-table th {
+    text-align: left;
+    padding: 0.8rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  .summary-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .td-week { color: var(--orange); font-weight: 500; }
+  .td-swim { color: var(--blue); }
+  .td-bike { color: var(--orange); }
+  .td-run  { color: var(--green); }
+  .td-tss  { color: var(--purple); }
+  .td-key  { color: var(--muted); font-size: 0.72rem; }
+
+  /* TSS bar inline */
+  .tss-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tss-fill {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--purple), rgba(179,157,219,0.4));
+  }
+
+  /* ── GARMIN INTEGRATION ── */
+  .garmin-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .garmin-header {
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .garmin-header:hover { background: rgba(255,255,255,0.02); }
+
+  .garmin-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .garmin-status {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255,80,80,0.15);
+    color: #ff8080;
+    letter-spacing: 0.05em;
+  }
+
+  .garmin-chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 0.8rem;
+  }
+
+  .garmin-chevron.open { transform: rotate(180deg); }
+
+  .garmin-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .garmin-body.open { display: block; }
+
+  .garmin-desc {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 1rem 0;
+  }
+
+  .garmin-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .garmin-steps li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--orange);
+    flex-shrink: 0;
+    min-width: 1.2em;
+  }
+
+  .code-block {
+    background: #070a10;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #8899bb;
+    overflow-x: auto;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .code-key  { color: #7ec8e3; }
+  .code-str  { color: #b5e853; }
+  .code-num  { color: var(--purple); }
+  .code-comm { color: #445; }
+
+  .btn-garmin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    cursor: not-allowed;
+    position: relative;
+  }
+
+  .btn-garmin:hover .btn-tooltip { opacity: 1; pointer-events: auto; }
+
+  .btn-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a2235;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.72rem;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  /* ── WORKOUT CARDS (prominent) ── */
+  .wk-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-left-width: 3px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.15s;
+    margin-bottom: 0.75rem;
+  }
+  .wk-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform: translateY(-1px); }
+  .wk-card.done-card { opacity: 0.52; }
+  .wk-card-swim     { border-left-color: var(--blue); }
+  .wk-card-bike     { border-left-color: var(--orange); }
+  .wk-card-run      { border-left-color: var(--green); }
+  .wk-card-brick    { border-left-color: var(--purple); }
+  .wk-card-strength { border-left-color: #ffc800; }
+  .wk-card-rest     { border-left-color: var(--muted); opacity: 0.6; }
+  .wk-card-race     { border-left-color: #ff5050; border-left-width: 4px; }
+
+  .wk-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 1.2rem 0.45rem;
+    flex-wrap: wrap;
+  }
+  .wk-dow {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.5;
+    min-width: 30px;
+    flex-shrink: 0;
+  }
+  .wk-dow strong { display: block; font-size: 0.7rem; color: rgba(232,234,240,0.75); }
+
+  .wk-disc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.07em;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .wk-disc-swim     { background: var(--blue-dim);   color: var(--blue); }
+  .wk-disc-bike     { background: var(--orange-dim); color: var(--orange); }
+  .wk-disc-run      { background: var(--green-dim);  color: var(--green); }
+  .wk-disc-brick    { background: var(--purple-dim); color: var(--purple); }
+  .wk-disc-strength { background: rgba(255,200,0,0.12); color: #ffc800; }
+  .wk-disc-rest     { background: rgba(255,255,255,0.05); color: var(--muted); }
+  .wk-disc-race     { background: rgba(255,80,80,0.18); color: #ff8080; }
+
+  .wk-check {
+    margin-left: auto;
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: transparent;
+    user-select: none;
+  }
+  .wk-check:hover { border-color: var(--green); background: var(--green-dim); }
+  .wk-check.checked { background: var(--green); border-color: var(--green); color: white; }
+
+  .wk-card-body { padding: 0 1.2rem 0.6rem; }
+  .wk-card-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.28rem;
+    color: var(--text);
+  }
+  .wk-card-stats {
+    display: flex;
+    gap: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .wk-sv { color: rgba(232,234,240,0.8); font-weight: 500; }
+
+  .wk-steps { display: flex; flex-direction: column; gap: 0.18rem; }
+  .wk-step {
+    display: flex; gap: 0.5rem;
+    font-size: 0.79rem;
+    color: rgba(232,234,240,0.62);
+    line-height: 1.55;
+    align-items: baseline;
+  }
+  .wk-step-b { color: var(--orange); font-size: 0.58rem; flex-shrink: 0; margin-top: 0.35rem; }
+  .wk-step.ks { color: rgba(255,210,100,0.9); font-weight: 500; }
+
+  .wk-steps-more { display: none; margin-top: 0.18rem; }
+  .wk-steps-more.open { display: block; }
+
+  .wk-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 1.2rem 0.7rem;
+    border-top: 1px solid var(--border);
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .btn-tgl {
+    background: none; border: none;
+    font-family: var(--font-mono); font-size: 0.67rem;
+    color: var(--muted); cursor: pointer; padding: 0;
+    transition: color 0.15s;
+  }
+  .btn-tgl:hover { color: var(--orange); }
+
+  .wk-actions { display: flex; gap: 0.45rem; margin-left: auto; }
+
+  .btn-log, .btn-done {
+    font-family: var(--font-mono); font-size: 0.67rem;
+    padding: 0.3rem 0.75rem; border-radius: 6px;
+    cursor: pointer; transition: all 0.15s;
+    border: 1px solid var(--border);
+    background: var(--surface2); color: rgba(232,234,240,0.55);
+  }
+  .btn-log:hover  { border-color: var(--blue);   color: var(--blue); }
+  .btn-done:hover { border-color: var(--green);  color: var(--green); background: var(--green-dim); }
+  .btn-log.logged { border-color: var(--green);  color: var(--green); background: var(--green-dim); }
+  .btn-done.done  { border-color: var(--green);  color: var(--green); background: var(--green-dim); }
+
+  .wk-log-summary {
+    font-family: var(--font-mono); font-size: 0.67rem;
+    color: var(--green); padding: 0.35rem 1.2rem 0.55rem;
+    background: rgba(0,230,118,0.05);
+    border-top: 1px solid rgba(0,230,118,0.15);
+  }
+
+  .wk-rest-note {
+    font-size: 0.78rem; color: rgba(232,234,240,0.5);
+    padding: 0 1.2rem 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* ── LOG MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 1.5rem;
+    max-width: 460px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-title { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.2rem; }
+  .modal-sub { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.2rem; }
+  .form-grp { margin-bottom: 0.9rem; }
+  .form-lbl { display: block; font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-inp {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 0.55rem 0.8rem; border-radius: 8px;
+    font-family: var(--font-mono); font-size: 0.82rem; outline: none;
+    transition: border-color 0.15s; box-sizing: border-box;
+  }
+  .form-inp:focus { border-color: var(--orange); }
+  .rpe-grid { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.2rem; }
+  .rpe-btn {
+    width: 34px; height: 34px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--muted); cursor: pointer; font-size: 0.78rem;
+    font-family: var(--font-mono); transition: all 0.15s;
+  }
+  .rpe-btn:hover, .rpe-btn.sel { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .modal-footer { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1.2rem; }
+  .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
+  .btn-cancel:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+  .btn-save { background: var(--orange); border: none; color: #fff; padding: 0.45rem 1.2rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+
+  /* ── NUTRIÇÃO ── */
+  .nutr-tabs {
+    display: flex; gap: 0.5rem; margin-bottom: 1.2rem; flex-wrap: wrap;
+  }
+  .nutr-tab {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+  }
+  .nutr-tab.active { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+  .nutr-panel { display: none; }
+  .nutr-panel.active { display: block; }
+
+  .nutr-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.1rem 1.4rem; margin-bottom: 1rem;
+  }
+  .nutr-ttl { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.04em; margin-bottom: 0.7rem; color: var(--orange); }
+  .nutr-tbl { width: 100%; border-collapse: collapse; font-size: 0.79rem; }
+  .nutr-tbl th { text-align: left; padding: 0.4rem 0.6rem; font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .nutr-tbl td { padding: 0.45rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .nutr-tbl tr:last-child td { border: none; }
+  .nt-o { color: var(--orange); font-weight: 600; }
+  .nt-b { color: var(--blue); font-weight: 600; }
+  .nt-g { color: var(--green); font-weight: 600; }
+  .nt-r { color: #ff7070; font-weight: 600; }
+  .nt-y { color: #ffc800; font-weight: 600; }
+
+  .suppl-grid { display: flex; flex-direction: column; gap: 0.55rem; }
+  .suppl-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1.1rem;
+    display: flex; gap: 0.9rem; align-items: flex-start;
+  }
+  .si-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1; padding-top: 0.1rem; }
+  .si-body { flex: 1; min-width: 0; }
+  .si-name { font-weight: 600; font-size: 0.85rem; }
+  .si-dose { font-family: var(--font-mono); font-size: 0.7rem; color: var(--orange); margin: 0.1rem 0 0.2rem; }
+  .si-why  { font-size: 0.73rem; color: rgba(232,234,240,0.55); }
+  .si-tag  { font-family: var(--font-mono); font-size: 0.6rem; padding: 0.12rem 0.45rem; border-radius: 4px; align-self: center; flex-shrink: 0; }
+  .si-exam { background: rgba(255,100,100,0.15); color: #ff8888; }
+  .si-evi  { background: var(--green-dim); color: var(--green); }
+  .si-opt  { background: rgba(255,255,255,0.05); color: var(--muted); }
+
+  .nutr-alert-box {
+    background: rgba(255,200,0,0.07); border: 1px solid rgba(255,200,0,0.25);
+    border-radius: 10px; padding: 0.75rem 1.1rem;
+    font-size: 0.78rem; color: rgba(255,200,80,0.85);
+    margin-bottom: 0.8rem; line-height: 1.6;
+  }
+
+  /* ── FEEDBACK SEMANAL ── */
+  .week-feedback-bar {
+    display: flex; gap: 0.8rem; align-items: center;
+    padding: 0.7rem 0; border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+  .btn-feedback {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); font-family: var(--font-mono); font-size: 0.7rem;
+    padding: 0.55rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    text-align: center;
+  }
+  .btn-feedback:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-feedback.has-fb { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+
+  /* ── STAR RATING ── */
+  .star-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.6rem; color: var(--muted); transition: color 0.15s;
+    padding: 0.1rem 0.2rem; line-height: 1;
+  }
+  .star-btn:hover, .star-btn.sel { color: #ffc800; }
+  .rpe-btn-fb {
+    width: 34px; height: 34px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--muted); cursor: pointer; font-size: 0.78rem;
+    font-family: var(--font-mono); transition: all 0.15s;
+  }
+  .rpe-btn-fb:hover, .rpe-btn-fb.sel { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  /* ── RACE DAY TIMELINE ── */
+  .rd-timeline { display: flex; flex-direction: column; gap: 0.6rem; }
+  .rd-item { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .rd-time { font-family: var(--font-mono); font-size: 0.72rem; color: var(--orange); min-width: 56px; flex-shrink: 0; padding-top: 0.15rem; }
+  .rd-body { flex: 1; font-size: 0.8rem; color: rgba(232,234,240,0.75); line-height: 1.55; }
+  .rd-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 0.15rem; }
+  .rd-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 0.42rem; }
+
+  /* ── NUTRITION PRE/DURING/POST ── */
+  .pnp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 0.9rem; }
+  .pnp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; }
+  .pnp-ttl { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 0.75rem; text-transform: uppercase; }
+  .pnp-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.78rem; }
+  .pnp-row:last-child { border: none; }
+  .pnp-val { font-family: var(--font-mono); color: var(--text); font-size: 0.75rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .countdown { gap: 0.8rem; }
+    .cd-sep { display: none; }
+    .week-days { grid-template-columns: 1fr; }
+    .summary-table th:nth-child(n+5),
+    .summary-table td:nth-child(n+5) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <p class="hero-label">Rio de Janeiro · Agosto 2026</p>
+  <h1 class="hero-title">IRONMAN</h1>
+  <p class="hero-subtitle">70.3 · RIO DE JANEIRO 2026</p>
+  <p class="hero-athlete">Atleta: <span>Diego</span></p>
+
+  <div class="countdown">
+    <div class="cd-block">
+      <div class="cd-num" id="cd-days">107</div>
+      <div class="cd-label">Dias</div>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block">
+      <div class="cd-num" id="cd-hours">00</div>
+      <div class="cd-label">Horas</div>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block">
+      <div class="cd-num" id="cd-mins">00</div>
+      <div class="cd-label">Minutos</div>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block">
+      <div class="cd-num" id="cd-secs">00</div>
+      <div class="cd-label">Segundos</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">SCROLL</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+<main class="main">
+
+  <!-- METRICS -->
+  <h2 class="section-title">MÉTRICAS DA SEMANA</h2>
+  <div class="metrics-grid">
+
+    <div class="metric-card orange">
+      <div class="metric-icon">🔥</div>
+      <div class="metric-value" id="days-to-race">76</div>
+      <div class="metric-label">Dias até o Ironman</div>
+      <div class="metric-sub">09 de agosto de 2026</div>
+    </div>
+
+    <div class="metric-card blue">
+      <div class="ring-wrap">
+        <svg class="ring-svg" width="56" height="56" viewBox="0 0 56 56">
+          <circle class="ring-bg" cx="28" cy="28" r="24"/>
+          <circle class="ring-fill" id="ring-fill" cx="28" cy="28" r="24"
+            stroke="#00d4ff"
+            stroke-dasharray="150.8"
+            stroke-dashoffset="150.8"/>
+        </svg>
+      </div>
+      <div class="metric-icon">📋</div>
+      <div class="metric-value"><span id="done-count">0</span>/<span id="total-count">0</span></div>
+      <div class="metric-label">Treinos concluídos</div>
+      <div class="metric-sub" id="done-pct">0% da semana atual</div>
+    </div>
+
+    <div class="metric-card green">
+      <div class="metric-icon">📏</div>
+      <div class="metric-value">13<span style="font-size:1.2rem">km</span></div>
+      <div class="metric-label">Volume semanal total</div>
+      <div class="metric-sub">🏊 2.0 · 🚴 0.0 · 🏃 11.1</div>
+    </div>
+
+    <div class="metric-card purple">
+      <div class="metric-icon">💪</div>
+      <div class="metric-value">52</div>
+      <div class="metric-label">CTL — Fitness atual</div>
+      <div class="metric-sub">ATL 31 · Forma +21 (recuperado)</div>
+    </div>
+
+  </div>
+
+  <!-- TRAINING LOAD CHART -->
+  <h2 class="section-title">CARGA DE TREINO (12 SEMANAS)</h2>
+  <div class="chart-card">
+    <div class="chart-header">
+      <div style="font-size:0.85rem;color:var(--muted)">Dados reais Garmin Connect · weeklyTrainingLoadSum normalizado · Fev–Mai 2026</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>CTL (Fitness)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e8501a"></div>ATL (Fadiga)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#00e676"></div>TSB (Forma)</div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="loadChart"></canvas>
+    </div>
+  </div>
+
+  <!-- WEEKLY PLAN -->
+  <h2 class="section-title">PLANO DE TREINO — 11 SEMANAS</h2>
+  <div class="week-nav-bar">
+    <button class="week-nav-btn" id="btn-prev" onclick="shiftWeek(-1)">‹ Anterior</button>
+    <div class="week-nav-info">
+      <span class="week-nav-label" id="nav-week-label"></span>
+      <span class="week-nav-sub" id="nav-week-sub"></span>
+    </div>
+    <button class="week-nav-btn" id="btn-next" onclick="shiftWeek(1)">Próxima ›</button>
+  </div>
+  <div class="week-stepper" id="week-stepper"></div>
+  <div id="weeks-container" style="margin-bottom:3rem"></div>
+
+  <!-- SUMMARY TABLE -->
+  <h2 class="section-title">HISTÓRICO — ÚLTIMAS 6 SEMANAS</h2>
+  <div class="table-card">
+    <div class="table-header">
+      <span style="font-size:0.82rem;color:var(--muted)">Distâncias em km · TSS total · Treino principal</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="summary-table" id="summary-table"></table>
+    </div>
+  </div>
+
+  <!-- NUTRIÇÃO E SUPLEMENTAÇÃO -->
+  <h2 class="section-title">NUTRIÇÃO & SUPLEMENTAÇÃO</h2>
+  <div class="nutr-tabs">
+    <button class="nutr-tab active" data-tab="diaria" onclick="switchNutr('diaria')">📊 Diária</button>
+    <button class="nutr-tab" data-tab="timing" onclick="switchNutr('timing')">⚡ Pré / Durante / Pós</button>
+    <button class="nutr-tab" data-tab="suppl" onclick="switchNutr('suppl')">💊 Suplementos</button>
+    <button class="nutr-tab" data-tab="race" onclick="switchNutr('race')">🏁 Race Day</button>
+  </div>
+
+  <!-- TAB: DIÁRIA -->
+  <div class="nutr-panel active" id="nutr-diaria">
+    <div class="nutr-alert-box">
+      ⚠️ <strong>Atenção — HbA1c 5.9%:</strong> Limite superior do normal. Prefira carboidratos de baixo IG (aveia, batata doce, arroz integral). Evite açúcar refinado exceto <em>durante</em> treinos &gt;60min. Não pular refeições.
+    </div>
+    <div class="nutr-card">
+      <div class="nutr-ttl">Macros Diários — Base ~70kg · ~14h treino/semana</div>
+      <table class="nutr-tbl">
+        <thead><tr><th>Nutriente</th><th>Dia de Treino</th><th>Dia de Descanso</th></tr></thead>
+        <tbody>
+          <tr><td>Calorias</td><td class="nt-o">3.000–3.200 kcal</td><td>2.300–2.500 kcal</td></tr>
+          <tr><td>Carboidratos</td><td class="nt-b">7–8 g/kg · 490–560g</td><td>4 g/kg · 280g</td></tr>
+          <tr><td>Proteínas</td><td class="nt-g">1.7–1.8 g/kg · 120–126g</td><td>1.6 g/kg · 112g</td></tr>
+          <tr><td>Gorduras saudáveis</td><td>~70–80g</td><td>~60–70g</td></tr>
+          <tr><td>Sódio</td><td class="nt-y">2.000–3.000mg</td><td>1.500mg</td></tr>
+          <tr><td>Hidratação</td><td class="nt-b">3,5–4,5L + reposição suor</td><td>2,5–3L</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nutr-card">
+      <div class="nutr-ttl">Distribuição das Refeições</div>
+      <table class="nutr-tbl">
+        <thead><tr><th>Horário</th><th>Refeição</th><th>Foco</th></tr></thead>
+        <tbody>
+          <tr><td>06h30</td><td>Café da manhã</td><td>Aveia + banana + ovos — carbo + proteína</td></tr>
+          <tr><td>09h30</td><td>Lanche pré-treino</td><td>Banana + pasta de amendoim (se treino &gt;11h)</td></tr>
+          <tr><td>12h30</td><td>Almoço</td><td>Arroz integral + feijão + frango + legumes</td></tr>
+          <tr><td>15h30</td><td>Lanche pós-treino</td><td>Batata doce + frango / whey + fruta</td></tr>
+          <tr><td>19h00</td><td>Jantar</td><td>Proteína + vegetais + gordura boa (abacate)</td></tr>
+          <tr><td>21h00</td><td>Ceia (opcional)</td><td>Iogurte grego + mel — caseína para recuperação</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: TIMING -->
+  <div class="nutr-panel" id="nutr-timing">
+    <div class="pnp-grid">
+      <div class="pnp-card">
+        <div class="pnp-ttl">🟡 PRÉ-TREINO — 30–60min antes</div>
+        <div class="pnp-row"><span>Carboidratos</span><span class="pnp-val nt-b">40–60g baixo IG</span></div>
+        <div class="pnp-row"><span>Proteína</span><span class="pnp-val">opcional 10–15g</span></div>
+        <div class="pnp-row"><span>Cafeína</span><span class="pnp-val nt-o">3–4mg/kg · ~200–280mg</span></div>
+        <div class="pnp-row"><span>Gordura/fibra</span><span class="pnp-val nt-r">minimizar — atrasa esvaziamento</span></div>
+        <div class="pnp-row"><span>Água</span><span class="pnp-val nt-b">400–600ml</span></div>
+        <div class="pnp-row" style="margin-top:0.4rem"><span style="font-size:0.72rem;color:var(--muted)">Exemplo</span><span class="pnp-val">Banana + tosta integral + café</span></div>
+      </div>
+      <div class="pnp-card">
+        <div class="pnp-ttl">🔴 DURANTE — sessões &gt;60min</div>
+        <div class="pnp-row"><span>Carboidratos</span><span class="pnp-val nt-o">60–90g/hora</span></div>
+        <div class="pnp-row"><span>Ratio glicose:frutose</span><span class="pnp-val">2:1 (permite 90g/h)</span></div>
+        <div class="pnp-row"><span>Sódio</span><span class="pnp-val nt-y">400–700mg/hora</span></div>
+        <div class="pnp-row"><span>Água</span><span class="pnp-val nt-b">500–800ml/hora</span></div>
+        <div class="pnp-row"><span>Bike (2h30)</span><span class="pnp-val">2–3 géis + 1 banana + eletrolitos</span></div>
+        <div class="pnp-row"><span>Run (1h50)</span><span class="pnp-val">gel a cada 35–40min + cola final</span></div>
+      </div>
+      <div class="pnp-card">
+        <div class="pnp-ttl">🟢 PÓS-TREINO — &lt;30min após</div>
+        <div class="pnp-row"><span>Proteína</span><span class="pnp-val nt-g">20–30g (whey ou alimento)</span></div>
+        <div class="pnp-row"><span>Carboidratos</span><span class="pnp-val nt-b">1–1,5g/kg · 70–105g</span></div>
+        <div class="pnp-row"><span>Vit C</span><span class="pnp-val nt-r">500mg (deficiente no exame!)</span></div>
+        <div class="pnp-row"><span>Magnésio</span><span class="pnp-val">200mg (recuperação muscular)</span></div>
+        <div class="pnp-row"><span>Hidratação</span><span class="pnp-val nt-b">reponha 150% do peso perdido</span></div>
+        <div class="pnp-row"><span>Exemplo</span><span class="pnp-val">Whey + banana + aveia + água</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: SUPLEMENTOS -->
+  <div class="nutr-panel" id="nutr-suppl">
+    <div class="nutr-alert-box">
+      📋 Baseado nos exames de jan-fev 2026: Vitamina C <strong>deficiente</strong>, HbA1c 5.9% (limítrofe), VO2máx 52.56 (bom, treinável). Consulte seu médico antes de iniciar qualquer suplementação.
+    </div>
+    <div class="suppl-grid">
+      <div class="suppl-item">
+        <div class="si-icon">🍊</div>
+        <div class="si-body">
+          <div class="si-name">Vitamina C</div>
+          <div class="si-dose">1.000mg/dia · após almoço</div>
+          <div class="si-why">Deficiente no exame. Essencial para síntese de colágeno, recuperação muscular e imunidade em treinos de alta carga.</div>
+        </div>
+        <span class="si-tag si-exam">EXAME</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">☀️</div>
+        <div class="si-body">
+          <div class="si-name">Vitamina D3 + K2</div>
+          <div class="si-dose">4.000 UI D3 + 100µg K2 · com refeição gordurosa</div>
+          <div class="si-why">Força muscular, imunidade, saúde óssea. K2 direciona cálcio para os ossos (evita artérias). Verificar no próximo exame.</div>
+        </div>
+        <span class="si-tag si-evi">EVIDÊNCIA A</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">🐟</div>
+        <div class="si-body">
+          <div class="si-name">Ômega-3 (EPA+DHA)</div>
+          <div class="si-dose">2–3g/dia · com refeição · EPA+DHA combinados</div>
+          <div class="si-why">Anti-inflamatório, recuperação muscular, saúde cardiovascular. Especialmente importante em atletas de endurance com alto volume.</div>
+        </div>
+        <span class="si-tag si-evi">EVIDÊNCIA A</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">⚡</div>
+        <div class="si-body">
+          <div class="si-name">Magnésio (bisglicinato)</div>
+          <div class="si-dose">400mg/dia · antes de dormir</div>
+          <div class="si-why">Qualidade do sono, relaxamento muscular, >300 reações enzimáticas. Atletas de endurance perdem magnésio pelo suor.</div>
+        </div>
+        <span class="si-tag si-evi">EVIDÊNCIA B</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">🔥</div>
+        <div class="si-body">
+          <div class="si-name">Beta-Alanina</div>
+          <div class="si-dose">3,2g/dia · dividido em 2x para minimizar formigamento</div>
+          <div class="si-why">Aumenta carnosina muscular → tamponamento de ácido lático → melhora performance em esforços Z3/Z4 de 1–4 minutos.</div>
+        </div>
+        <span class="si-tag si-evi">EVIDÊNCIA A</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">☕</div>
+        <div class="si-body">
+          <div class="si-name">Cafeína</div>
+          <div class="si-dose">3–5mg/kg · 30–60min antes · ~200–350mg</div>
+          <div class="si-why">Ergogênico mais estudado do mundo. Reduz percepção de esforço, melhora oxidação de gordura. Evitar 14 dias antes da prova (recalibrar tolerância).</div>
+        </div>
+        <span class="si-tag si-evi">EVIDÊNCIA A</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">💪</div>
+        <div class="si-body">
+          <div class="si-name">Creatina Monohidratada</div>
+          <div class="si-dose">5g/dia · qualquer horário · com água</div>
+          <div class="si-why">Melhora força e potência. Util na fase Build para suportar treinos de força. Pode aumentar ~1-2kg de peso (água intracelular) — considere o impacto na corrida.</div>
+        </div>
+        <span class="si-tag si-opt">OPCIONAL</span>
+      </div>
+      <div class="suppl-item">
+        <div class="si-icon">🥩</div>
+        <div class="si-body">
+          <div class="si-name">Proteína Whey (se necessário)</div>
+          <div class="si-dose">25–30g pós-treino · apenas se não atingir 1,7g/kg pela dieta</div>
+          <div class="si-why">Praticidade para atingir a meta de proteína. Priorize fontes alimentares; whey é suplemento, não substituto.</div>
+        </div>
+        <span class="si-tag si-opt">OPCIONAL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: RACE DAY -->
+  <div class="nutr-panel" id="nutr-race">
+    <div class="nutr-card">
+      <div class="nutr-ttl">3 DIAS ANTES — Carbo-loading (06–08 Ago 2026)</div>
+      <table class="nutr-tbl">
+        <thead><tr><th>Dia</th><th>Estratégia</th><th>Carboidratos</th></tr></thead>
+        <tbody>
+          <tr><td>Qui 06/Ago</td><td>Normal + aumento carbo</td><td class="nt-b">7g/kg · ~490g</td></tr>
+          <tr><td>Sex 07/Ago</td><td>Reduz volume treino</td><td class="nt-o">8g/kg · ~560g</td></tr>
+          <tr><td>Sáb 08/Ago</td><td>Treino leve + jantar rico</td><td class="nt-o">8–9g/kg · ~560–630g</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nutr-card">
+      <div class="nutr-ttl">DIA DA PROVA — 09 de Agosto de 2026 🏁</div>
+      <div class="rd-timeline">
+        <div class="rd-item">
+          <div class="rd-time">04h30</div>
+          <div class="rd-dot"></div>
+          <div class="rd-body"><strong>Acordar</strong>Hidratação imediata: 500ml água + eletrólitos. Não sair de casa sem tomar.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">05h00</div>
+          <div class="rd-dot"></div>
+          <div class="rd-body"><strong>Café da manhã da prova</strong>Arroz branco + banana + mel + café. Total: 100–120g carbo, baixo resíduo. Sem fibra, sem gordura.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">06h30</div>
+          <div class="rd-dot"></div>
+          <div class="rd-body"><strong>Na transição (T-área)</strong>200ml isotônico + 1 gel (cafeína) 20min antes do start. Sem experimentar nada novo.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">07h00</div>
+          <div class="rd-dot" style="background:var(--blue)"></div>
+          <div class="rd-body"><strong>🏊 NATAÇÃO 1,9km</strong>Sem nutrição. Hidratação na saída d'água antes da corrida para T1.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">T1</div>
+          <div class="rd-dot" style="background:var(--muted)"></div>
+          <div class="rd-body"><strong>Transição 1</strong>1 gel + 1 cápsula de sal. Água 200ml. Não apresse — nutrição aqui é ouro.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">~07h35</div>
+          <div class="rd-dot" style="background:var(--orange)"></div>
+          <div class="rd-body"><strong>🚴 CICLISMO 90km · ~2h30–2h45</strong>Alvo: 80–90g carbo/hora. Gel + banana + isotônico. Sal: 1 cápsula (400mg) a cada 45min. Beba a cada 15–20min mesmo sem sede.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">T2</div>
+          <div class="rd-dot" style="background:var(--muted)"></div>
+          <div class="rd-body"><strong>Transição 2</strong>1 gel cafeína + água. Descanse 30s — valerá mais que 10s de corrida apressada.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">~10h20</div>
+          <div class="rd-dot" style="background:var(--green)"></div>
+          <div class="rd-body"><strong>🏃 CORRIDA 21,1km · ~2h00–2h15</strong>Gel a cada 30–35min + cola a partir do km 14. Água em todos os pontos. Se tontura: sal imediato.</div>
+        </div>
+        <div class="rd-item">
+          <div class="rd-time">~12h30</div>
+          <div class="rd-dot" style="background:#ffc800)"></div>
+          <div class="rd-body"><strong>🏆 LINHA DE CHEGADA</strong>Você É um IRONMAN. Proteína + carboidrato na próxima hora. Comemore — mas re-hidrate primeiro!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARMIN INTEGRATION -->
+  <h2 class="section-title">INTEGRAÇÃO GARMIN</h2>
+  <div class="garmin-section">
+    <div class="garmin-header" onclick="toggleGarmin()">
+      <div class="garmin-title">
+        <span>🔌</span>
+        <span>Conexão garmin_mcp</span>
+        <span class="garmin-status">Desconectado</span>
+      </div>
+      <div class="garmin-chevron" id="garmin-chevron">▼</div>
+    </div>
+    <div class="garmin-body" id="garmin-body">
+      <p class="garmin-desc">
+        Este dashboard pode consumir dados reais do seu Garmin Connect via
+        <strong>garmin_mcp</strong> — um servidor MCP que expõe +110 ferramentas de dados de treino.
+        Siga os passos abaixo para conectar:
+      </p>
+      <ol class="garmin-steps">
+        <li><span class="step-num">01</span>Instale o garmin_mcp: baixe o arquivo <code>.dxt</code> em <strong>github.com/Taxuspt/garmin_mcp</strong> e abra no Claude Desktop</li>
+        <li><span class="step-num">02</span>Autentique: rode <code>garmin-mcp-auth</code> no terminal e insira suas credenciais Garmin Connect</li>
+        <li><span class="step-num">03</span>Reinicie o Claude Desktop</li>
+        <li><span class="step-num">04</span>Peça ao Claude para buscar seus treinos e atualizar este dashboard com dados reais</li>
+      </ol>
+      <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem">Estrutura JSON esperada para atualizar os dados:</p>
+      <div class="code-block"><pre><span class="code-comm">// Cole aqui o JSON retornado pelo garmin_mcp</span>
+{
+  <span class="code-key">"athlete"</span>: <span class="code-str">"Diego"</span>,
+  <span class="code-key">"race_date"</span>: <span class="code-str">"2026-08-09"</span>,
+  <span class="code-key">"ctl"</span>: <span class="code-num">52</span>,
+  <span class="code-key">"atl"</span>: <span class="code-num">31</span>,
+  <span class="code-key">"tsb"</span>: <span class="code-num">+21</span>,
+  <span class="code-key">"weekly_volume"</span>: {
+    <span class="code-key">"swim_km"</span>: <span class="code-num">2.0</span>,
+    <span class="code-key">"bike_km"</span>: <span class="code-num">0.0</span>,
+    <span class="code-key">"run_km"</span>: <span class="code-num">11.1</span>
+  },
+  <span class="code-key">"activities"</span>: [
+    { <span class="code-key">"type"</span>: <span class="code-str">"lap_swimming"</span>, <span class="code-key">"date"</span>: <span class="code-str">"2026-05-24"</span>, <span class="code-key">"distance_km"</span>: <span class="code-num">2.0</span>, <span class="code-key">"duration_min"</span>: <span class="code-num">38</span> },
+    { <span class="code-key">"type"</span>: <span class="code-str">"treadmill_running"</span>, <span class="code-key">"date"</span>: <span class="code-str">"2026-05-22"</span>, <span class="code-key">"distance_km"</span>: <span class="code-num">2.78</span>, <span class="code-key">"avg_hr"</span>: <span class="code-num">146</span> }
+  ]
+}</pre></div>
+      <button class="btn-garmin">
+        🔄 Atualizar dados do Garmin
+        <span class="btn-tooltip">Conecte o garmin_mcp primeiro (veja os passos acima)</span>
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════ LOG MODAL ═══════════════════ -->
+<div class="modal-overlay" id="log-modal" onclick="if(event.target===this)closeLog()">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Registrar treino</div>
+    <div class="modal-sub" id="modal-sub">Insira os dados reais do treino</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem">
+      <div class="form-grp">
+        <label class="form-lbl">Duração real</label>
+        <input class="form-inp" id="log-dur" type="text" placeholder="ex: 1h45m">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Distância</label>
+        <input class="form-inp" id="log-dist" type="text" placeholder="ex: 18.5km">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Pace médio</label>
+        <input class="form-inp" id="log-pace" type="text" placeholder="ex: 5:22/km">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">FC média (bpm)</label>
+        <input class="form-inp" id="log-hr" type="text" placeholder="ex: 158">
+      </div>
+    </div>
+    <div class="form-grp">
+      <label class="form-lbl">RPE — esforço percebido (1–10)</label>
+      <div class="rpe-grid">
+        <button class="rpe-btn" data-rpe="1"  onclick="selectRPE(1)">1</button>
+        <button class="rpe-btn" data-rpe="2"  onclick="selectRPE(2)">2</button>
+        <button class="rpe-btn" data-rpe="3"  onclick="selectRPE(3)">3</button>
+        <button class="rpe-btn" data-rpe="4"  onclick="selectRPE(4)">4</button>
+        <button class="rpe-btn" data-rpe="5"  onclick="selectRPE(5)">5</button>
+        <button class="rpe-btn" data-rpe="6"  onclick="selectRPE(6)">6</button>
+        <button class="rpe-btn" data-rpe="7"  onclick="selectRPE(7)">7</button>
+        <button class="rpe-btn" data-rpe="8"  onclick="selectRPE(8)">8</button>
+        <button class="rpe-btn" data-rpe="9"  onclick="selectRPE(9)">9</button>
+        <button class="rpe-btn" data-rpe="10" onclick="selectRPE(10)">10</button>
+      </div>
+    </div>
+    <div class="form-grp">
+      <label class="form-lbl">Notas / observações</label>
+      <textarea class="form-inp" id="log-notes" rows="2" placeholder="Como foi o treino? Sentiu bem? Dores?"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeLog()">Cancelar</button>
+      <button class="btn-save" onclick="saveLog()">💾 Salvar log</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FEEDBACK MODAL ═══════════════════ -->
+<div class="modal-overlay" id="fb-modal" onclick="if(event.target===this)closeFeedback()">
+  <div class="modal">
+    <div class="modal-title" id="fb-modal-title">Feedback da semana</div>
+    <div class="modal-sub">Avalie sua semana de treino — ajuda a ajustar o plano</div>
+    <div class="form-grp">
+      <label class="form-lbl">Como foi a semana no geral?</label>
+      <div class="rpe-grid">
+        <button class="star-btn" data-star="1" onclick="selectStar(1)">★</button>
+        <button class="star-btn" data-star="2" onclick="selectStar(2)">★</button>
+        <button class="star-btn" data-star="3" onclick="selectStar(3)">★</button>
+        <button class="star-btn" data-star="4" onclick="selectStar(4)">★</button>
+        <button class="star-btn" data-star="5" onclick="selectStar(5)">★</button>
+      </div>
+    </div>
+    <div class="form-grp">
+      <label class="form-lbl">RPE médio da semana</label>
+      <div class="rpe-grid">
+        <button class="rpe-btn-fb" data-rpe="1"  onclick="selectRPEFb(1)">1</button>
+        <button class="rpe-btn-fb" data-rpe="2"  onclick="selectRPEFb(2)">2</button>
+        <button class="rpe-btn-fb" data-rpe="3"  onclick="selectRPEFb(3)">3</button>
+        <button class="rpe-btn-fb" data-rpe="4"  onclick="selectRPEFb(4)">4</button>
+        <button class="rpe-btn-fb" data-rpe="5"  onclick="selectRPEFb(5)">5</button>
+        <button class="rpe-btn-fb" data-rpe="6"  onclick="selectRPEFb(6)">6</button>
+        <button class="rpe-btn-fb" data-rpe="7"  onclick="selectRPEFb(7)">7</button>
+        <button class="rpe-btn-fb" data-rpe="8"  onclick="selectRPEFb(8)">8</button>
+        <button class="rpe-btn-fb" data-rpe="9"  onclick="selectRPEFb(9)">9</button>
+        <button class="rpe-btn-fb" data-rpe="10" onclick="selectRPEFb(10)">10</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem">
+      <div class="form-grp">
+        <label class="form-lbl">Maior dificuldade</label>
+        <input class="form-inp" id="fb-struggle" type="text" placeholder="ex: Long run ficou pesado">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Maior conquista</label>
+        <input class="form-inp" id="fb-highlight" type="text" placeholder="ex: Primeiro 1.9km contínuo!">
+      </div>
+    </div>
+    <div class="form-grp">
+      <label class="form-lbl">Notas gerais (sono, motivação, corpo)</label>
+      <textarea class="form-inp" id="fb-notes" rows="2" placeholder="Recuperação, humor, energia..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeFeedback()">Cancelar</button>
+      <button class="btn-save" onclick="saveFeedback()">💾 Salvar feedback</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+//  COUNTDOWN
+// ════════════════════════════════════════════
+function updateCountdown() {
+  const race = new Date('2026-08-09T07:00:00');
+  const now = new Date();
+  const diff = race - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '🏆';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = d;
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+  const dtr = document.getElementById('days-to-race');
+  if (dtr) dtr.textContent = d;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ════════════════════════════════════════════
+//  WEEKLY PLAN DATA
+// ════════════════════════════════════════════
+const WEEKS = [
+  {
+    id:'w01',name:"S1 — Reativação",
+    range:"25–31 Mai 2026",
+    type:'build',label:'BASE',
+    swim:3.0,bike:80,run:25,
+    days:[
+      {id:'w01d01',dow:'Seg 25/05',disc:'strength',icon:'💪',name:"Força — Ativação Glúteo",detail:"45min | Glúteo médio D (déficit 11.5%): faixa lateral 3x15 + elevação lateral 3x20 | Rotadores externos Q.E (déficit moderado): clamshell 3x15 | Core: prancha 3x45s + bird-dog 3x12 | Mobilidade de quadril 10min",dur:'45min',zone:'Z1',meta:''},
+      {id:'w01d02',dow:'Ter 26/05',disc:'swim',icon:'🏊',name:"2.000m — Base Técnica",detail:"400m Br aquecimento | 6x100m A1 c/ 20s intervalo (foco: braçada longa) | 4x50m Braço | 200m Solto Cr | 400m contínuo A1 | 200m Br resfriamento | Total: 2.000m",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w01d03',dow:'Ter 26/05',disc:'run',icon:'🏃',name:"8km — 50min Constante L2",detail:"10min aquecimento caminhada/trote | 50min Corrida Constante L2 (FC 148-165) | Passada larga — evitar crossover! Foco na largura da passada | 5min caminhada | Total: ~8km",dur:'65min',zone:'Z2',meta:'8km'},
+      {id:'w01d04',dow:'Qua 27/05',disc:'bike',icon:'🚴',name:"70km — Progressivo L2→L3",detail:"10min aquecimento L1 | 40min Constante L2 (FC 140-155) | 30min Progressivo L2→L3 | 3x5min estímulos L3 (FC 165-175) c/ 3min L1 | 10min solto L1 | Cruzeiro ou indoor | Total: ~70km",dur:'2h20',zone:'Z2/Z3',meta:'70km'},
+      {id:'w01d05',dow:'Qui 28/05',disc:'run',icon:'🏃',name:"12km — 2x Bloco L2+L3",detail:"10min aquecimento | Bloco 1: 3km L2 + 2km L3 (pace ~4:45-5:00/km) + 3min recuperação | Bloco 2: 3km L2 + 2km L3 | 5min trote L1 | Total: ~12km | FC média esperada: 158-165",dur:'75min',zone:'Z2/Z3',meta:'12km'},
+      {id:'w01d06',dow:'Sex 29/05',disc:'swim',icon:'🏊',name:"1.800m — Séries A1",detail:"300m Br aquecimento | 4x(200m Crawl A1 + 100m Crawl A3) c/ 30s intervalo | 200m Braço A1 | 200m Br resfriamento | Total: 1.800m | Foco: não forçar — sessão leve pré-long ride",dur:'40min',zone:'Z1/Z2',meta:'1.800m'},
+      {id:'w01d07',dow:'Sáb 30/05',disc:'bike',icon:'🚴',name:"80km — Long Ride L2 Constante",detail:"10min aquecimento | 1h20 Constante L2 (FC 140-155 — NÃO ultrapassar!) | 3x5min subidas em pé (L3/L4) | 15min solto L1 | Rota sugerida: Cruzeiro ou Lago Sul | Total: ~80km",dur:'2h45',zone:'Z2',meta:'80km'},
+      {id:'w01d08',dow:'Dom 31/05',disc:'run',icon:'🏃',name:"16km — Long Run L2",detail:"10min aquecimento trote | 1h30 Corrida Constante L2 (FC 148-165) | Pace esperado: 5:30-6:00/km | Foco: terminar forte, não morrer | 5min caminhada | Total: ~16km",dur:'1h50',zone:'Z2',meta:'16km'}
+    ]
+  },
+  {
+    id:'w02',name:"S2 — Build 1",
+    range:"1–7 Jun 2026",
+    type:'build',label:'BUILD',
+    swim:4.0,bike:120,run:28,
+    days:[
+      {id:'w02d01',dow:'Seg 01/06',disc:'rest',icon:'😴',name:"Descanso + Recuperação",detail:"Descanso total ou mobilidade leve 20min | Sono: prioridade absoluta — mínimo 8h | Hidratação e alimentação | Sem treino estruturado",dur:'—',zone:'REST',meta:''},
+      {id:'w02d02',dow:'Ter 02/06',disc:'swim',icon:'🏊',name:"2.300m — Séries Mistas",detail:"300m Br aquecimento | 4x(200m Crawl A1 + 100m Crawl A3) c/ 20s | 4x50m sprint total A5 c/ 45s | 300m Br contínuo A2 | 200m Br resfriamento | Total: 2.300m",dur:'55min',zone:'Z1/Z3',meta:'2.300m'},
+      {id:'w02d03',dow:'Ter 02/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"10min aquecimento | 50min Corrida Constante L2 (FC 148-165) | Pace alvo: 5:15-5:30/km | 5min caminhada | Total: ~10km | Esta é a sessão base do ciclo — consiste e sem ego",dur:'65min',zone:'Z2',meta:'10km'},
+      {id:'w02d04',dow:'Qua 03/06',disc:'bike',icon:'🚴',name:"100km — Progressivo + Blocos",detail:"10min aquecimento | 40min L2 constante | 3x8min L3 (FC 165-175) c/ 4min L2 | 40min L2 constante | Estímulos finais: 5x1min força em pé c/ 2min L1 | 10min solto | Total: ~100km",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
+      {id:'w02d05',dow:'Qui 04/06',disc:'run',icon:'🏃',name:"12km — Tempo Run L3",detail:"10min aquecimento | 2x(3km L3 pace ~4:40-4:55/km + 2min recuperação) | 3km L2 | 5min trote | Total: ~12km | FC média: 162-170 | Beba água nos retornos",dur:'70min',zone:'Z3',meta:'12km'},
+      {id:'w02d06',dow:'Sex 05/06',disc:'swim',icon:'🏊',name:"2.000m — 20x100m Pace Prova",detail:"300m Br aquecimento | 20x100m A2/A3 c/ 20s intervalo (pace alvo: 1:45-1:50/100m) | 200m Br resfriamento | Total: 2.300m | Sessão inspirada no treino de 25/03/25 que funcionou muito bem!",dur:'55min',zone:'Z2/Z3',meta:'2.300m'},
+      {id:'w02d07',dow:'Sáb 06/06',disc:'brick',icon:'🧱',name:"BRICK — 100km + 5km off bike",detail:"BIKE 100km: 10min Aq + 1h40 L2 constante + 20min progressivo L2→L3 | T2: 3min transição rápida | CORRIDA 5km: saída de bike L2/L3 (esperar FC cair para 165-170 antes de acelerar) | Foco: sentir a corrida pós-bike",dur:'3h30',zone:'Z2/Z3',meta:'100km+5km'},
+      {id:'w02d08',dow:'Dom 07/06',disc:'run',icon:'🏃',name:"18km — Long Run L2",detail:"10min aquecimento | 1h40 Corrida Constante L2 (FC 148-165) | Pace: 5:30-6:00/km | Nutrição em movimento: gel a cada 45min | Total: ~18km | Não force — chegue bem",dur:'2h00',zone:'Z2',meta:'18km'}
+    ]
+  },
+  {
+    id:'w03',name:"S3 — Build 1 cont.",
+    range:"8–14 Jun 2026",
+    type:'build',label:'BUILD',
+    swim:4.0,bike:120,run:30,
+    days:[
+      {id:'w03d01',dow:'Seg 08/06',disc:'strength',icon:'💪',name:"Força — Membros Inferiores",detail:"Agachamento búlgaro 3x10/lado | Deadlift romeno 3x12 | Leg press unilateral 3x12 | Elevação de panturrilha 3x20 | Rotadores externos (correia) 3x15 | Core plank lateral 3x30s | Total: 50min",dur:'50min',zone:'Z1',meta:''},
+      {id:'w03d02',dow:'Ter 09/06',disc:'swim',icon:'🏊',name:"2.500m — Séries Longas",detail:"300m Br aquecimento | 3x500m A2 c/ 45s intervalo (manter pace constante!) | 4x100m A3 c/ 30s | 200m Br resfriamento | Total: 2.500m | Foco: 500m contínuos sem cair o pace",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
+      {id:'w03d03',dow:'Ter 09/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"10min aquecimento | 50min Constante L2 | Foco: passada larga + cadência 170+ | 5min caminhada",dur:'65min',zone:'Z2',meta:'10km'},
+      {id:'w03d04',dow:'Qua 10/06',disc:'bike',icon:'🚴',name:"90km — Blocos Fortes L3",detail:"15min aquecimento | 5x8min L3 (FC 165-175) c/ 4min L2 entre | 30min L2 constante pós-blocos | 10min solto | Esta sessão replica \"Longo c/ estímulos\" do 08/03/25 que foi muito eficaz | Total: ~90km",dur:'3h00',zone:'Z2/Z3',meta:'90km'},
+      {id:'w03d05',dow:'Qui 11/06',disc:'run',icon:'🏃',name:"14km — 2x 6.5km L3",detail:"15min aquecimento | 6.5km L3 (pace 4:45-5:00/km) + 3min recuperação | 6.5km L3 | 5min trote L1 | Esta é a sessão \"2x (6.5km L3 + 3min L1)\" do 23/03/25 — treino chave! | FC esperada: 165-175 | Total: ~14km",dur:'90min',zone:'Z3',meta:'14km'},
+      {id:'w03d06',dow:'Sex 12/06',disc:'swim',icon:'🏊',name:"OWS 1.5km — Paranoá/Lago",detail:"Natação em águas abertas — Paranoá ou Lago Oeste | Sem pausas, contínuo | Foco: orientação (olhar pra frente a cada 6-8 braçadas) e respiração bilateral | Se não possível OWS: piscina 2.000m séries livres",dur:'35min',zone:'Z2',meta:'1.500m OWS'},
+      {id:'w03d07',dow:'Sáb 13/06',disc:'brick',icon:'🧱',name:"BRICK LONGO — 90km + 8km",detail:"BIKE 90km: 10min Aq + 1h30 L2 + 3x5min L3/L4 c/ 2min L2 + 15min solto | T2: transição completa (troca roupa, nutrição) | CORRIDA 8km: 5km L2 + 3km progressivo até L3 | Anote o pace de saída de bike para ter referência na prova",dur:'4h00',zone:'Z2/Z3',meta:'90km+8km'},
+      {id:'w03d08',dow:'Dom 14/06',disc:'run',icon:'🏃',name:"20km — Long Run L2 (maior da fase)",detail:"10min aquecimento | 1h50 Constante L2 (FC 148-165) | Pace: 5:20-5:45/km | Nutrição: gel a cada 40min + água a cada 20min | Total: ~20km | Esta é a maior corrida longa do Build 1 — comemore!",dur:'2h10',zone:'Z2',meta:'20km'}
+    ]
+  },
+  {
+    id:'w04',name:"S4 — Recovery",
+    range:"15–21 Jun 2026",
+    type:'recovery',label:'RECOVERY',
+    swim:2.5,bike:60,run:15,
+    days:[
+      {id:'w04d01',dow:'Seg 15/06',disc:'rest',icon:'😴',name:"Descanso Total",detail:"Seu corpo precisa absorver 3 semanas de carga. Sono 8-9h. Alimentação rica em proteína e carboidratos complexos. Sem treino — nem \"leve\". O descanso É o treino.",dur:'—',zone:'REST',meta:''},
+      {id:'w04d02',dow:'Ter 16/06',disc:'swim',icon:'🏊',name:"1.500m — Solto Regenerativo",detail:"300m Br | 6x100m A1 muito fácil (sem olhar o relógio) | 300m Br | Foco: sentir a água, nada de pressão | FC nunca acima de 130",dur:'35min',zone:'Z1',meta:'1.500m'},
+      {id:'w04d03',dow:'Qua 17/06',disc:'bike',icon:'🚴',name:"60km — 1h30 Regenerativo L1/L2",detail:"10min Aq muito leve | 1h30 Constante L1/L2 (FC máx 145) | Sem pressão, sem olhar velocidade | Roda a mais leve, não esmague o pedal | 10min solto | Replica \"1h30 Regenerativo\" do 02/04/25",dur:'2h00',zone:'Z1/Z2',meta:'60km'},
+      {id:'w04d04',dow:'Qui 18/06',disc:'run',icon:'🏃',name:"8km — Trote Fácil L1",detail:"Trote suave 8km (FC < 145) | Sem pace target | Fique no conforto — se houver desconforto, caminhe | Sapato confortável, não o de treino pesado",dur:'55min',zone:'Z1',meta:'8km'},
+      {id:'w04d05',dow:'Sex 19/06',disc:'swim',icon:'🏊',name:"1.000m — Técnica Pura",detail:"200m Br | 8x50m técnica: respiração unilateral alternada, pegada, rotação do quadril | 200m Br | Foco total em técnica, sem contar tempo",dur:'25min',zone:'Z1',meta:'1.000m'},
+      {id:'w04d06',dow:'Sáb 20/06',disc:'rest',icon:'😴',name:"Descanso ou Trilha Leve",detail:"Opcional: trilha/caminhada leve 1h a FC < 120 | Ou descanso total | Faça o que o corpo pede",dur:'—',zone:'REST',meta:''},
+      {id:'w04d07',dow:'Dom 21/06',disc:'run',icon:'🏃',name:"10km — Constante L2 (teste)",detail:"10min Aq | 50min L2 constante | Este é o \"teste\" pós-recovery: se sentir bem, é sinal que o corpo absorveu. Se pesado, mais 1-2 dias leves | Pace esperado: melhor que na S1 (fitness real cresce na recovery!)",dur:'65min',zone:'Z2',meta:'10km'}
+    ]
+  },
+  {
+    id:'w05',name:"S5 — Build 2",
+    range:"22–28 Jun 2026",
+    type:'build',label:'BUILD',
+    swim:5.0,bike:150,run:35,
+    days:[
+      {id:'w05d01',dow:'Seg 22/06',disc:'strength',icon:'💪',name:"Força — Manutenção + Ativação",detail:"Glúteo médio D: monster walk 3x20 + elevação lateral resistida 3x15 | Agachamento unilateral 3x10/lado | Core: prancha + rotação 3x12 | Mobilidade 10min | Leve — não é semana de ganho muscular, é manutenção",dur:'40min',zone:'Z1',meta:''},
+      {id:'w05d02',dow:'Ter 23/06',disc:'swim',icon:'🏊',name:"2.500m — 1.900m pace prova",detail:"300m Br aquecimento | 1.900m contínuo A2/A3 (simulação distância da prova — 1.9km!) | 300m Br resfriamento | Este é SEU marco: primeiro 1.9km contínuo do ciclo. Pace alvo: 2:00-2:10/100m | Total: 2.500m",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
+      {id:'w05d03',dow:'Ter 23/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"50min Constante L2 | Pace esperado: 5:00-5:15/km (veja a evolução desde S1!) | Total: ~10km",dur:'65min',zone:'Z2',meta:'10km'},
+      {id:'w05d04',dow:'Qua 24/06',disc:'bike',icon:'🚴',name:"100km — Cruzeiro Progressivo",detail:"10min Aq | 1h30 Progressivo L2→L3 (começa 135bpm, termina 165bpm) | 3x10min L3 c/ 5min L2 | 10min solto | Rota Cruzeiro recomendada | Total: ~100km",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
+      {id:'w05d05',dow:'Qui 25/06',disc:'run',icon:'🏃',name:"15km — 2x5km L3 Tempo Run",detail:"15min Aq | 5km L3 (pace 4:40-4:55/km) + 3min recuperação | 5km L3 | 3km L2 | 5min trote | FC esperada: 165-175 | Total: ~15km | Treino qualidade — o mais exigente da semana",dur:'90min',zone:'Z3',meta:'15km'},
+      {id:'w05d06',dow:'Sex 26/06',disc:'swim',icon:'🏊',name:"OWS 2km — Paranoá",detail:"Natação aberta contínua 2km | Orienta usando landmarks visuais | Respiração alternada (L e R) | FC controlada — se ofegar, reduza o ritmo | Se necessário: piscina 2.500m (8x200m A2)",dur:'45min',zone:'Z2',meta:'2km OWS'},
+      {id:'w05d07',dow:'Sáb 27/06',disc:'bike',icon:'🚴',name:"120km — Long Ride L2 Constante",detail:"10min Aq | 2h00 Constante L2 (FC 140-155 — NUNCA acima de 160 sábado!) | 3x5min em pé (subidas L3) | 10min solto | Nutrição: 60-90g carbo/h | Total: ~120km | Seu maior ride da fase",dur:'3h45',zone:'Z2',meta:'120km'},
+      {id:'w05d08',dow:'Dom 28/06',disc:'run',icon:'🏃',name:"22km — Long Run L2 (maior do ciclo)",detail:"10min Aq | 2h00 Constante L2 | Pace: 5:15-5:45/km | Gel cada 35-40min | Água a cada 20min | Total: ~22km | Você fez isso no 30/03/25 (22km forte) — repita! | FC média esperada: 155-165",dur:'2h20',zone:'Z2',meta:'22km'}
+    ]
+  },
+  {
+    id:'w06',name:"S6 — Build 2 Pico",
+    range:"29 Jun–5 Jul 2026",
+    type:'peak',label:'PEAK',
+    swim:5.0,bike:160,run:38,
+    days:[
+      {id:'w06d01',dow:'Seg 29/06',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso total. Você terá a semana mais pesada do ciclo à frente. Sono prioritário.",dur:'—',zone:'REST',meta:''},
+      {id:'w06d02',dow:'Ter 30/06',disc:'swim',icon:'🏊',name:"2.500m — Séries A2/A3",detail:"300m Br | 4x(200m A2 + 100m A3) c/ 20s | 4x100m A2 sprint final | 300m Br | Total: 2.500m",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
+      {id:'w06d03',dow:'Ter 30/06',disc:'run',icon:'🏃',name:"10km — L2 Base",detail:"50min Constante L2 | Pace: 5:00-5:10/km | Conserva energia para o fim de semana",dur:'60min',zone:'Z2',meta:'10km'},
+      {id:'w06d04',dow:'Qua 01/07',disc:'bike',icon:'🚴',name:"100km — Blocos L3 + Base",detail:"10min Aq | 1h L2 constante | 5x8min L3 (FC 165-175) c/ 4min L2 | 30min L2 | 10min solto | Total: ~100km",dur:'3h10',zone:'Z2/Z3',meta:'100km'},
+      {id:'w06d05',dow:'Qui 02/07',disc:'run',icon:'🏃',name:"15km — 12km Forte L3",detail:"15min Aq | 12km L3 constante (pace 4:45-5:00/km, FC 165-175) | 3min recuperação | 3km trote L1 | Esta é a sessão \"15km (12km L3)\" do 09/03/25 — treino mais difícil da semana | Total: ~15km",dur:'95min',zone:'Z3',meta:'15km'},
+      {id:'w06d06',dow:'Sex 03/07',disc:'swim',icon:'🏊',name:"OWS 2km — Foco Orientação",detail:"2km contínuo em águas abertas | Praticar \"sighting\" (levantar cabeça) a cada 8 braçadas | Foco: nadar reto, sem ziguezague (economiza 100-200m de distância!) | Piscina alternativa: 2.500m contínuo",dur:'45min',zone:'Z2',meta:'2km OWS'},
+      {id:'w06d07',dow:'Sáb 04/07',disc:'brick',icon:'🧱',name:"BRICK MÁXIMO — 130km + 5km",detail:"BIKE 130km: maior pedalada do ciclo! 10min Aq + 2h10 L2 + estímulos finais 3x5min L3 | T2: transição completa com troca real de roupa e nutrição | CORRIDA 5km off bike L2 (espera FC estabilizar em ~165 antes de acelerar) | Anote o pace de saída",dur:'4h30',zone:'Z2/Z3',meta:'130km+5km'},
+      {id:'w06d08',dow:'Dom 05/07',disc:'run',icon:'🏃',name:"24km — Long Run L2 (MAIOR DO CICLO)",detail:"10min Aq | 2h10 Constante L2 | Pace: 5:10-5:40/km | Gel a cada 35min + água a cada 15min | Total: ~24km | MARCO DO CICLO — sua maior corrida longa | FC: 155-165",dur:'2h30',zone:'Z2',meta:'24km'}
+    ]
+  },
+  {
+    id:'w07',name:"S7 — Build 2 cont.",
+    range:"6–12 Jul 2026",
+    type:'build',label:'BUILD',
+    swim:4.5,bike:140,run:32,
+    days:[
+      {id:'w07d01',dow:'Seg 06/07',disc:'strength',icon:'💪',name:"Força — Manutenção",detail:"Circuito leve 40min: glúteo médio + core + mobilidade | Sem carga pesada — manutenção funcional apenas",dur:'40min',zone:'Z1',meta:''},
+      {id:'w07d02',dow:'Ter 07/07',disc:'swim',icon:'🏊',name:"2.500m — Pace Prova",detail:"300m Br | 1.900m pace de prova contínuo (alvo: 2:00/100m = 38min para 1.9km) | 300m Br | Compare com a S5 — o tempo deve ser melhor!",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
+      {id:'w07d03',dow:'Ter 07/07',disc:'run',icon:'🏃',name:"12km — L2 c/ strides",detail:"10min Aq | 8km L2 | 4x100m strides (aceleração suave até 85% esforço, 100m caminhada) | 2km L1 | Total: ~12km",dur:'70min',zone:'Z2',meta:'12km'},
+      {id:'w07d04',dow:'Qua 08/07',disc:'bike',icon:'🚴',name:"90km — L2 Constante",detail:"10min Aq | 2h L2 constante (FC 140-155) | 10min solto | Não force — semana de continuidade, não de destruição | Total: ~90km",dur:'2h30',zone:'Z2',meta:'90km'},
+      {id:'w07d05',dow:'Qui 09/07',disc:'run',icon:'🏃',name:"14km — Fartlek",detail:"10min Aq | 40min Fartlek: 3min L3 / 2min L1 (repete 8x) | 15min L2 | 5min trote | Total: ~14km | Fartlek é mais agradável que tempo run — deixe o terreno guiar o ritmo",dur:'80min',zone:'Z2/Z3',meta:'14km'},
+      {id:'w07d06',dow:'Sex 10/07',disc:'swim',icon:'🏊',name:"2.000m — Técnica + Velocidade",detail:"300m Br | 10x100m variado: 5x A2 (ritmo controlado) + 5x A3 (esforço real) c/ 30s | 300m Br | Bônus: se sentir bem, 2x200m A2 extras",dur:'50min',zone:'Z2/Z3',meta:'2.000m'},
+      {id:'w07d07',dow:'Sáb 11/07',disc:'bike',icon:'🚴',name:"100km — Long Ride L2 + Estímulos",detail:"10min Aq | 1h40 L2 | 5x5min L3 c/ 3min L2 | 20min solto | Total: ~100km | Semana levemente abaixo da S6 — intencional para absorção",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
+      {id:'w07d08',dow:'Dom 12/07',disc:'run',icon:'🏃',name:"20km — Long Run L2",detail:"10min Aq | 1h50 Constante L2 | Pace: 5:10-5:35/km | Gel a cada 40min | Total: ~20km",dur:'2h10',zone:'Z2',meta:'20km'}
+    ]
+  },
+  {
+    id:'w08',name:"S8 — Peak Simulado I",
+    range:"13–19 Jul 2026",
+    type:'peak',label:'PEAK',
+    swim:4.0,bike:150,run:35,
+    days:[
+      {id:'w08d01',dow:'Seg 13/07',disc:'strength',icon:'💪',name:"Força — Pré-pico",detail:"40min leve: ativação glúteo + core planks | Sem excesso — próximo sábado é simulado de prova!",dur:'40min',zone:'Z1',meta:''},
+      {id:'w08d02',dow:'Ter 14/07',disc:'swim',icon:'🏊',name:"2.500m — Ritmo Prova",detail:"300m Br | 1.900m pace de prova (meta: completar abaixo de 36min!) | 300m Br | Marco: o 1.9km da prova em tempo real",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
+      {id:'w08d03',dow:'Ter 14/07',disc:'run',icon:'🏃',name:"10km — L2",detail:"50min Constante L2 | Preserva pernas para o fim de semana",dur:'60min',zone:'Z2',meta:'10km'},
+      {id:'w08d04',dow:'Qua 15/07',disc:'bike',icon:'🚴',name:"90km — L3 Sweetspot",detail:"10min Aq | 2x20min Sweetspot (L3/L4, FC 168-178) c/ 5min L2 | 30min L2 | 10min solto | Total: ~90km | Sweetspot = intensidade mais eficiente para ganho aeróbio",dur:'2h45',zone:'Z3',meta:'90km'},
+      {id:'w08d05',dow:'Qui 16/07',disc:'run',icon:'🏃',name:"12km — Progressivo",detail:"10min Aq | 3km L2 + 3km L2/L3 + 3km L3 + 3km L2 (progressivo e volta) | Total: ~12km | FC: começa 148, pico 172, termina 155",dur:'70min',zone:'Z2/Z3',meta:'12km'},
+      {id:'w08d06',dow:'Sex 17/07',disc:'swim',icon:'🏊',name:"1.500m — Solto Técnica",detail:"1.500m solto A1 — pré-simulado, sessão recuperativa | Foco: técnica de virada e saída de bloco",dur:'35min',zone:'Z1',meta:'1.500m'},
+      {id:'w08d07',dow:'Sáb 18/07',disc:'brick',icon:'🧱',name:"SIMULADO I — 90km Bike + 10km Run",detail:"SIMULADO DE PROVA: Bike 90km ao pace de prova (FC 145-160, 28-30km/h se possível) | T2: transição cronometrada — anote o tempo | CORRIDA 10km ao pace de prova (4:45-5:15/km, FC 165-172) | Este é o dia mais importante do ciclo! Use a nutrição que planeja usar na prova | Total: ~4h45 + transição",dur:'4h45',zone:'Z3',meta:'90km+10km'},
+      {id:'w08d08',dow:'Dom 19/07',disc:'run',icon:'🏃',name:"21km — Long Run L2 (Testando Half)",detail:"10min Aq | 21km L2 + últimos 3km progressivo | Pace: 5:00-5:30/km | FC: 155-168 | Marco: você vai saber se consegue terminar o half depois do bike | Compare com o 30/03/25 (22km forte, FC 167)",dur:'2h15',zone:'Z2/Z3',meta:'21km'}
+    ]
+  },
+  {
+    id:'w09',name:"S9 — Peak Simulado II",
+    range:"20–26 Jul 2026",
+    type:'peak',label:'PEAK',
+    swim:3.5,bike:130,run:28,
+    days:[
+      {id:'w09d01',dow:'Seg 20/07',disc:'rest',icon:'😴',name:"Descanso — Absorção do Simulado",detail:"Descanso OBRIGATÓRIO após o simulado. Sono 9h. Anti-inflamatório natural (cúrcuma, gelo nas pernas). Sem treino algum.",dur:'—',zone:'REST',meta:''},
+      {id:'w09d02',dow:'Ter 21/07',disc:'swim',icon:'🏊',name:"2.000m — Recuperativo",detail:"2.000m solto, sem séries — apenas nadar e sentir | FC < 130 | Ótimo para recuperação muscular ativa",dur:'45min',zone:'Z1',meta:'2.000m'},
+      {id:'w09d03',dow:'Ter 21/07',disc:'run',icon:'🏃',name:"10km — L2 Suave",detail:"50min L2 suave (FC < 158) | Se as pernas pesarem, reduza para 8km | Nunca force em dia de recuperação",dur:'60min',zone:'Z2',meta:'10km'},
+      {id:'w09d04',dow:'Qua 22/07',disc:'bike',icon:'🚴',name:"80km — Constante L2",detail:"10min Aq | 1h30 L2 constante | 10min solto | Volume reduzido vs S8 — intencional | Total: ~80km",dur:'2h10',zone:'Z2',meta:'80km'},
+      {id:'w09d05',dow:'Qui 23/07',disc:'run',icon:'🏃',name:"12km — Threshold",detail:"15min Aq | 3x(3km L3 pace 4:40-4:55/km + 2min L1) | 3min trote | Total: ~12km | Última sessão de qualidade antes do taper",dur:'80min',zone:'Z3',meta:'12km'},
+      {id:'w09d06',dow:'Sex 24/07',disc:'swim',icon:'🏊',name:"OWS 1.500m — Simulação Final",detail:"1.500m em águas abertas com wetsuit SE for usar na prova | Última sessão de águas abertas antes da prova | Foco: reconhecer a sensação e controlar ansiedade",dur:'35min',zone:'Z2',meta:'1.500m OWS'},
+      {id:'w09d07',dow:'Sáb 25/07',disc:'brick',icon:'🧱',name:"BRICK — 90km + 8km off bike",detail:"BIKE 90km: L2 constante + 2x10min L3 | T2: transição | CORRIDA 8km: 5km race pace + 3km L2 | Última sessão longa antes do taper — anote tudo: pace, FC, nutrição",dur:'4h00',zone:'Z2/Z3',meta:'90km+8km'},
+      {id:'w09d08',dow:'Dom 26/07',disc:'run',icon:'🏃',name:"15km — L2 Controlado",detail:"10min Aq | 1h20 L2 (NÃO force — taper começa em 6 dias!) | Total: ~15km | Esta é a última long run longa do ciclo",dur:'1h40',zone:'Z2',meta:'15km'}
+    ]
+  },
+  {
+    id:'w10',name:"S10 — Taper",
+    range:"27 Jul–2 Ago 2026",
+    type:'taper',label:'TAPER',
+    swim:2.5,bike:80,run:18,
+    days:[
+      {id:'w10d01',dow:'Seg 27/07',disc:'strength',icon:'💪',name:"Força — Última Sessão",detail:"30min APENAS: ativação glúteo + core | Sem carga, sem fadiga | Esta é a ÚLTIMA sessão de força do ciclo",dur:'30min',zone:'Z1',meta:''},
+      {id:'w10d02',dow:'Ter 28/07',disc:'swim',icon:'🏊',name:"1.500m — Fácil",detail:"1.500m solto e fácil | Sem séries pesadas | Foco: sentir a técnica, relaxar | FC < 125",dur:'35min',zone:'Z1',meta:'1.500m'},
+      {id:'w10d03',dow:'Ter 28/07',disc:'run',icon:'🏃',name:"8km — L2 Suave",detail:"8km L2 constante | Pace: 5:20-5:40/km (sem correr rápido!) | As pernas devem começar a \"levitar\" esta semana",dur:'55min',zone:'Z2',meta:'8km'},
+      {id:'w10d04',dow:'Qua 29/07',disc:'bike',icon:'🚴',name:"50km — L2 c/ 2x10min Race Pace",detail:"15min Aq | 20min L2 | 2x10min pace de prova (FC 155-165) c/ 5min L2 | 15min solto | Volume -60% vs pico | Mas intensidade mantida — é isso que o taper faz! | Total: ~50km",dur:'1h30',zone:'Z2/Z3',meta:'50km'},
+      {id:'w10d05',dow:'Qui 30/07',disc:'run',icon:'🏃',name:"10km — Race Pace Test",detail:"10min Aq | 3km L2 | 3km race pace (alvo: 4:45-5:00/km off bike) | 2km L1 | 2km L2 | Total: ~10km | Último teste de pace antes da prova",dur:'60min',zone:'Z2/Z3',meta:'10km'},
+      {id:'w10d06',dow:'Sex 31/07',disc:'swim',icon:'🏊',name:"1.000m — Técnica Final",detail:"1.000m técnica: 4x100m foco braçada + 4x100m foco pernas + 200m pace prova | Sem cansaço — esta sessão é psicológica tanto quanto física",dur:'25min',zone:'Z1',meta:'1.000m'},
+      {id:'w10d07',dow:'Sáb 01/08',disc:'bike',icon:'🚴',name:"30km — Passeio L1",detail:"30km solto L1 (FC < 130) | Verificar equipamento: bike, pedais, sapatilhas, câmaras, nutrição | Reconhecimento da transição se possível",dur:'55min',zone:'Z1',meta:'30km'},
+      {id:'w10d08',dow:'Dom 02/08',disc:'run',icon:'🏃',name:"8km — Trote Descontraído",detail:"8km trote leve L1 | 4x100m strides para manter agilidade | Sem esforço! As pernas devem estar coçando para correr rápido — ÓTIMO sinal | Total: ~8km",dur:'50min',zone:'Z1',meta:'8km'}
+    ]
+  },
+  {
+    id:'w11',name:"S11 — Race Week",
+    range:"3–9 Ago 2026",
+    type:'taper',label:'RACE',
+    swim:1.0,bike:1.0,run:1.0,
+    days:[
+      {id:'w11d01',dow:'Seg 03/08',disc:'run',icon:'🏃',name:"20min — Trote Matinal",detail:"20min trote muito leve ao amanhecer | FC < 125 | Acorda o sistema cardiovascular para a semana | Nada mais",dur:'20min',zone:'Z1',meta:'~3km'},
+      {id:'w11d02',dow:'Ter 04/08',disc:'swim',icon:'🏊',name:"1km — Técnica + BIKE 30min",detail:"NATAÇÃO: 1.000m técnica muito leve (sem contar tempo) | BIKE: 30min passeio L1 | Checar equipamento: lubrificar corrente, verificar freios, calibrar pneus (6-7 bar)",dur:'1h00',zone:'Z1',meta:'1km + 30min'},
+      {id:'w11d03',dow:'Qua 05/08',disc:'run',icon:'🏃',name:"15min + Strides",detail:"15min trote L1 | 4x100m strides progressivos (termina em ~85% esforço) | As pernas devem estar EXPLOSIVAS — aproveite para confirmar",dur:'25min',zone:'Z1',meta:'~3km'},
+      {id:'w11d04',dow:'Qui 06/08',disc:'rest',icon:'😴',name:"DESCANSO TOTAL",detail:"Zero treino. Sem caminhadas longas. Pés no ar. Sono 9-10h. Hidratação 3L de água. Alimentação normal (sem excessos de pasta). Mentalize a prova.",dur:'—',zone:'REST',meta:''},
+      {id:'w11d05',dow:'Sex 07/08',disc:'bike',icon:'🚴',name:"Reconhecimento do percurso",detail:"20min bike no percurso ou na área de transição | 10min natação no percurso SE a água estiver aberta | Identifique: saídas e entradas T1/T2, posição da sua bike, marcações da corrida",dur:'30min',zone:'Z1',meta:'Reconhecimento'},
+      {id:'w11d06',dow:'Sáb 08/08',disc:'rest',icon:'😴',name:"DESCANSO TOTAL — Preparar transições",detail:"Monte as transições com calma: rack da bike, sacos T1 e T2, nutrição numerada por ordem | Refeição pré-corrida: jantar leve (arroz + frango + salada) às 19h | Durma às 21h | Acorde às 4:30h | Café da manhã às 5h: banana + aveia + café",dur:'—',zone:'REST',meta:'Logística'},
+      {id:'w11d07',dow:'Dom 09/08',disc:'race',icon:'🏁',name:"🏁 IRONMAN 70.3 RIO DE JANEIRO",detail:"Natação 1.9km | T1 | Ciclismo 90km | T2 | Corrida 21.1km | Alvo: melhorar os 6h42 de Brasília 2025 | Pace swim: 2:00/100m | Bike: 29-30km/h | Run off bike: 5:00-5:20/km | GOOO DIEGO!",dur:'~6h30',zone:'RACE',meta:'IRONMAN 70.3'}
+    ]
+  }
+];
+
+const TYPE_BADGE = {
+  build:'badge-build', peak:'badge-peak',
+  taper:'badge-taper', recovery:'badge-recovery'
+};
+const TYPE_COLOR = {
+  build:'build', peak:'peak', taper:'taper', recovery:'taper'
+};
+
+function getZoneClass(z) {
+  if (!z || z === 'REST') return 'zr';
+  if (z === 'RACE' || z.includes('RACE')) return 'zrace';
+  if (z.startsWith('Z5')) return 'z5';
+  if (z.startsWith('Z4')) return 'z4';
+  if (z.startsWith('Z3')) return 'z3';
+  if (z.startsWith('Z2')) return 'z2';
+  if (z.startsWith('Z1')) return 'z1';
+  return 'zr';
+}
+
+function getChecked(id) { return localStorage.getItem('chk_'+id) === '1'; }
+function setChecked(id, val) { localStorage.setItem('chk_'+id, val ? '1' : '0'); }
+
+// ── Find current week index (based on today's date) ──
+let currentWeekIdx = 0;
+(function() {
+  const today = new Date();
+  // week start dates derived from ranges
+  const starts = [
+    new Date('2026-05-25'), new Date('2026-06-01'), new Date('2026-06-08'),
+    new Date('2026-06-15'), new Date('2026-06-22'), new Date('2026-06-29'),
+    new Date('2026-07-06'), new Date('2026-07-13'), new Date('2026-07-20'),
+    new Date('2026-07-27'), new Date('2026-08-03')
+  ];
+  for (let i = starts.length - 1; i >= 0; i--) {
+    if (today >= starts[i]) { currentWeekIdx = i; break; }
+  }
+  // Clamp before plan start to week 0
+  if (today < starts[0]) currentWeekIdx = 0;
+})();
+
+function buildStepper() {
+  const el = document.getElementById('week-stepper');
+  el.innerHTML = '';
+  WEEKS.forEach((w, i) => {
+    const allDone = w.days.filter(d => d.disc !== 'rest').every(d => getChecked(d.id));
+    const pip = document.createElement('div');
+    pip.className = 'step-pip' +
+      (i === currentWeekIdx ? ' active' : '') +
+      (allDone && i !== currentWeekIdx ? ' done' : '') +
+      (!allDone && i !== currentWeekIdx && (w.type === 'peak') ? ' peak' : '') +
+      (!allDone && i !== currentWeekIdx && (w.type === 'taper') ? ' taper' : '');
+    pip.title = `${w.name} · ${w.range}`;
+    pip.onclick = () => goToWeek(i);
+    el.appendChild(pip);
+  });
+}
+
+const DISC_LABEL = { swim:'Natação', bike:'Ciclismo', run:'Corrida', brick:'Brick', strength:'Força', rest:'Descanso', race:'PROVA' };
+
+function isKeyStep(s) {
+  return /[!]/.test(s) || /marco|simulad|chave|key|maior|mais forte|teste/i.test(s);
+}
+
+function renderWeek(idx) {
+  const week = WEEKS[idx];
+  const container = document.getElementById('weeks-container');
+  const checked = week.days.filter(d => getChecked(d.id) && d.disc !== 'rest').length;
+  const total   = week.days.filter(d => d.disc !== 'rest').length;
+  const pct     = total ? Math.round(checked / total * 100) : 0;
+
+  const volHtml = (week.id === 'w11')
+    ? `<span class="vol-item" style="color:var(--muted);font-style:italic">Semana de prova — volume mínimo</span>`
+    : `<span class="vol-item vol-swim"><span class="vol-icon">🏊</span><span class="vol-label">SWIM</span>${week.swim}km</span>
+       <span class="vol-item vol-bike"><span class="vol-icon">🚴</span><span class="vol-label">BIKE</span>${week.bike}km</span>
+       <span class="vol-item vol-run"><span class="vol-icon">🏃</span><span class="vol-label">RUN</span>${week.run}km</span>`;
+
+  const daysHtml = week.days.map(d => {
+    // ── REST DAY ──
+    if (d.disc === 'rest') {
+      const note = d.detail.split('|')[0]?.trim() || '';
+      return `<div class="wk-card wk-card-rest">
+        <div class="wk-card-header">
+          <div class="wk-dow">${d.dow.split(' ')[0]}<strong>${d.dow.split(' ')[1]||''}</strong></div>
+          <span class="wk-disc-badge wk-disc-rest">${d.icon} Descanso</span>
+        </div>
+        <div class="wk-rest-note">${note}</div>
+      </div>`;
+    }
+
+    const done  = getChecked(d.id);
+    const log   = getLog(d.id);
+    const steps = d.detail.split('|').map(s => s.trim()).filter(Boolean);
+    const vis   = steps.slice(0, 3);
+    const hid   = steps.slice(3);
+    const zc    = getZoneClass(d.zone);
+    const dowParts = d.dow.split(' ');
+
+    const stepsHtml = vis.map(s =>
+      `<div class="wk-step${isKeyStep(s) ? ' ks' : ''}"><span class="wk-step-b">▸</span>${s}</div>`
+    ).join('');
+    const moreHtml = hid.map(s =>
+      `<div class="wk-step${isKeyStep(s) ? ' ks' : ''}"><span class="wk-step-b">▸</span>${s}</div>`
+    ).join('');
+
+    const logBadge = log
+      ? `<div class="wk-log-summary">✓ Registrado: ${[log.dur, log.dist, log.pace ? 'pace '+log.pace : '', log.hr ? 'FC '+log.hr : '', log.rpe ? 'RPE '+log.rpe : ''].filter(Boolean).join(' · ')}</div>`
+      : '';
+
+    return `
+      <div class="wk-card wk-card-${d.disc}${done ? ' done-card' : ''}" id="card-${d.id}">
+        <div class="wk-card-header">
+          <div class="wk-dow">${dowParts[0]}<strong>${dowParts[1]||''}</strong></div>
+          <span class="wk-disc-badge wk-disc-${d.disc}">${d.icon} ${DISC_LABEL[d.disc]||d.disc}</span>
+          <span class="zone-badge ${zc}" style="font-size:0.58rem;padding:0.12rem 0.45rem">${d.zone}</span>
+          <div class="wk-check${done ? ' checked' : ''}" id="chk-${d.id}" onclick="toggleDay('${d.id}','${week.id}')">✓</div>
+        </div>
+        <div class="wk-card-body">
+          <div class="wk-card-name">${d.name}</div>
+          <div class="wk-card-stats">
+            <span>⏱ <span class="wk-sv">${d.dur}</span></span>
+            ${d.meta ? `<span>📏 <span class="wk-sv">${d.meta}</span></span>` : ''}
+          </div>
+          <div class="wk-steps">
+            ${stepsHtml}
+            ${hid.length ? `<div class="wk-steps-more" id="more-${d.id}">${moreHtml}</div>` : ''}
+          </div>
+        </div>
+        <div class="wk-card-footer">
+          ${hid.length ? `<button class="btn-tgl" id="tgl-${d.id}" onclick="toggleSteps('${d.id}')">▾ ${hid.length} passos</button>` : '<span></span>'}
+          <div class="wk-actions">
+            <button class="btn-log${log ? ' logged' : ''}" onclick="openLog('${d.id}','${week.id}')">${log ? '📊 Ver log' : '📝 Registrar'}</button>
+            <button class="btn-done${done ? ' done' : ''}" id="donebtn-${d.id}" onclick="toggleDay('${d.id}','${week.id}')">${done ? '✓ Feito' : 'Concluir'}</button>
+          </div>
+        </div>
+        ${logBadge}
+      </div>`;
+  }).join('');
+
+  const fb = getFeedback(week.id);
+  const fbHtml = `
+    <div class="week-feedback-bar">
+      <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.08em">FEEDBACK</span>
+      <button class="btn-feedback${fb ? ' has-fb' : ''}" onclick="openFeedback('${week.id}')">
+        ${fb ? `⭐ ${fb.stars}/5 · RPE ${fb.rpe} · ${fb.highlight || 'ver notas'}` : '+ Avaliar semana'}
+      </button>
+    </div>`;
+
+  container.innerHTML = `
+    <div class="week-card" style="overflow:visible">
+      <div class="week-header">
+        <div>
+          <div class="week-name">${week.name}</div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem;font-family:var(--font-mono)">${week.range}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap">
+          <div class="week-pct" id="pct-${week.id}">${pct}%</div>
+          <div class="week-badge ${TYPE_BADGE[week.type]}">${week.label}</div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted)">S${idx+1}/11</div>
+        </div>
+      </div>
+      <div class="week-progress-bar">
+        <div class="week-progress-fill" id="bar-${week.id}" style="width:${pct}%"></div>
+      </div>
+      <div class="week-volumes">${volHtml}</div>
+      <div style="display:flex;flex-direction:column;gap:0">${daysHtml}</div>
+      ${fbHtml}
+    </div>`;
+
+  document.getElementById('nav-week-label').textContent = week.name;
+  document.getElementById('nav-week-sub').textContent = week.range + '  ·  S' + (idx+1) + '/11';
+  document.getElementById('btn-prev').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = (idx === WEEKS.length - 1);
+}
+
+function goToWeek(idx) {
+  currentWeekIdx = idx;
+  renderWeek(idx);
+  buildStepper();
+  updateWeekMetric();
+  document.getElementById('weeks-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function shiftWeek(dir) {
+  const next = currentWeekIdx + dir;
+  if (next >= 0 && next < WEEKS.length) goToWeek(next);
+}
+
+function toggleDetail(dayId) {
+  const panel = document.getElementById('det-' + dayId);
+  const btn   = document.getElementById('dtbtn-' + dayId);
+  const row   = document.getElementById('row-' + dayId);
+  const isOpen = panel.classList.toggle('open');
+  if (btn) btn.textContent = isOpen ? '▴' : '▾';
+  if (row) row.classList.toggle('expanded', isOpen);
+}
+
+function toggleDay(dayId, weekId) {
+  const now = !getChecked(dayId);
+  setChecked(dayId, now);
+
+  const card    = document.getElementById('card-'+dayId);
+  const chk     = document.getElementById('chk-'+dayId);
+  const doneBtn = document.getElementById('donebtn-'+dayId);
+  if (card) card.classList.toggle('done-card', now);
+  if (chk)  chk.classList.toggle('checked', now);
+  if (doneBtn) { doneBtn.classList.toggle('done', now); doneBtn.textContent = now ? '✓ Feito' : 'Concluir'; }
+
+  const week = WEEKS.find(w => w.id === weekId);
+  const checked = week.days.filter(d => getChecked(d.id) && d.disc !== 'rest').length;
+  const total   = week.days.filter(d => d.disc !== 'rest').length;
+  const pct     = total ? Math.round(checked / total * 100) : 0;
+  const pctEl = document.getElementById('pct-'+weekId);
+  const barEl = document.getElementById('bar-'+weekId);
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (barEl) barEl.style.width = pct + '%';
+
+  buildStepper();
+  updateWeekMetric();
+}
+
+function updateWeekMetric() {
+  const week = WEEKS[currentWeekIdx];
+  const done  = week.days.filter(d => getChecked(d.id) && d.disc !== 'rest').length;
+  const total = week.days.filter(d => d.disc !== 'rest').length;
+  const pct   = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('done-count').textContent  = done;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('done-pct').textContent    = pct + '% da semana atual';
+
+  const circ = 2 * Math.PI * 24;
+  const offset = circ - (pct / 100) * circ;
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+}
+
+renderWeek(currentWeekIdx);
+buildStepper();
+updateWeekMetric();
+
+// ════════════════════════════════════════════
+//  TRAINING LOAD CHART
+// ════════════════════════════════════════════
+// Dados reais Garmin Connect (exportação Mai 2026)
+// weeklyTrainingLoadSum normalizado para escala CTL/ATL
+const weeks = ['23/02','02/03','09/03','16/03','23/03','30/03','06/04','13/04','20/04','27/04','04/05','11/05','18/05'];
+const ctl   = [66, 63, 67, 66, 68, 71, 73, 69, 61, 60, 58, 56, 52];
+const atl   = [66, 50, 87, 57, 77, 89, 84, 45, 21, 57, 50, 46, 31];
+const tsb   = ctl.map((v,i) => v - atl[i]);
+
+const ctx = document.getElementById('loadChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: weeks,
+    datasets: [
+      {
+        label: 'CTL (Fitness)',
+        data: ctl,
+        borderColor: '#00d4ff',
+        backgroundColor: 'rgba(0,212,255,0.06)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4,
+        pointBackgroundColor: '#00d4ff',
+        borderWidth: 2,
+      },
+      {
+        label: 'ATL (Fadiga)',
+        data: atl,
+        borderColor: '#e8501a',
+        backgroundColor: 'rgba(232,80,26,0.06)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4,
+        pointBackgroundColor: '#e8501a',
+        borderWidth: 2,
+      },
+      {
+        label: 'TSB (Forma)',
+        data: tsb,
+        borderColor: '#00e676',
+        backgroundColor: 'rgba(0,230,118,0.05)',
+        tension: 0.4,
+        fill: false,
+        pointRadius: 4,
+        pointBackgroundColor: '#00e676',
+        borderWidth: 2,
+        borderDash: [4,3],
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#111827',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleColor: '#e8eaf0',
+        bodyColor: '#8899bb',
+        padding: 12,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: { color: '#556070', font: { family: 'DM Mono', size: 11 } }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: { color: '#556070', font: { family: 'DM Mono', size: 11 } }
+      }
+    }
+  }
+});
+
+// ════════════════════════════════════════════
+//  SUMMARY TABLE
+// ════════════════════════════════════════════
+// Dados reais Garmin Connect
+const historyData = [
+  { week:'13/04', swim:2.0, bike:0,    run:12.0, tss:313, key:'2km piscina + corridas Taguatinga' },
+  { week:'20/04', swim:2.6, bike:0,    run:5.8,  tss:147, key:'Natação aberta 1km (Brasília) + recovery' },
+  { week:'27/04', swim:1.5, bike:62.9, run:17.8, tss:396, key:'62.9km bike indoor + 9km corrida' },
+  { week:'04/05', swim:0,   bike:22.0, run:17.9, tss:347, key:'22km ciclismo + 10km Taguatinga Corrida' },
+  { week:'11/05', swim:0,   bike:0,    run:10.6, tss:322, key:'10.6km corrida + 3×força' },
+  { week:'18/05 (Atual)', swim:2.0, bike:0, run:11.1, tss:219, key:'2km natação + 8.3km esteira · RECOVERY' },
+];
+const maxTSS = Math.max(...historyData.map(r => r.tss));
+
+const table = document.getElementById('summary-table');
+table.innerHTML = `
+  <thead>
+    <tr>
+      <th>SEMANA</th>
+      <th>🏊 SWIM</th>
+      <th>🚴 BIKE</th>
+      <th>🏃 RUN</th>
+      <th>TSS TOTAL</th>
+      <th>TREINO PRINCIPAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${historyData.map(r => `
+      <tr>
+        <td class="td-week">${r.week}</td>
+        <td class="td-swim">${r.swim} km</td>
+        <td class="td-bike">${r.bike} km</td>
+        <td class="td-run">${r.run} km</td>
+        <td>
+          <div class="tss-bar">
+            <span class="td-tss">${r.tss}</span>
+            <div class="tss-fill" style="width:${Math.round(r.tss/maxTSS*80)}px"></div>
+          </div>
+        </td>
+        <td class="td-key">${r.key}</td>
+      </tr>
+    `).join('')}
+  </tbody>
+`;
+
+// ════════════════════════════════════════════
+//  TOGGLE STEPS
+// ════════════════════════════════════════════
+function toggleSteps(dayId) {
+  const more = document.getElementById('more-' + dayId);
+  const btn  = document.getElementById('tgl-' + dayId);
+  if (!more) return;
+  const open = more.classList.toggle('open');
+  if (btn) btn.textContent = open
+    ? '▴ menos'
+    : `▾ ${more.querySelectorAll('.wk-step').length} passos`;
+}
+
+// ════════════════════════════════════════════
+//  LOG MODAL
+// ════════════════════════════════════════════
+let _logDayId = null, _logWeekId = null;
+
+function getLog(dayId) {
+  const v = localStorage.getItem('log_' + dayId);
+  return v ? JSON.parse(v) : null;
+}
+function setLog(dayId, data) { localStorage.setItem('log_' + dayId, JSON.stringify(data)); }
+
+function openLog(dayId, weekId) {
+  _logDayId  = dayId;
+  _logWeekId = weekId;
+  const log  = getLog(dayId);
+  const week = WEEKS.find(w => w.id === weekId);
+  const day  = week?.days.find(d => d.id === dayId);
+  document.getElementById('modal-title').textContent = day?.name || 'Registrar treino';
+  document.getElementById('modal-sub').textContent   = (day?.dur || '') + (day?.zone ? ' · ' + day.zone : '');
+  document.getElementById('log-dur').value   = log?.dur   || '';
+  document.getElementById('log-dist').value  = log?.dist  || '';
+  document.getElementById('log-pace').value  = log?.pace  || '';
+  document.getElementById('log-hr').value    = log?.hr    || '';
+  document.getElementById('log-notes').value = log?.notes || '';
+  document.querySelectorAll('.rpe-btn').forEach(b =>
+    b.classList.toggle('sel', b.dataset.rpe == (log?.rpe || '')));
+  document.getElementById('log-modal').classList.add('open');
+}
+
+function closeLog() {
+  document.getElementById('log-modal').classList.remove('open');
+  _logDayId = null; _logWeekId = null;
+}
+
+function selectRPE(val) {
+  document.querySelectorAll('.rpe-btn').forEach(b =>
+    b.classList.toggle('sel', b.dataset.rpe == val));
+}
+
+function saveLog() {
+  if (!_logDayId) return;
+  const rpeEl = document.querySelector('.rpe-btn.sel');
+  const data = {
+    dur:   document.getElementById('log-dur').value.trim(),
+    dist:  document.getElementById('log-dist').value.trim(),
+    pace:  document.getElementById('log-pace').value.trim(),
+    hr:    document.getElementById('log-hr').value.trim(),
+    rpe:   rpeEl ? rpeEl.dataset.rpe : '',
+    notes: document.getElementById('log-notes').value.trim(),
+    ts:    Date.now()
+  };
+  setLog(_logDayId, data);
+  if (!getChecked(_logDayId)) toggleDay(_logDayId, _logWeekId);
+  const wid = _logWeekId;
+  closeLog();
+  renderWeek(WEEKS.findIndex(w => w.id === wid));
+  buildStepper();
+}
+
+// ════════════════════════════════════════════
+//  FEEDBACK MODAL
+// ════════════════════════════════════════════
+let _fbWeekId = null;
+
+function getFeedback(weekId) {
+  const v = localStorage.getItem('fb_' + weekId);
+  return v ? JSON.parse(v) : null;
+}
+function setFeedback(weekId, data) { localStorage.setItem('fb_' + weekId, JSON.stringify(data)); }
+
+function openFeedback(weekId) {
+  _fbWeekId = weekId;
+  const fb  = getFeedback(weekId);
+  const week = WEEKS.find(w => w.id === weekId);
+  document.getElementById('fb-modal-title').textContent = 'Feedback — ' + (week?.name || weekId);
+  const stars = fb?.stars || 0;
+  document.querySelectorAll('.star-btn').forEach(b =>
+    b.classList.toggle('sel', parseInt(b.dataset.star) <= stars));
+  document.querySelectorAll('.rpe-btn-fb').forEach(b =>
+    b.classList.toggle('sel', b.dataset.rpe == (fb?.rpe || '')));
+  document.getElementById('fb-struggle').value  = fb?.struggle  || '';
+  document.getElementById('fb-highlight').value = fb?.highlight || '';
+  document.getElementById('fb-notes').value     = fb?.notes     || '';
+  document.getElementById('fb-modal').classList.add('open');
+}
+
+function closeFeedback() {
+  document.getElementById('fb-modal').classList.remove('open');
+  _fbWeekId = null;
+}
+
+function selectStar(val) {
+  document.querySelectorAll('.star-btn').forEach(b =>
+    b.classList.toggle('sel', parseInt(b.dataset.star) <= val));
+}
+
+function selectRPEFb(val) {
+  document.querySelectorAll('.rpe-btn-fb').forEach(b =>
+    b.classList.toggle('sel', b.dataset.rpe == val));
+}
+
+function saveFeedback() {
+  if (!_fbWeekId) return;
+  let stars = 0;
+  document.querySelectorAll('.star-btn.sel').forEach(() => stars++);
+  const rpeEl = document.querySelector('.rpe-btn-fb.sel');
+  const data = {
+    stars,
+    rpe:      rpeEl ? rpeEl.dataset.rpe : '',
+    struggle: document.getElementById('fb-struggle').value.trim(),
+    highlight:document.getElementById('fb-highlight').value.trim(),
+    notes:    document.getElementById('fb-notes').value.trim(),
+    ts:       Date.now()
+  };
+  setFeedback(_fbWeekId, data);
+  const wid = _fbWeekId;
+  closeFeedback();
+  renderWeek(WEEKS.findIndex(w => w.id === wid));
+  buildStepper();
+}
+
+// ════════════════════════════════════════════
+//  NUTRITION TABS
+// ════════════════════════════════════════════
+function switchNutr(tab) {
+  document.querySelectorAll('.nutr-tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.nutr-panel').forEach(p =>
+    p.classList.toggle('active', p.id === 'nutr-' + tab));
+}
+
+// ════════════════════════════════════════════
+//  GARMIN TOGGLE
+// ════════════════════════════════════════════
+function toggleGarmin() {
+  const body    = document.getElementById('garmin-body');
+  const chevron = document.getElementById('garmin-chevron');
+  const open    = body.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+
+// ════════════════════════════════════════════
+//  ANIMATE BARS ON LOAD
+// ════════════════════════════════════════════
+setTimeout(() => {
+  document.querySelectorAll('.week-progress-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => el.style.width = w, 100);
+  });
+  updateWeekMetric();
+}, 300);
+</script>
+</body>
+</html>
