@@ -38,17 +38,36 @@
     overflow-x: hidden;
   }
 
+  /* ── STICKY TOP BAR ── */
+  .top-bar {
+    position: sticky; top: 0; z-index: 150;
+    height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.5rem;
+    background: rgba(7,9,15,0.92);
+    border-bottom: 1px solid rgba(232,80,26,0.25);
+    backdrop-filter: blur(16px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .top-bar.visible { opacity: 1; pointer-events: auto; }
+  .tb-brand { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.12em; color: var(--orange); }
+  .tb-cd { display: flex; gap: 0.3rem; align-items: baseline; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+  .tb-cd strong { font-size: 1rem; color: var(--text); font-family: var(--font-display); }
+  .tb-week { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); display: none; }
+  @media (min-width: 600px) { .tb-week { display: block; } }
+
   /* ── HERO ── */
   .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 46vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
   }
 
   .hero-bg {
@@ -82,7 +101,7 @@
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(5rem, 18vw, 14rem);
+    font-size: clamp(3rem, 11vw, 7.5rem);
     line-height: 0.9;
     letter-spacing: 0.02em;
     background: linear-gradient(135deg, #fff 40%, var(--orange) 100%);
@@ -95,10 +114,10 @@
 
   .hero-subtitle {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-size: clamp(1rem, 3vw, 1.8rem);
     letter-spacing: 0.15em;
     color: var(--muted);
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
     opacity: 0;
     animation: fadeUp 0.8s 0.6s forwards;
   }
@@ -118,8 +137,8 @@
   /* Countdown */
   .countdown {
     display: flex;
-    gap: clamp(1rem, 4vw, 3rem);
-    margin-top: 3rem;
+    gap: clamp(0.6rem, 2.5vw, 2rem);
+    margin-top: 1.5rem;
     opacity: 0;
     animation: fadeUp 0.8s 1s forwards;
   }
@@ -128,12 +147,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.25rem;
   }
 
   .cd-num {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 6rem);
+    font-size: clamp(1.8rem, 4.5vw, 3.5rem);
     line-height: 1;
     background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
     -webkit-background-clip: text;
@@ -145,15 +164,15 @@
 
   .cd-label {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
     color: var(--muted);
     text-transform: uppercase;
   }
 
   .cd-sep {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
     color: var(--orange);
     line-height: 1;
     align-self: flex-start;
@@ -191,8 +210,118 @@
   .main {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 6rem;
+    padding: 2rem 1.5rem 6rem;
   }
+
+  /* ── TODAY SECTION ── */
+  .today-section {
+    background: linear-gradient(135deg, rgba(232,80,26,0.07) 0%, rgba(0,212,255,0.04) 100%);
+    border: 1px solid rgba(232,80,26,0.2);
+    border-radius: 16px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.2rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .today-section { grid-template-columns: 1fr; } }
+
+  .today-left {}
+  .today-header {
+    display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+  .today-label {
+    font-family: var(--font-display); font-size: 1.5rem;
+    letter-spacing: 0.06em; color: var(--orange);
+  }
+  .today-date-txt {
+    font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted);
+  }
+  .today-week-badge {
+    font-family: var(--font-mono); font-size: 0.62rem; color: rgba(232,80,26,0.7);
+    border: 1px solid rgba(232,80,26,0.25); border-radius: 4px;
+    padding: 0.1rem 0.45rem;
+  }
+
+  .today-workouts-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .today-w-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.6rem 0.9rem;
+    border-left: 3px solid var(--orange);
+  }
+  .today-w-item.twi-swim  { border-left-color: var(--blue); }
+  .today-w-item.twi-bike  { border-left-color: var(--orange); }
+  .today-w-item.twi-run   { border-left-color: var(--green); }
+  .today-w-item.twi-strength { border-left-color: #ffc800; }
+  .today-w-item.twi-brick { border-left-color: var(--purple); }
+  .today-w-item.twi-rest  { border-left-color: var(--muted); opacity: 0.6; }
+  .today-w-done { opacity: 0.42; text-decoration: line-through; }
+
+  .twi-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .twi-info { flex: 1; min-width: 0; }
+  .twi-name { font-size: 0.9rem; font-weight: 600; }
+  .twi-meta { font-family: var(--font-mono); font-size: 0.63rem; color: var(--muted); margin-top: 0.1rem; }
+  .twi-check {
+    width: 22px; height: 22px; border-radius: 5px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.7rem; color: transparent;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .twi-check.done { background: var(--green); border-color: var(--green); color: #fff; }
+  .twi-check:hover { border-color: var(--green); background: var(--green-dim); }
+
+  .today-rest-msg {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--muted); padding: 0.5rem 0;
+  }
+
+  /* Garmin Live Data */
+  .garmin-live-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    min-width: 220px;
+  }
+  @media (max-width: 768px) {
+    .garmin-live-grid { grid-template-columns: repeat(4, 1fr); min-width: 0; }
+  }
+  @media (max-width: 500px) {
+    .garmin-live-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .glive-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.65rem 0.8rem;
+    display: flex; flex-direction: column; gap: 0.2rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .glive-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gc-color, transparent);
+    opacity: 0.06; pointer-events: none;
+  }
+  .glive-card:hover { border-color: rgba(255,255,255,0.15); }
+
+  .glc-icon { font-size: 0.9rem; }
+  .glc-val {
+    font-family: var(--font-display); font-size: 1.5rem;
+    line-height: 1; color: var(--text);
+  }
+  .glc-val span { font-size: 0.7rem; color: var(--muted); font-family: var(--font-mono); }
+  .glc-lbl { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .glc-bar { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.08); margin-top: 0.3rem; }
+  .glc-bar-fill { height: 100%; border-radius: 2px; background: var(--gc-color, var(--orange)); transition: width 0.8s ease; }
+  .glc-status {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    color: var(--gc-color, var(--muted)); margin-top: 0.1rem;
+  }
+  .glc-sync { font-family: var(--font-mono); font-size: 0.55rem; color: rgba(255,255,255,0.2); margin-top: 0.2rem; }
+  .glive-card.no-data .glc-val { color: var(--muted); font-size: 1.1rem; }
 
   .section-title {
     font-family: var(--font-display);
@@ -1129,8 +1258,19 @@
 </head>
 <body>
 
+<!-- ═══════════════ STICKY TOP BAR ═══════════════ -->
+<div class="top-bar" id="top-bar">
+  <div class="tb-brand">IRONMAN 70.3 RIO</div>
+  <div class="tb-cd">
+    <strong id="tb-days">--</strong><span>d</span>
+    <strong id="tb-hours">--</strong><span>h</span>
+    <strong id="tb-mins">--</strong><span>m</span>
+  </div>
+  <div class="tb-week" id="tb-week-name">S1 — Reativação</div>
+</div>
+
 <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
-<section class="hero">
+<section class="hero" id="hero-section">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
 
@@ -1169,6 +1309,50 @@
 
 <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
 <main class="main">
+
+  <!-- ═══ TODAY ═══ -->
+  <section class="today-section" id="today-section">
+    <div class="today-left">
+      <div class="today-header">
+        <div class="today-label">HOJE</div>
+        <div class="today-date-txt" id="today-date-txt"></div>
+        <div class="today-week-badge" id="today-week-badge"></div>
+      </div>
+      <div class="today-workouts-list" id="today-workouts-list">
+        <div class="today-rest-msg">Carregando treinos...</div>
+      </div>
+    </div>
+    <div class="garmin-live-grid">
+      <div class="glive-card no-data" id="gc-sleep" style="--gc-color:#00d4ff">
+        <div class="glc-icon">😴</div>
+        <div class="glc-val" id="gc-sleep-val">--<span>h</span></div>
+        <div class="glc-lbl">Sono</div>
+        <div class="glc-bar"><div class="glc-bar-fill" id="gc-sleep-bar" style="width:0%"></div></div>
+        <div class="glc-status" id="gc-sleep-status">aguardando sync</div>
+      </div>
+      <div class="glive-card no-data" id="gc-stress" style="--gc-color:#ffc800">
+        <div class="glc-icon">⚡</div>
+        <div class="glc-val" id="gc-stress-val">--</div>
+        <div class="glc-lbl">Stress</div>
+        <div class="glc-bar"><div class="glc-bar-fill" id="gc-stress-bar" style="width:0%"></div></div>
+        <div class="glc-status" id="gc-stress-status">aguardando sync</div>
+      </div>
+      <div class="glive-card no-data" id="gc-bb" style="--gc-color:#00e676">
+        <div class="glc-icon">🔋</div>
+        <div class="glc-val" id="gc-bb-val">--<span>%</span></div>
+        <div class="glc-lbl">Body Battery</div>
+        <div class="glc-bar"><div class="glc-bar-fill" id="gc-bb-bar" style="width:0%"></div></div>
+        <div class="glc-status" id="gc-bb-status">aguardando sync</div>
+      </div>
+      <div class="glive-card no-data" id="gc-hrv" style="--gc-color:#b39ddb">
+        <div class="glc-icon">💜</div>
+        <div class="glc-val" id="gc-hrv-val">--<span>ms</span></div>
+        <div class="glc-lbl">HRV</div>
+        <div class="glc-bar"><div class="glc-bar-fill" id="gc-hrv-bar" style="width:0%"></div></div>
+        <div class="glc-status" id="gc-hrv-status">aguardando sync</div>
+      </div>
+    </div>
+  </section>
 
   <!-- METRICS -->
   <h2 class="section-title">MÉTRICAS DA SEMANA</h2>
@@ -1652,6 +1836,31 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// ── TOP BAR: show on scroll ──
+const topBar = document.getElementById('top-bar');
+const heroSec = document.getElementById('hero-section');
+const tbDays  = document.getElementById('tb-days');
+const tbHours = document.getElementById('tb-hours');
+const tbMins  = document.getElementById('tb-mins');
+const tbWeek  = document.getElementById('tb-week-name');
+
+function updateTopBar() {
+  const race = new Date('2026-08-09T07:00:00');
+  const diff = race - new Date();
+  if (diff > 0) {
+    tbDays.textContent  = Math.floor(diff / 86400000);
+    tbHours.textContent = Math.floor((diff % 86400000) / 3600000);
+    tbMins.textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+  }
+}
+updateTopBar();
+setInterval(updateTopBar, 60000);
+
+const heroObserver = new IntersectionObserver(([e]) => {
+  topBar.classList.toggle('visible', !e.isIntersecting);
+}, { threshold: 0 });
+if (heroSec) heroObserver.observe(heroSec);
+
 // ════════════════════════════════════════════
 //  WEEKLY PLAN DATA
 // ════════════════════════════════════════════
@@ -2070,6 +2279,127 @@ function updateWeekMetric() {
 renderWeek(currentWeekIdx);
 buildStepper();
 updateWeekMetric();
+
+// ════════════════════════════════════════════
+//  TODAY SECTION
+// ════════════════════════════════════════════
+(function buildToday() {
+  const now   = new Date();
+  const today = now.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'2-digit' });
+  const dow   = now.getDay(); // 0=Sun
+
+  document.getElementById('today-date-txt').textContent = today;
+
+  // Find which week contains today
+  const starts = [
+    new Date('2026-05-25'), new Date('2026-06-01'), new Date('2026-06-08'),
+    new Date('2026-06-15'), new Date('2026-06-22'), new Date('2026-06-29'),
+    new Date('2026-07-06'), new Date('2026-07-13'), new Date('2026-07-20'),
+    new Date('2026-07-27'), new Date('2026-08-03')
+  ];
+  let wIdx = 0;
+  for (let i = starts.length - 1; i >= 0; i--) {
+    if (now >= starts[i]) { wIdx = i; break; }
+  }
+  if (now < starts[0]) wIdx = 0;
+
+  const week = WEEKS[wIdx];
+  document.getElementById('today-week-badge').textContent = week.name;
+  if (tbWeek) tbWeek.textContent = week.name;
+
+  // Map dow to day label prefixes used in data
+  const DOW_MAP = { 1:'Seg', 2:'Ter', 3:'Qua', 4:'Qui', 5:'Sex', 6:'Sáb', 0:'Dom' };
+  const todayDow = DOW_MAP[dow];
+
+  // Find today's workouts (match by dow prefix)
+  const todayDays = week.days.filter(d => d.dow.startsWith(todayDow));
+
+  const list = document.getElementById('today-workouts-list');
+  if (!todayDays.length) {
+    list.innerHTML = `<div class="today-rest-msg">😴 Dia de descanso — recuperação ativa</div>`;
+    return;
+  }
+
+  list.innerHTML = todayDays.map(d => {
+    const done = getChecked(d.id);
+    return `<div class="today-w-item twi-${d.disc}${done?' today-w-done':''}">
+      <div class="twi-icon">${d.icon}</div>
+      <div class="twi-info">
+        <div class="twi-name">${d.name}</div>
+        <div class="twi-meta">⏱ ${d.dur}${d.meta ? ' · 📏 '+d.meta : ''} · ${d.zone}</div>
+      </div>
+      <div class="twi-check${done?' done':''}" onclick="toggleDay('${d.id}','${week.id}');this.classList.toggle('done');this.closest('.today-w-item').classList.toggle('today-w-done')">✓</div>
+    </div>`;
+  }).join('');
+})();
+
+// ════════════════════════════════════════════
+//  GARMIN LIVE DATA (garmin_data.json)
+// ════════════════════════════════════════════
+function setGliveCard(id, val, unit, label, pct, status, color) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.remove('no-data');
+  card.style.setProperty('--gc-color', color);
+  const valEl = card.querySelector('.glc-val');
+  if (valEl) valEl.innerHTML = val + (unit ? `<span>${unit}</span>` : '');
+  const barEl = card.querySelector('.glc-bar-fill');
+  if (barEl) setTimeout(() => barEl.style.width = pct + '%', 200);
+  const stEl = card.querySelector('.glc-status');
+  if (stEl) { stEl.textContent = status; stEl.style.color = color; }
+}
+
+function populateGarminData(g) {
+  // Sync timestamp
+  if (g.last_sync) {
+    const ts = new Date(g.last_sync);
+    const syncTxt = ts.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) + ' · ' +
+                    ts.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+    document.querySelectorAll('.glc-sync').forEach(el => el.textContent = 'sync: ' + syncTxt);
+  }
+
+  // Sleep
+  const sl = g.dailySleepDTO || g.sleep;
+  if (sl) {
+    const hrs  = sl.sleepTimeSeconds ? (sl.sleepTimeSeconds / 3600).toFixed(1) : (sl.totalSleepSeconds ? (sl.totalSleepSeconds/3600).toFixed(1) : '--');
+    const qual = sl.sleepScores?.overall?.qualifierKey || sl.overallSleepScore?.qualifierKey || '';
+    const qualPt = {'EXCELLENT':'Excelente','GOOD':'Bom','FAIR':'Regular','POOR':'Ruim','UNKNOWN':''}[qual.toUpperCase()] || qual;
+    const pct  = Math.min(100, (parseFloat(hrs) / 9) * 100);
+    const col  = pct > 77 ? '#00e676' : pct > 55 ? '#ffc800' : '#ff7070';
+    setGliveCard('gc-sleep', hrs, 'h', 'Sono', pct, qualPt || hrs + 'h', col);
+  }
+
+  // Stress
+  const stress = g.overallStressLevel ?? g.averageStressLevel;
+  if (stress != null) {
+    const st = stress;
+    const col  = st < 26 ? '#00e676' : st < 51 ? '#ffc800' : st < 76 ? '#e8501a' : '#ff5050';
+    const lbl  = st < 26 ? 'BAIXO' : st < 51 ? 'MÉDIO' : st < 76 ? 'ALTO' : 'MUITO ALTO';
+    setGliveCard('gc-stress', st, '', 'Stress', st, lbl, col);
+  }
+
+  // Body Battery
+  const bb = g.bodyBatteryMostRecentValue ?? g.charged ?? (Array.isArray(g.bodyBattery) ? g.bodyBattery.at(-1)?.value : null);
+  if (bb != null) {
+    const col = bb > 70 ? '#00e676' : bb > 40 ? '#ffc800' : '#ff7070';
+    const lbl = bb > 70 ? 'Recuperado' : bb > 40 ? 'Parcial' : 'Baixo';
+    setGliveCard('gc-bb', bb, '%', 'Body Battery', bb, lbl, col);
+  }
+
+  // HRV
+  const hrv = g.lastNight5MinHighHrv ?? g.weeklyAvg ?? (g.hrvSummary?.lastNight5MinHigh);
+  if (hrv) {
+    const col = hrv > 60 ? '#00e676' : hrv > 40 ? '#ffc800' : '#ff7070';
+    const lbl = hrv > 60 ? 'Ótimo' : hrv > 40 ? 'Bom' : 'Atenção';
+    setGliveCard('gc-hrv', hrv, 'ms', 'HRV', Math.min(100, hrv), lbl, col);
+  }
+}
+
+// Try to load garmin_data.json (updated by garmin_daily_sync.py)
+fetch('garmin_data.json?t=' + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(g => { if (g) populateGarminData(g); })
+  .catch(() => {}); // silent fail if file doesn't exist yet
 
 // ════════════════════════════════════════════
 //  TRAINING LOAD CHART

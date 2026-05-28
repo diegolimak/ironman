@@ -1,7 +1,22 @@
 .claude/
 Dados Garmin/
 Exames/
-*.py
 plano_js.js
 __pycache__/
 *.pyc
+
+# Scripts de análise antigos (não necessários no deploy)
+analyze_iron_2025.py
+compile_dashboard_data.py
+garmin_login_fix.py
+parse_activities.py
+parse_garmin.py
+parse_garmin2.py
+parse_garmin3.py
+
+# Segurança — nunca subir tokens ou logs locais
+.garmin_tokens/
+garmin_sync.log
+
+# Runtime — gerado automaticamente pelo sync
+garmin_data.json
