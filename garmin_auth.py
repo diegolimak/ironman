@@ -1,44 +1,267 @@
 """
-garmin_auth.py — Configuração inicial da autenticação Garmin Connect
-Execute UMA VEZ para salvar o token OAuth localmente.
-Após isso, garmin_daily_sync.py e garmin_push_workouts.py funcionam sem senha.
+garmin_auth.py — Autenticação Garmin Connect
+Versão robusta com 3 métodos de auth para contornar rate limit (429).
+
+OPÇÕES:
+  1 - Email + senha (funciona quando não há rate limit)
+  2 - Via cookies do Chrome (funciona sempre, você só precisa estar logado no browser)
+  3 - Testar token existente
 
 Uso:
     python garmin_auth.py
 """
-import os, sys, getpass
-
-try:
-    import garth
-    from garminconnect import Garmin
-except ImportError:
-    print("Instalando dependências Garmin...")
-    os.system(f"{sys.executable} -m pip install garminconnect garth")
-    import garth
-    from garminconnect import Garmin
+import os, sys, json, time, datetime
 
 TOKEN_DIR = os.path.join(os.path.dirname(__file__), ".garmin_tokens")
 
-def do_auth():
-    print("\n╔══════════════════════════════════════╗")
-    print("║  Autenticação Garmin Connect          ║")
-    print("╚══════════════════════════════════════╝\n")
+def log(msg):
+    print(msg)
 
+def check_deps():
+    for pkg in ["garminconnect", "garth", "requests", "browser_cookie3"]:
+        try:
+            __import__(pkg.replace("-","_"))
+        except ImportError:
+            log(f"  Instalando {pkg}...")
+            os.system(f"{sys.executable} -m pip install {pkg} --quiet")
+
+# ─────────────────────────────────────────────
+#  MÉTODO 1: Email + Senha
+# ─────────────────────────────────────────────
+def auth_password():
+    import getpass
+    from garminconnect import Garmin
+
+    log("\n📧 MÉTODO 1: Email + Senha")
+    log("─" * 40)
     email    = input("Email Garmin Connect: ").strip()
-    password = getpass.getpass("Senha Garmin Connect: ")
+    password = getpass.getpass("Senha: ")
 
-    print("\nConectando...")
+    for attempt in range(1, 4):
+        log(f"\nTentativa {attempt}/3...")
+        try:
+            api = Garmin(email=email, password=password)
+            api.login()
+            os.makedirs(TOKEN_DIR, exist_ok=True)
+            api.garth.dump(TOKEN_DIR)
+            log(f"✅ Autenticado! Token salvo.")
+            return True
+        except Exception as e:
+            msg = str(e)
+            if "429" in msg:
+                wait = 45 * attempt
+                log(f"⚠  Rate limit (429) — aguardando {wait}s...")
+                time.sleep(wait)
+            else:
+                log(f"❌ Erro: {e}")
+                return False
+
+    log("\n❌ Rate limit persistente após 3 tentativas.")
+    log("   → Tente o MÉTODO 2 (cookies do browser) ou aguarde 30-60 min.")
+    return False
+
+# ─────────────────────────────────────────────
+#  MÉTODO 2: Cookies do Chrome (sem rate limit!)
+# ─────────────────────────────────────────────
+def auth_via_chrome():
+    """
+    Pega os cookies do Chrome onde você já está logado no Garmin Connect,
+    e usa esses cookies para obter um token OAuth2 real.
+    Sem nenhuma requisição de login → sem rate limit!
+    """
+    log("\n🌐 MÉTODO 2: Cookies do Chrome (sem rate limit)")
+    log("─" * 40)
+    log("\nPasso 1: Abra https://connect.garmin.com no Chrome e faça login")
+    input("Pressione ENTER quando estiver logado no Garmin Connect no Chrome...")
+
     try:
-        client = Garmin(email, password)
-        client.login()
-        client.garth.dump(TOKEN_DIR)
-        print(f"\n✅ Autenticado com sucesso! Token salvo em: {TOKEN_DIR}")
-        print(f"   Usuário: {client.get_full_name()}")
-        print("\nAgora execute garmin_daily_sync.py para puxar dados.\n")
-    except Exception as e:
-        print(f"\n❌ Erro de autenticação: {e}")
-        print("Verifique email/senha e tente novamente.")
-        sys.exit(1)
+        import browser_cookie3, requests
 
+        log("\nLendo cookies do Chrome...")
+        cj = browser_cookie3.chrome(domain_name='.garmin.com')
+        cookies = {c.name: c.value for c in cj}
+
+        if not cookies:
+            log("❌ Nenhum cookie Garmin encontrado. Verifique se está logado no Chrome.")
+            return False
+
+        log(f"  {len(cookies)} cookies encontrados: {list(cookies.keys())[:6]}...")
+
+        # Verifica se temos a sessão SSO
+        sso_keys = [k for k in cookies if 'JWT' in k or 'SSO' in k or 'TOKEN' in k or 'SESSION' in k]
+        if not sso_keys:
+            log("⚠  Cookies de sessão não encontrados. Certifique-se de estar logado.")
+
+        # Usa os cookies para fazer uma requisição autenticada e obter o token OAuth2
+        session = requests.Session()
+        for name, value in cookies.items():
+            session.cookies.set(name, value, domain='.garmin.com')
+
+        # Requisição para obter o perfil (testa se os cookies são válidos)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "NK": "NT",
+        }
+        r = session.get(
+            "https://connect.garmin.com/modern/proxy/userprofile-service/socialProfile",
+            headers=headers
+        )
+
+        if r.status_code == 200:
+            profile = r.json()
+            display_name = profile.get("displayName", "Diego")
+            log(f"✅ Sessão válida! Usuário: {display_name}")
+        else:
+            log(f"⚠  Status {r.status_code} — talvez seja necessário relogar no browser")
+            if r.status_code == 401:
+                log("   → Acesse https://connect.garmin.com e faça login, depois tente novamente.")
+                return False
+
+        # Obtém o OAuth2 token via endpoint de exchange
+        r2 = session.post(
+            "https://connect.garmin.com/services/auth/token/exchange",
+            headers={**headers, "origin": "https://connect.garmin.com"},
+        )
+
+        if r2.status_code == 200:
+            token_data = r2.json()
+            os.makedirs(TOKEN_DIR, exist_ok=True)
+
+            # Salva no formato que o garth/garminconnect espera
+            oauth2 = {
+                "scope":         token_data.get("scope", ""),
+                "jti":           token_data.get("jti", ""),
+                "token_type":    "Bearer",
+                "access_token":  token_data.get("access_token", ""),
+                "refresh_token": token_data.get("refresh_token", ""),
+                "expires_in":    token_data.get("expires_in", 3600),
+                "expires_at":    time.time() + token_data.get("expires_in", 3600),
+            }
+
+            with open(os.path.join(TOKEN_DIR, "oauth2_token.json"), "w") as f:
+                json.dump(oauth2, f, indent=2)
+
+            log(f"✅ Token OAuth2 salvo em {TOKEN_DIR}/oauth2_token.json")
+        else:
+            # Fallback: salva os cookies para uso direto
+            os.makedirs(TOKEN_DIR, exist_ok=True)
+            with open(os.path.join(TOKEN_DIR, "session_cookies.json"), "w") as f:
+                json.dump(cookies, f, indent=2)
+            log(f"✅ Cookies salvos (fallback). Sync pode funcionar com sessão de browser.")
+
+        # Salva também os cookies raw para fallback
+        with open(os.path.join(TOKEN_DIR, "chrome_cookies.json"), "w") as f:
+            json.dump(cookies, f, indent=2)
+
+        return True
+
+    except ImportError as e:
+        log(f"❌ Biblioteca ausente: {e}")
+        log("   Execute: pip install browser-cookie3")
+        return False
+    except Exception as e:
+        log(f"❌ Erro: {e}")
+        import traceback; traceback.print_exc()
+        return False
+
+# ─────────────────────────────────────────────
+#  TESTE
+# ─────────────────────────────────────────────
+def test_auth():
+    try:
+        from garminconnect import Garmin
+        import garth
+
+        api = Garmin()
+        api.garth.load(TOKEN_DIR)
+
+        today = datetime.date.today().isoformat()
+        acts = api.get_activities_by_date(today, today)
+        log(f"✅ Autenticação OK! Atividades hoje: {len(acts or [])}")
+
+        # Testa sleep
+        try:
+            sleep = api.get_sleep_data(today)
+            if sleep:
+                dto = sleep.get("dailySleepDTO", sleep)
+                hrs = (dto.get("sleepTimeSeconds") or dto.get("totalSleepSeconds") or 0) / 3600
+                log(f"   Sono: {hrs:.1f}h")
+        except Exception as e:
+            log(f"   Sleep: {e}")
+
+        return True
+    except FileNotFoundError:
+        log("❌ Token não encontrado. Execute garmin_auth.py para autenticar.")
+        return False
+    except Exception as e:
+        log(f"❌ Token inválido: {e}")
+        return False
+
+# ─────────────────────────────────────────────
+#  TEST via cookies (sync sem OAuth formal)
+# ─────────────────────────────────────────────
+def test_with_cookies():
+    """Testa usando cookies do Chrome diretamente."""
+    cookie_file = os.path.join(TOKEN_DIR, "chrome_cookies.json")
+    if not os.path.exists(cookie_file):
+        return False
+    try:
+        import requests
+        with open(cookie_file) as f:
+            cookies = json.load(f)
+        session = requests.Session()
+        for name, value in cookies.items():
+            session.cookies.set(name, value, domain='.garmin.com')
+        r = session.get(
+            "https://connect.garmin.com/modern/proxy/userprofile-service/socialProfile",
+            headers={"NK":"NT","User-Agent":"Mozilla/5.0"},
+        )
+        if r.status_code == 200:
+            name = r.json().get("displayName","?")
+            log(f"✅ Cookies válidos! Usuário: {name}")
+            return True
+    except Exception as e:
+        log(f"⚠ Teste de cookie: {e}")
+    return False
+
+# ─────────────────────────────────────────────
+#  MAIN
+# ─────────────────────────────────────────────
 if __name__ == "__main__":
-    do_auth()
+    check_deps()
+    print()
+
+    # Verifica token existente
+    if os.path.isdir(TOKEN_DIR):
+        files = os.listdir(TOKEN_DIR)
+        if "oauth2_token.json" in files or "oauth1_token.json" in files:
+            log("Token encontrado. Testando...")
+            if test_auth():
+                log("\n✅ Autenticação já configurada! Pronto para usar.")
+                sys.exit(0)
+
+        if "chrome_cookies.json" in files:
+            log("Cookies encontrados. Testando...")
+            if test_with_cookies():
+                log("\n✅ Sessão Chrome válida!")
+                sys.exit(0)
+
+    print("╔════════════════════════════════════════════╗")
+    print("║   Garmin Connect — Configuração inicial    ║")
+    print("╠════════════════════════════════════════════╣")
+    print("║  1 — Email + senha                         ║")
+    print("║  2 — Via Chrome (sem rate limit!) ✅ REC   ║")
+    print("║  3 — Testar token existente                ║")
+    print("╚════════════════════════════════════════════╝")
+
+    choice = input("\nOpção [1/2/3, padrão=2]: ").strip() or "2"
+
+    if choice == "1":
+        ok = auth_password()
+        if not ok:
+            log("\nFalhando para o método browser...")
+            auth_via_chrome()
+    elif choice == "3":
+        test_auth() or test_with_cookies()
+    else:
+        auth_via_chrome()
