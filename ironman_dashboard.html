@@ -922,6 +922,54 @@
     transition: width 1s ease;
   }
 
+  /* ── LISTA DE COMPRAS ── */
+  .shop-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.2rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.8rem 1.1rem;
+  }
+  .shop-progress-wrap { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 180px; }
+  .shop-progress-txt { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+  .shop-progress-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .shop-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--orange), var(--green)); border-radius: 3px; transition: width 0.4s ease; }
+  .shop-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .shop-week-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--orange); }
+  .shop-reset-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 0.72rem; padding: 0.3rem 0.75rem; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+  .shop-reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  .shop-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
+  }
+  .shop-cat {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.1rem;
+  }
+  .shop-cat-full { grid-column: 1 / -1; }
+  .shop-suppl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0; }
+  .shop-cat-title {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--orange); margin-bottom: 0.75rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .shop-item {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.38rem 0;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .shop-item input[type=checkbox] { display: none; }
+  .shop-box {
+    width: 16px; height: 16px; min-width: 16px; border: 1.5px solid var(--muted);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-size: 11px; color: #fff;
+  }
+  .shop-item input:checked ~ .shop-box { background: var(--orange); border-color: var(--orange); }
+  .shop-item input:checked ~ .shop-box::after { content: '✓'; }
+  .shop-item input:checked ~ .shop-label { text-decoration: line-through; opacity: 0.45; }
+  .shop-item input:checked ~ .shop-qty { opacity: 0.35; }
+  .shop-label { flex: 1; font-size: 0.82rem; color: var(--text); line-height: 1.3; }
+  .shop-qty { font-family: var(--font-mono); font-size: 0.68rem; color: var(--blue); white-space: nowrap; }
+  .shop-alert { color: #ffc800; font-size: 0.65rem; margin-left: 0.3rem; }
+
   /* ── NUTRIÇÃO HOJE ── */
   .nutr-hoje {
     background: linear-gradient(135deg, rgba(232,80,26,0.07), rgba(0,212,255,0.04));
@@ -1457,6 +1505,7 @@
     <button class="nutr-tab" data-tab="timing" onclick="switchNutr('timing')">⚡ Pré / Durante / Pós</button>
     <button class="nutr-tab" data-tab="suppl" onclick="switchNutr('suppl')">💊 Suplementos</button>
     <button class="nutr-tab" data-tab="race" onclick="switchNutr('race')">🏁 Race Day</button>
+    <button class="nutr-tab" data-tab="compras" onclick="switchNutr('compras')">🛒 Lista de Compras</button>
   </div>
 
   <!-- TAB: DIÁRIA -->
@@ -1677,6 +1726,98 @@
       </div>
     </div>
   </div>
+
+  <!-- TAB: LISTA DE COMPRAS -->
+  <div class="nutr-panel" id="nutr-compras">
+    <div class="shop-header">
+      <div class="shop-progress-wrap">
+        <span class="shop-progress-txt" id="shop-prog-txt">0 / 0 itens</span>
+        <div class="shop-progress-bar"><div class="shop-progress-fill" id="shop-prog-fill"></div></div>
+      </div>
+      <div class="shop-actions">
+        <span class="shop-week-label" id="shop-week-label">Semana atual</span>
+        <button class="shop-reset-btn" onclick="shopReset()">↺ Nova semana</button>
+      </div>
+    </div>
+
+    <div class="shop-grid">
+
+      <!-- PROTEÍNAS -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">🥩 Proteínas</div>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Peito de frango</span><span class="shop-qty">1,5 kg</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Patinho moído (bovino)</span><span class="shop-qty">500 g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Atum em água</span><span class="shop-qty">4 latas</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Salmão / tilápia</span><span class="shop-qty">500 g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Iogurte grego (0%)</span><span class="shop-qty">4 potes 170g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="prot-6" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Queijo cottage</span><span class="shop-qty">2 potes</span></label>
+      </div>
+
+      <!-- CARBOIDRATOS BASE -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">🌾 Carboidratos (baixo IG)</div>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Batata-doce</span><span class="shop-qty">2 kg</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Aveia em flocos</span><span class="shop-qty">1 kg</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Arroz integral</span><span class="shop-qty">1 kg</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Macarrão integral</span><span class="shop-qty">500 g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Pão integral (sementes)</span><span class="shop-qty">1 pacote</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="carb-6" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Quinoa</span><span class="shop-qty">300 g</span></label>
+      </div>
+
+      <!-- FRUTAS & VEGETAIS -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">🥦 Frutas & Legumes</div>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Banana</span><span class="shop-qty">2 cachos</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Manga / mamão (Vit C)</span><span class="shop-qty">4 unid</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Laranja / acerola (Vit C)</span><span class="shop-qty">1 kg</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Brócolis / espinafre</span><span class="shop-qty">2 maços</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Tomate / pepino / cenoura</span><span class="shop-qty">1 kg cada</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="veg-6" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Beterraba (nitrato)</span><span class="shop-qty">4 unid</span></label>
+      </div>
+
+      <!-- LATICÍNIOS & OVOS -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">🥚 Laticínios & Ovos</div>
+        <label class="shop-item"><input type="checkbox" data-sk="lac-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Ovos</span><span class="shop-qty">2 dúzias</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="lac-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Leite desnatado / vegetal</span><span class="shop-qty">2 L</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="lac-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Whey protein (checar)</span><span class="shop-qty">— doses</span></label>
+      </div>
+
+      <!-- GORDURAS SAUDÁVEIS -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">🥑 Gorduras Saudáveis</div>
+        <label class="shop-item"><input type="checkbox" data-sk="fat-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Abacate</span><span class="shop-qty">3 unid</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="fat-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Azeite extravirgem</span><span class="shop-qty">1 garrafa</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="fat-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Pasta de amendoim (sem açúcar)</span><span class="shop-qty">1 pote</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="fat-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Castanha-do-pará / nozes</span><span class="shop-qty">200 g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="fat-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Chia / linhaça</span><span class="shop-qty">300 g</span></label>
+      </div>
+
+      <!-- DURANTE O TREINO -->
+      <div class="shop-cat">
+        <div class="shop-cat-title">⚡ Nutrição de Treino</div>
+        <label class="shop-item"><input type="checkbox" data-sk="trn-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Gel de energia (maltodex.)</span><span class="shop-qty">8–10 unid</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="trn-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Isotônico / eletrólitos em pó</span><span class="shop-qty">2 packs</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="trn-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Tâmaras / medjool (treinos longos)</span><span class="shop-qty">300 g</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="trn-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Água de coco</span><span class="shop-qty">6 unid</span></label>
+        <label class="shop-item"><input type="checkbox" data-sk="trn-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Cápsulas de sódio/sal (long rides)</span><span class="shop-qty">1 frasco</span></label>
+      </div>
+
+      <!-- SUPLEMENTOS -->
+      <div class="shop-cat shop-cat-full">
+        <div class="shop-cat-title">💊 Suplementos — Checar Estoque</div>
+        <div class="shop-suppl-grid">
+          <label class="shop-item"><input type="checkbox" data-sk="sup-1" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Vitamina C 1.000mg <span class="shop-alert">⚠ deficiente</span></span><span class="shop-qty">30 cáps</span></label>
+          <label class="shop-item"><input type="checkbox" data-sk="sup-2" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Vitamina D3 + K2</span><span class="shop-qty">—</span></label>
+          <label class="shop-item"><input type="checkbox" data-sk="sup-3" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Ômega 3 (EPA+DHA)</span><span class="shop-qty">—</span></label>
+          <label class="shop-item"><input type="checkbox" data-sk="sup-4" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Magnésio glicinato</span><span class="shop-qty">—</span></label>
+          <label class="shop-item"><input type="checkbox" data-sk="sup-5" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">Creatina monoidratada</span><span class="shop-qty">—</span></label>
+          <label class="shop-item"><input type="checkbox" data-sk="sup-6" onchange="shopToggle(this)"><span class="shop-box"></span><span class="shop-label">BCAA / EAA (opcional)</span><span class="shop-qty">—</span></label>
+        </div>
+      </div>
+
+    </div><!-- /shop-grid -->
+  </div><!-- /nutr-compras -->
 
   <!-- GARMIN STATUS -->
   <h2 class="section-title">GARMIN — SINCRONIZAÇÃO</h2>
@@ -2581,7 +2722,53 @@ function switchNutr(tab) {
     t.classList.toggle('active', t.dataset.tab === tab));
   document.querySelectorAll('.nutr-panel').forEach(p =>
     p.classList.toggle('active', p.id === 'nutr-' + tab));
+  if (tab === 'compras') shopRender();
 }
+
+// ════════════════════════════════════════════
+//  LISTA DE COMPRAS
+// ════════════════════════════════════════════
+const SHOP_KEY = 'ironman_shop_';
+
+function shopToggle(cb) {
+  localStorage.setItem(SHOP_KEY + cb.dataset.sk, cb.checked ? '1' : '0');
+  shopUpdateProgress();
+}
+
+function shopRender() {
+  const items = document.querySelectorAll('#nutr-compras input[type=checkbox]');
+  items.forEach(cb => {
+    cb.checked = localStorage.getItem(SHOP_KEY + cb.dataset.sk) === '1';
+  });
+  shopUpdateProgress();
+}
+
+function shopUpdateProgress() {
+  const items = document.querySelectorAll('#nutr-compras input[type=checkbox]');
+  const total  = items.length;
+  const done   = [...items].filter(i => i.checked).length;
+  const pct    = total ? Math.round(done / total * 100) : 0;
+  const txt  = document.getElementById('shop-prog-txt');
+  const fill = document.getElementById('shop-prog-fill');
+  if (txt)  txt.textContent  = `${done} / ${total} itens`;
+  if (fill) fill.style.width = pct + '%';
+}
+
+function shopReset() {
+  if (!confirm('Limpar toda a lista de compras para a nova semana?')) return;
+  document.querySelectorAll('#nutr-compras input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    localStorage.removeItem(SHOP_KEY + cb.dataset.sk);
+  });
+  shopUpdateProgress();
+}
+
+// Restaurar estado ao carregar
+(function() {
+  const items = document.querySelectorAll('#nutr-compras input[type=checkbox]');
+  items.forEach(cb => { cb.checked = localStorage.getItem(SHOP_KEY + cb.dataset.sk) === '1'; });
+  shopUpdateProgress();
+})();
 
 // ════════════════════════════════════════════
 //  NUTRIÇÃO — HOJE (contexto dinâmico)
