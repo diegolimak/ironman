@@ -23,108 +23,92 @@ def log(msg):
         f.write(line + "\n")
 
 def load_garmin():
-    try:
-        from garminconnect import Garmin
-    except ImportError:
-        log("Instalando garminconnect...")
-        os.system(f"{sys.executable} -m pip install garminconnect garth")
-        from garminconnect import Garmin
-
     if not os.path.isdir(TOKEN_DIR):
-        log("❌ Token não encontrado. Execute garmin_auth.py primeiro.")
+        log("❌ Token não encontrado. Execute garmin_get_token.py primeiro.")
         sys.exit(1)
 
-    # Tenta OAuth token primeiro
+    # ── Prioridade 1: Bearer token (garmin_get_token.py) ──
     oauth2_file = os.path.join(TOKEN_DIR, "oauth2_token.json")
     if os.path.exists(oauth2_file):
         try:
-            client = Garmin()
-            client.garth.load(TOKEN_DIR)
-            log(f"✓ Conectado via OAuth2")
-            return client
+            with open(oauth2_file) as f:
+                tok = json.load(f)
+            access_token = tok.get("access_token", "")
+            if access_token:
+                client = BearerGarminClient(access_token)
+                test = client._get("/userprofile-service/userprofile")
+                log(f"✓ Conectado via Bearer token")
+                return client
         except Exception as e:
-            log(f"⚠ OAuth falhou ({e}), tentando cookies...")
+            log(f"⚠ Bearer token falhou ({e}), tentando garth...")
 
-    # Fallback: usa cookies do Chrome para sync via requests direto
-    cookie_file = os.path.join(TOKEN_DIR, "chrome_cookies.json")
-    if os.path.exists(cookie_file):
-        log("✓ Usando sessão Chrome (cookie-based)")
-        return load_garmin_via_cookies(cookie_file)
+    # ── Fallback: garth OAuth2 ──
+    try:
+        from garminconnect import Garmin
+        api = Garmin()
+        api.garth.load(TOKEN_DIR)
+        log(f"✓ Conectado via garth OAuth2")
+        return api
+    except Exception as e:
+        log(f"⚠ garth falhou: {e}")
 
-    log("❌ Nenhum método de auth disponível. Execute garmin_auth.py primeiro.")
+    log("❌ Nenhum auth disponível. Execute:  python garmin_get_token.py")
     sys.exit(1)
 
-def load_garmin_via_cookies(cookie_file):
-    """Garmin client que usa cookies do browser diretamente."""
-    import requests, json
 
-    with open(cookie_file) as f:
-        cookies = json.load(f)
+class BearerGarminClient:
+    """Cliente REST usando Bearer JWT token do Garmin Connect."""
+    BASE = "https://connect.garmin.com/gc-api"
 
-    class GarminCookieClient:
-        BASE = "https://connect.garmin.com/modern/proxy"
-        def __init__(self):
-            self.session = requests.Session()
-            for name, value in cookies.items():
-                self.session.cookies.set(name, value, domain='.garmin.com')
-            self.session.headers.update({
-                "NK": "NT",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            })
-            self.display_name = "Diego"
+    def __init__(self, access_token):
+        import requests
+        self.session = requests.Session()
+        self.session.headers.update({
+            "Authorization": f"Bearer {access_token}",
+            "NK": "NT",
+            "Accept": "application/json",
+            "Origin": "https://connect.garmin.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        })
 
-        def _get(self, url, **params):
-            r = self.session.get(self.BASE + url, params=params)
-            r.raise_for_status()
-            return r.json()
+    def _get(self, path, **params):
+        import requests
+        r = self.session.get(self.BASE + path, params=params)
+        r.raise_for_status()
+        return r.json() if r.content else {}
 
-        def get_sleep_data(self, date):
-            return self._get(f"/wellness-service/wellness/dailySleepData/{date}")
+    def get_sleep_data(self, date):
+        return self._get(f"/wellness-service/wellness/dailySleepData/{date}")
 
-        def get_stress_data(self, date):
-            return self._get(f"/wellness-service/wellness/dailyStress/{date}")
+    def get_stress_data(self, date):
+        return self._get(f"/wellness-service/wellness/dailyStress/{date}")
 
-        def get_hrv_data(self, date):
-            return self._get(f"/hrv-service/hrv/{date}")
+    def get_hrv_data(self, date):
+        return self._get(f"/hrv-service/hrv/{date}")
 
-        def get_body_battery(self, start, end):
-            return self._get(f"/wellness-service/wellness/bodyBattery/range/{start}/{end}")
+    def get_body_battery(self, start, end):
+        return self._get(f"/wellness-service/wellness/bodyBattery/range/{start}/{end}")
 
-        def get_rhr_day(self, date):
-            return self._get(f"/wellness-service/wellness/dailyHeartRate/{date}")
+    def get_rhr_day(self, date):
+        return self._get(f"/wellness-service/wellness/dailyHeartRate/{date}")
 
-        def get_steps_data(self, date):
-            return self._get(f"/wellness-service/wellness/dailySummaryChart/{date}")
+    def get_steps_data(self, date):
+        return self._get(f"/wellness-service/wellness/dailySummaryChart/{date}")
 
-        def get_activities_by_date(self, start, end):
-            return self._get("/activitylist-service/activities/search/activities",
-                           startDate=start, endDate=end)
+    def get_activities_by_date(self, start, end):
+        return self._get("/activitylist-service/activities/search/activities",
+                       startDate=start, endDate=end)
 
-        def get_activities(self, start, limit):
-            return self._get("/activitylist-service/activities/search/activities",
-                           start=start, limit=limit)
+    def get_activities(self, start, limit):
+        return self._get("/activitylist-service/activities/search/activities",
+                       start=start, limit=limit)
 
-        def get_training_status(self, date):
-            return self._get(f"/metrics-service/metrics/trainingStatus/{date}")
+    def get_training_status(self, date):
+        return self._get(f"/metrics-service/metrics/trainingStatus/{date}")
 
-        def get_max_metrics(self, date):
-            return self._get(f"/metrics-service/metrics/maxMetrics/{date}")
+    def get_max_metrics(self, date):
+        return self._get(f"/metrics-service/metrics/maxMetrics/{date}")
 
-        def get_full_name(self):
-            try:
-                p = self._get("/userprofile-service/socialProfile")
-                return p.get("displayName", "Diego")
-            except:
-                return "Diego"
-
-    client = GarminCookieClient()
-    try:
-        client.display_name = client.get_full_name()
-        log(f"✓ Conectado via Chrome cookies: {client.display_name}")
-    except Exception as e:
-        log(f"⚠ Cookies podem estar expirados: {e}")
-        log("  → Execute garmin_auth.py (opção 2) para renovar")
-    return client
 
 def safe_get(fn, *args, default=None):
     try:

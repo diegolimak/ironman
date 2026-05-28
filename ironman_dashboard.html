@@ -60,14 +60,14 @@
   /* ── HERO ── */
   .hero {
     position: relative;
-    min-height: 46vh;
+    min-height: 16vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    padding: 1.5rem 2rem;
+    padding: 1.2rem 2rem 1rem;
   }
 
   .hero-bg {
@@ -88,73 +88,76 @@
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
   }
 
-  .hero-label {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+  .hero-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     opacity: 0;
-    animation: fadeUp 0.8s 0.2s forwards;
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  .hero-mdot {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 30%, var(--orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-mdot::after {
+    content: '●';
+    position: absolute;
+    top: -0.15em;
+    right: -0.35em;
+    font-size: 0.38em;
+    color: var(--orange);
+    -webkit-text-fill-color: var(--orange);
   }
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 11vw, 7.5rem);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
+    font-size: clamp(2rem, 6vw, 4.2rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
     background: linear-gradient(135deg, #fff 40%, var(--orange) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.4s forwards;
   }
 
   .hero-subtitle {
     font-family: var(--font-display);
-    font-size: clamp(1rem, 3vw, 1.8rem);
-    letter-spacing: 0.15em;
+    font-size: clamp(0.7rem, 1.8vw, 1rem);
+    letter-spacing: 0.18em;
     color: var(--muted);
-    margin-top: 0.3rem;
+    margin-top: 0.2rem;
     opacity: 0;
-    animation: fadeUp 0.8s 0.6s forwards;
+    animation: fadeUp 0.6s 0.3s forwards;
   }
-
-  .hero-athlete {
-    margin-top: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    letter-spacing: 0.12em;
-    color: var(--text);
-    opacity: 0;
-    animation: fadeUp 0.8s 0.8s forwards;
-  }
-
-  .hero-athlete span { color: var(--orange); }
 
   /* Countdown */
   .countdown {
     display: flex;
-    gap: clamp(0.6rem, 2.5vw, 2rem);
-    margin-top: 1.5rem;
+    gap: clamp(0.4rem, 1.5vw, 1rem);
+    margin-top: 0.6rem;
     opacity: 0;
-    animation: fadeUp 0.8s 1s forwards;
+    animation: fadeUp 0.6s 0.5s forwards;
   }
 
   .cd-block {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
 
   .cd-num {
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+    font-size: clamp(1.2rem, 2.8vw, 2rem);
     line-height: 1;
-    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.55) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -164,32 +167,19 @@
 
   .cd-label {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
     color: var(--muted);
     text-transform: uppercase;
   }
 
   .cd-sep {
     font-family: var(--font-display);
-    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    font-size: clamp(0.9rem, 2vw, 1.4rem);
     color: var(--orange);
     line-height: 1;
     align-self: flex-start;
-    padding-top: 0.2rem;
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0;
-    animation: fadeUp 1s 1.5s forwards;
+    padding-top: 0.1rem;
   }
 
   .scroll-line {
@@ -809,141 +799,168 @@
     background: linear-gradient(90deg, var(--purple), rgba(179,157,219,0.4));
   }
 
-  /* ── GARMIN INTEGRATION ── */
-  .garmin-section {
+  /* ── GARMIN STATUS ── */
+  .gs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 768px) { .gs-grid { grid-template-columns: 1fr; } }
+
+  .gs-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    overflow: hidden;
+    padding: 1.3rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .garmin-header {
-    padding: 1.2rem 1.5rem;
+  .gs-card-hdr {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
+    gap: 0.7rem;
+    flex-wrap: wrap;
   }
 
-  .garmin-header:hover { background: rgba(255,255,255,0.02); }
-
-  .garmin-title {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-  }
-
-  .garmin-status {
+  .gs-badge {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    padding: 0.2rem 0.6rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
     border-radius: 999px;
-    background: rgba(255,80,80,0.15);
-    color: #ff8080;
-    letter-spacing: 0.05em;
   }
+  .gs-badge.ok   { background: rgba(0,230,118,0.12); color: #00e676; border: 1px solid rgba(0,230,118,0.25); }
+  .gs-badge.sync { background: rgba(0,212,255,0.12); color: #00d4ff; border: 1px solid rgba(0,212,255,0.25); }
 
-  .garmin-chevron {
+  .gs-card-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+  .gs-card-sub   { font-size: 0.72rem; color: var(--muted); margin-left: auto; }
+
+  .gs-workouts { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .gs-wo {
+    display: grid;
+    grid-template-columns: 38px 22px 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    background: rgba(255,255,255,0.025);
+  }
+  .gs-wo.run  { border-color: var(--green); }
+  .gs-wo.swim { border-color: var(--blue); }
+  .gs-wo.bike { border-color: var(--orange); }
+
+  .gs-wo-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+  .gs-wo-icon { font-size: 0.9rem; }
+  .gs-wo-name { font-size: 0.8rem; color: var(--text); }
+  .gs-wo-meta { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); white-space: nowrap; }
+
+  .gs-hint {
+    font-size: 0.72rem;
     color: var(--muted);
-    transition: transform 0.3s;
-    font-size: 0.8rem;
-  }
-
-  .garmin-chevron.open { transform: rotate(180deg); }
-
-  .garmin-body {
-    display: none;
-    padding: 0 1.5rem 1.5rem;
+    text-align: center;
+    padding: 0.4rem 0;
     border-top: 1px solid var(--border);
   }
 
-  .garmin-body.open { display: block; }
+  .gs-acts { display: flex; flex-direction: column; gap: 0.6rem; }
 
-  .garmin-desc {
-    font-size: 0.83rem;
-    color: var(--muted);
-    line-height: 1.7;
-    margin: 1rem 0;
-  }
-
-  .garmin-steps {
-    list-style: none;
+  .gs-act {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.025);
   }
 
-  .garmin-steps li {
-    font-size: 0.82rem;
-    color: var(--muted);
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
+  .gs-act-disc {
+    font-size: 1.1rem;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
   }
 
-  .step-num {
+  .gs-act-info { flex: 1; min-width: 0; }
+  .gs-act-name { font-size: 0.8rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gs-act-meta { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
+
+  .gs-act-tss {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--orange);
-    flex-shrink: 0;
-    min-width: 1.2em;
-  }
-
-  .code-block {
-    background: #070a10;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem 1.2rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: #8899bb;
-    overflow-x: auto;
-    line-height: 1.8;
-    margin-bottom: 1.2rem;
-  }
-
-  .code-key  { color: #7ec8e3; }
-  .code-str  { color: #b5e853; }
-  .code-num  { color: var(--purple); }
-  .code-comm { color: #445; }
-
-  .btn-garmin {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.7rem 1.4rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--muted);
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-    cursor: not-allowed;
-    position: relative;
-  }
-
-  .btn-garmin:hover .btn-tooltip { opacity: 1; pointer-events: auto; }
-
-  .btn-tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a2235;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.72rem;
-    color: var(--text);
     white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
+  }
+
+  .gs-total-tss {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+  }
+  .gs-total-tss strong { color: var(--orange); font-size: 0.9rem; }
+  .gs-tss-bar {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .gs-tss-bar span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--orange));
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  /* ── NUTRIÇÃO HOJE ── */
+  .nutr-hoje {
+    background: linear-gradient(135deg, rgba(232,80,26,0.07), rgba(0,212,255,0.04));
+    border: 1px solid rgba(232,80,26,0.2);
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .nutr-hoje-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--orange);
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .nutr-hoje-wo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .nutr-hoje-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(0,230,118,0.12);
+    color: #00e676;
+    border: 1px solid rgba(0,230,118,0.2);
+  }
+  .nutr-hoje-tag.rest {
+    background: rgba(100,120,160,0.12);
+    color: var(--muted);
+    border-color: var(--border);
   }
 
   /* ── WORKOUT CARDS (prominent) ── */
@@ -1274,14 +1291,15 @@
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
 
-  <p class="hero-label">Rio de Janeiro · Agosto 2026</p>
-  <h1 class="hero-title">IRONMAN</h1>
-  <p class="hero-subtitle">70.3 · RIO DE JANEIRO 2026</p>
-  <p class="hero-athlete">Atleta: <span>Diego</span></p>
+  <div class="hero-brand">
+    <span class="hero-mdot">M</span>
+    <h1 class="hero-title">IRONMAN</h1>
+  </div>
+  <p class="hero-subtitle">70.3 · RIO DE JANEIRO · AGO 2026</p>
 
   <div class="countdown">
     <div class="cd-block">
-      <div class="cd-num" id="cd-days">107</div>
+      <div class="cd-num" id="cd-days">73</div>
       <div class="cd-label">Dias</div>
     </div>
     <div class="cd-sep">:</div>
@@ -1292,18 +1310,13 @@
     <div class="cd-sep">:</div>
     <div class="cd-block">
       <div class="cd-num" id="cd-mins">00</div>
-      <div class="cd-label">Minutos</div>
+      <div class="cd-label">Min</div>
     </div>
     <div class="cd-sep">:</div>
     <div class="cd-block">
       <div class="cd-num" id="cd-secs">00</div>
-      <div class="cd-label">Segundos</div>
+      <div class="cd-label">Seg</div>
     </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span class="scroll-text">SCROLL</span>
   </div>
 </section>
 
@@ -1401,7 +1414,7 @@
   <h2 class="section-title">CARGA DE TREINO (12 SEMANAS)</h2>
   <div class="chart-card">
     <div class="chart-header">
-      <div style="font-size:0.85rem;color:var(--muted)">Dados reais Garmin Connect · weeklyTrainingLoadSum normalizado · Fev–Mai 2026</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Estimativa PMC · curvas suavizadas baseadas no plano · Fev–Mai 2026</div>
       <div class="chart-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>CTL (Fitness)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#e8501a"></div>ATL (Fadiga)</div>
@@ -1448,6 +1461,11 @@
 
   <!-- TAB: DIÁRIA -->
   <div class="nutr-panel active" id="nutr-diaria">
+    <!-- Contexto de hoje — preenchido por buildNutrHoje() -->
+    <div class="nutr-hoje" id="nutr-hoje-box">
+      <span class="nutr-hoje-label">HOJE</span>
+      <span class="nutr-hoje-wo" style="color:var(--muted)">Calculando…</span>
+    </div>
     <div class="nutr-alert-box">
       ⚠️ <strong>Atenção — HbA1c 5.9%:</strong> Limite superior do normal. Prefira carboidratos de baixo IG (aveia, batata doce, arroz integral). Evite açúcar refinado exceto <em>durante</em> treinos &gt;60min. Não pular refeições.
     </div>
@@ -1660,155 +1678,90 @@
     </div>
   </div>
 
-  <!-- GARMIN INTEGRATION -->
-  <h2 class="section-title">INTEGRAÇÃO GARMIN</h2>
-  <div class="garmin-section">
-    <div class="garmin-header" onclick="toggleGarmin()">
-      <div class="garmin-title">
-        <span>🔌</span>
-        <span>Conexão garmin_mcp</span>
-        <span class="garmin-status">Desconectado</span>
+  <!-- GARMIN STATUS -->
+  <h2 class="section-title">GARMIN — SINCRONIZAÇÃO</h2>
+  <div class="gs-grid">
+
+    <!-- Card: treinos no relógio -->
+    <div class="gs-card">
+      <div class="gs-card-hdr">
+        <span class="gs-badge ok">✓ NO RELÓGIO</span>
+        <span class="gs-card-title">Próximos treinos enviados</span>
+        <span class="gs-card-sub" id="gs-push-ts">28–31 Mai 2026 · S1 enviada via JS</span>
       </div>
-      <div class="garmin-chevron" id="garmin-chevron">▼</div>
+      <div class="gs-workouts" id="gs-workouts">
+        <div class="gs-wo run">
+          <span class="gs-wo-date">Qui 28</span>
+          <span class="gs-wo-icon">🏃</span>
+          <span class="gs-wo-name">12km — 2x Bloco L2+L3</span>
+          <span class="gs-wo-meta">75min · Z2/Z3</span>
+        </div>
+        <div class="gs-wo swim">
+          <span class="gs-wo-date">Sex 29</span>
+          <span class="gs-wo-icon">🏊</span>
+          <span class="gs-wo-name">1.800m — Séries A1</span>
+          <span class="gs-wo-meta">40min · Z1/Z2</span>
+        </div>
+        <div class="gs-wo bike">
+          <span class="gs-wo-date">Sáb 30</span>
+          <span class="gs-wo-icon">🚴</span>
+          <span class="gs-wo-name">80km — Long Ride L2 Constante</span>
+          <span class="gs-wo-meta">2h45 · Z2</span>
+        </div>
+        <div class="gs-wo run">
+          <span class="gs-wo-date">Dom 31</span>
+          <span class="gs-wo-icon">🏃</span>
+          <span class="gs-wo-name">16km — Long Run L2</span>
+          <span class="gs-wo-meta">1h50 · Z2</span>
+        </div>
+      </div>
+      <div class="gs-hint">Sincronize o Forerunner para carregar os treinos ↑</div>
     </div>
-    <div class="garmin-body" id="garmin-body">
-      <p class="garmin-desc">
-        Este dashboard pode consumir dados reais do seu Garmin Connect via
-        <strong>garmin_mcp</strong> — um servidor MCP que expõe +110 ferramentas de dados de treino.
-        Siga os passos abaixo para conectar:
-      </p>
-      <ol class="garmin-steps">
-        <li><span class="step-num">01</span>Instale o garmin_mcp: baixe o arquivo <code>.dxt</code> em <strong>github.com/Taxuspt/garmin_mcp</strong> e abra no Claude Desktop</li>
-        <li><span class="step-num">02</span>Autentique: rode <code>garmin-mcp-auth</code> no terminal e insira suas credenciais Garmin Connect</li>
-        <li><span class="step-num">03</span>Reinicie o Claude Desktop</li>
-        <li><span class="step-num">04</span>Peça ao Claude para buscar seus treinos e atualizar este dashboard com dados reais</li>
-      </ol>
-      <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem">Estrutura JSON esperada para atualizar os dados:</p>
-      <div class="code-block"><pre><span class="code-comm">// Cole aqui o JSON retornado pelo garmin_mcp</span>
-{
-  <span class="code-key">"athlete"</span>: <span class="code-str">"Diego"</span>,
-  <span class="code-key">"race_date"</span>: <span class="code-str">"2026-08-09"</span>,
-  <span class="code-key">"ctl"</span>: <span class="code-num">52</span>,
-  <span class="code-key">"atl"</span>: <span class="code-num">31</span>,
-  <span class="code-key">"tsb"</span>: <span class="code-num">+21</span>,
-  <span class="code-key">"weekly_volume"</span>: {
-    <span class="code-key">"swim_km"</span>: <span class="code-num">2.0</span>,
-    <span class="code-key">"bike_km"</span>: <span class="code-num">0.0</span>,
-    <span class="code-key">"run_km"</span>: <span class="code-num">11.1</span>
-  },
-  <span class="code-key">"activities"</span>: [
-    { <span class="code-key">"type"</span>: <span class="code-str">"lap_swimming"</span>, <span class="code-key">"date"</span>: <span class="code-str">"2026-05-24"</span>, <span class="code-key">"distance_km"</span>: <span class="code-num">2.0</span>, <span class="code-key">"duration_min"</span>: <span class="code-num">38</span> },
-    { <span class="code-key">"type"</span>: <span class="code-str">"treadmill_running"</span>, <span class="code-key">"date"</span>: <span class="code-str">"2026-05-22"</span>, <span class="code-key">"distance_km"</span>: <span class="code-num">2.78</span>, <span class="code-key">"avg_hr"</span>: <span class="code-num">146</span> }
-  ]
-}</pre></div>
-      <button class="btn-garmin">
-        🔄 Atualizar dados do Garmin
-        <span class="btn-tooltip">Conecte o garmin_mcp primeiro (veja os passos acima)</span>
-      </button>
+
+    <!-- Card: última sincronização de dados -->
+    <div class="gs-card">
+      <div class="gs-card-hdr">
+        <span class="gs-badge sync">↺ SINCRONIZADO</span>
+        <span class="gs-card-title">Dados de ontem (27/05)</span>
+        <span class="gs-card-sub" id="gs-sync-ts">garmin_daily_sync.py · auto</span>
+      </div>
+      <div class="gs-acts" id="gs-acts">
+        <div class="gs-act">
+          <span class="gs-act-disc bike">🚴</span>
+          <div class="gs-act-info">
+            <div class="gs-act-name">Ciclismo — Progressivo L2→L3</div>
+            <div class="gs-act-meta">70km · 2h20 · FC média 158bpm · 27 Mai</div>
+          </div>
+          <span class="gs-act-tss">TSS ~142</span>
+        </div>
+        <div class="gs-act">
+          <span class="gs-act-disc swim">🏊</span>
+          <div class="gs-act-info">
+            <div class="gs-act-name">Natação — Base Técnica</div>
+            <div class="gs-act-meta">1.500m · 34min · 26 Mai</div>
+          </div>
+          <span class="gs-act-tss">TSS ~38</span>
+        </div>
+        <div class="gs-act">
+          <span class="gs-act-disc run">🏃</span>
+          <div class="gs-act-info">
+            <div class="gs-act-name">Corrida — Constante L2</div>
+            <div class="gs-act-meta">8km · 47min · FC média 162bpm · 26 Mai</div>
+          </div>
+          <span class="gs-act-tss">TSS ~55</span>
+        </div>
+      </div>
+      <div class="gs-total-tss" id="gs-total-tss">
+        <span>Carga semanal S1 até hoje:</span>
+        <strong>~235 TSS</strong>
+        <span class="gs-tss-bar"><span style="width:67%"></span></span>
+      </div>
     </div>
+
   </div>
 
 </main>
 
-<!-- ═══════════════════ LOG MODAL ═══════════════════ -->
-<div class="modal-overlay" id="log-modal" onclick="if(event.target===this)closeLog()">
-  <div class="modal">
-    <div class="modal-title" id="modal-title">Registrar treino</div>
-    <div class="modal-sub" id="modal-sub">Insira os dados reais do treino</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem">
-      <div class="form-grp">
-        <label class="form-lbl">Duração real</label>
-        <input class="form-inp" id="log-dur" type="text" placeholder="ex: 1h45m">
-      </div>
-      <div class="form-grp">
-        <label class="form-lbl">Distância</label>
-        <input class="form-inp" id="log-dist" type="text" placeholder="ex: 18.5km">
-      </div>
-      <div class="form-grp">
-        <label class="form-lbl">Pace médio</label>
-        <input class="form-inp" id="log-pace" type="text" placeholder="ex: 5:22/km">
-      </div>
-      <div class="form-grp">
-        <label class="form-lbl">FC média (bpm)</label>
-        <input class="form-inp" id="log-hr" type="text" placeholder="ex: 158">
-      </div>
-    </div>
-    <div class="form-grp">
-      <label class="form-lbl">RPE — esforço percebido (1–10)</label>
-      <div class="rpe-grid">
-        <button class="rpe-btn" data-rpe="1"  onclick="selectRPE(1)">1</button>
-        <button class="rpe-btn" data-rpe="2"  onclick="selectRPE(2)">2</button>
-        <button class="rpe-btn" data-rpe="3"  onclick="selectRPE(3)">3</button>
-        <button class="rpe-btn" data-rpe="4"  onclick="selectRPE(4)">4</button>
-        <button class="rpe-btn" data-rpe="5"  onclick="selectRPE(5)">5</button>
-        <button class="rpe-btn" data-rpe="6"  onclick="selectRPE(6)">6</button>
-        <button class="rpe-btn" data-rpe="7"  onclick="selectRPE(7)">7</button>
-        <button class="rpe-btn" data-rpe="8"  onclick="selectRPE(8)">8</button>
-        <button class="rpe-btn" data-rpe="9"  onclick="selectRPE(9)">9</button>
-        <button class="rpe-btn" data-rpe="10" onclick="selectRPE(10)">10</button>
-      </div>
-    </div>
-    <div class="form-grp">
-      <label class="form-lbl">Notas / observações</label>
-      <textarea class="form-inp" id="log-notes" rows="2" placeholder="Como foi o treino? Sentiu bem? Dores?"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeLog()">Cancelar</button>
-      <button class="btn-save" onclick="saveLog()">💾 Salvar log</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ FEEDBACK MODAL ═══════════════════ -->
-<div class="modal-overlay" id="fb-modal" onclick="if(event.target===this)closeFeedback()">
-  <div class="modal">
-    <div class="modal-title" id="fb-modal-title">Feedback da semana</div>
-    <div class="modal-sub">Avalie sua semana de treino — ajuda a ajustar o plano</div>
-    <div class="form-grp">
-      <label class="form-lbl">Como foi a semana no geral?</label>
-      <div class="rpe-grid">
-        <button class="star-btn" data-star="1" onclick="selectStar(1)">★</button>
-        <button class="star-btn" data-star="2" onclick="selectStar(2)">★</button>
-        <button class="star-btn" data-star="3" onclick="selectStar(3)">★</button>
-        <button class="star-btn" data-star="4" onclick="selectStar(4)">★</button>
-        <button class="star-btn" data-star="5" onclick="selectStar(5)">★</button>
-      </div>
-    </div>
-    <div class="form-grp">
-      <label class="form-lbl">RPE médio da semana</label>
-      <div class="rpe-grid">
-        <button class="rpe-btn-fb" data-rpe="1"  onclick="selectRPEFb(1)">1</button>
-        <button class="rpe-btn-fb" data-rpe="2"  onclick="selectRPEFb(2)">2</button>
-        <button class="rpe-btn-fb" data-rpe="3"  onclick="selectRPEFb(3)">3</button>
-        <button class="rpe-btn-fb" data-rpe="4"  onclick="selectRPEFb(4)">4</button>
-        <button class="rpe-btn-fb" data-rpe="5"  onclick="selectRPEFb(5)">5</button>
-        <button class="rpe-btn-fb" data-rpe="6"  onclick="selectRPEFb(6)">6</button>
-        <button class="rpe-btn-fb" data-rpe="7"  onclick="selectRPEFb(7)">7</button>
-        <button class="rpe-btn-fb" data-rpe="8"  onclick="selectRPEFb(8)">8</button>
-        <button class="rpe-btn-fb" data-rpe="9"  onclick="selectRPEFb(9)">9</button>
-        <button class="rpe-btn-fb" data-rpe="10" onclick="selectRPEFb(10)">10</button>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem">
-      <div class="form-grp">
-        <label class="form-lbl">Maior dificuldade</label>
-        <input class="form-inp" id="fb-struggle" type="text" placeholder="ex: Long run ficou pesado">
-      </div>
-      <div class="form-grp">
-        <label class="form-lbl">Maior conquista</label>
-        <input class="form-inp" id="fb-highlight" type="text" placeholder="ex: Primeiro 1.9km contínuo!">
-      </div>
-    </div>
-    <div class="form-grp">
-      <label class="form-lbl">Notas gerais (sono, motivação, corpo)</label>
-      <textarea class="form-inp" id="fb-notes" rows="2" placeholder="Recuperação, humor, energia..."></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeFeedback()">Cancelar</button>
-      <button class="btn-save" onclick="saveFeedback()">💾 Salvar feedback</button>
-    </div>
-  </div>
-</div>
 
 <script>
 // ════════════════════════════════════════════
@@ -2107,9 +2060,7 @@ function isKeyStep(s) {
 function renderWeek(idx) {
   const week = WEEKS[idx];
   const container = document.getElementById('weeks-container');
-  const checked = week.days.filter(d => getChecked(d.id) && d.disc !== 'rest').length;
   const total   = week.days.filter(d => d.disc !== 'rest').length;
-  const pct     = total ? Math.round(checked / total * 100) : 0;
 
   const volHtml = (week.id === 'w11')
     ? `<span class="vol-item" style="color:var(--muted);font-style:italic">Semana de prova — volume mínimo</span>`
@@ -2130,8 +2081,6 @@ function renderWeek(idx) {
       </div>`;
     }
 
-    const done  = getChecked(d.id);
-    const log   = getLog(d.id);
     const steps = d.detail.split('|').map(s => s.trim()).filter(Boolean);
     const vis   = steps.slice(0, 3);
     const hid   = steps.slice(3);
@@ -2145,17 +2094,12 @@ function renderWeek(idx) {
       `<div class="wk-step${isKeyStep(s) ? ' ks' : ''}"><span class="wk-step-b">▸</span>${s}</div>`
     ).join('');
 
-    const logBadge = log
-      ? `<div class="wk-log-summary">✓ Registrado: ${[log.dur, log.dist, log.pace ? 'pace '+log.pace : '', log.hr ? 'FC '+log.hr : '', log.rpe ? 'RPE '+log.rpe : ''].filter(Boolean).join(' · ')}</div>`
-      : '';
-
     return `
-      <div class="wk-card wk-card-${d.disc}${done ? ' done-card' : ''}" id="card-${d.id}">
+      <div class="wk-card wk-card-${d.disc}" id="card-${d.id}">
         <div class="wk-card-header">
           <div class="wk-dow">${dowParts[0]}<strong>${dowParts[1]||''}</strong></div>
           <span class="wk-disc-badge wk-disc-${d.disc}">${d.icon} ${DISC_LABEL[d.disc]||d.disc}</span>
           <span class="zone-badge ${zc}" style="font-size:0.58rem;padding:0.12rem 0.45rem">${d.zone}</span>
-          <div class="wk-check${done ? ' checked' : ''}" id="chk-${d.id}" onclick="toggleDay('${d.id}','${week.id}')">✓</div>
         </div>
         <div class="wk-card-body">
           <div class="wk-card-name">${d.name}</div>
@@ -2168,25 +2112,9 @@ function renderWeek(idx) {
             ${hid.length ? `<div class="wk-steps-more" id="more-${d.id}">${moreHtml}</div>` : ''}
           </div>
         </div>
-        <div class="wk-card-footer">
-          ${hid.length ? `<button class="btn-tgl" id="tgl-${d.id}" onclick="toggleSteps('${d.id}')">▾ ${hid.length} passos</button>` : '<span></span>'}
-          <div class="wk-actions">
-            <button class="btn-log${log ? ' logged' : ''}" onclick="openLog('${d.id}','${week.id}')">${log ? '📊 Ver log' : '📝 Registrar'}</button>
-            <button class="btn-done${done ? ' done' : ''}" id="donebtn-${d.id}" onclick="toggleDay('${d.id}','${week.id}')">${done ? '✓ Feito' : 'Concluir'}</button>
-          </div>
-        </div>
-        ${logBadge}
+        ${hid.length ? `<div class="wk-card-footer"><button class="btn-tgl" id="tgl-${d.id}" onclick="toggleSteps('${d.id}')">▾ ${hid.length} passos</button></div>` : ''}
       </div>`;
   }).join('');
-
-  const fb = getFeedback(week.id);
-  const fbHtml = `
-    <div class="week-feedback-bar">
-      <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.08em">FEEDBACK</span>
-      <button class="btn-feedback${fb ? ' has-fb' : ''}" onclick="openFeedback('${week.id}')">
-        ${fb ? `⭐ ${fb.stars}/5 · RPE ${fb.rpe} · ${fb.highlight || 'ver notas'}` : '+ Avaliar semana'}
-      </button>
-    </div>`;
 
   container.innerHTML = `
     <div class="week-card" style="overflow:visible">
@@ -2196,17 +2124,12 @@ function renderWeek(idx) {
           <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem;font-family:var(--font-mono)">${week.range}</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap">
-          <div class="week-pct" id="pct-${week.id}">${pct}%</div>
           <div class="week-badge ${TYPE_BADGE[week.type]}">${week.label}</div>
-          <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted)">S${idx+1}/11</div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--muted)">S${idx+1}/11 · ${total} treinos</div>
         </div>
-      </div>
-      <div class="week-progress-bar">
-        <div class="week-progress-fill" id="bar-${week.id}" style="width:${pct}%"></div>
       </div>
       <div class="week-volumes">${volHtml}</div>
       <div style="display:flex;flex-direction:column;gap:0">${daysHtml}</div>
-      ${fbHtml}
     </div>`;
 
   document.getElementById('nav-week-label').textContent = week.name;
@@ -2262,18 +2185,7 @@ function toggleDay(dayId, weekId) {
 }
 
 function updateWeekMetric() {
-  const week = WEEKS[currentWeekIdx];
-  const done  = week.days.filter(d => getChecked(d.id) && d.disc !== 'rest').length;
-  const total = week.days.filter(d => d.disc !== 'rest').length;
-  const pct   = total ? Math.round(done / total * 100) : 0;
-
-  document.getElementById('done-count').textContent  = done;
-  document.getElementById('total-count').textContent = total;
-  document.getElementById('done-pct').textContent    = pct + '% da semana atual';
-
-  const circ = 2 * Math.PI * 24;
-  const offset = circ - (pct / 100) * circ;
-  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+  // metrics section removed — no-op kept for backward compat with toggleDay calls
 }
 
 renderWeek(currentWeekIdx);
@@ -2321,14 +2233,12 @@ updateWeekMetric();
   }
 
   list.innerHTML = todayDays.map(d => {
-    const done = getChecked(d.id);
-    return `<div class="today-w-item twi-${d.disc}${done?' today-w-done':''}">
+    return `<div class="today-w-item twi-${d.disc}">
       <div class="twi-icon">${d.icon}</div>
       <div class="twi-info">
         <div class="twi-name">${d.name}</div>
         <div class="twi-meta">⏱ ${d.dur}${d.meta ? ' · 📏 '+d.meta : ''} · ${d.zone}</div>
       </div>
-      <div class="twi-check${done?' done':''}" onclick="toggleDay('${d.id}','${week.id}');this.classList.toggle('done');this.closest('.today-w-item').classList.toggle('today-w-done')">✓</div>
     </div>`;
   }).join('');
 })();
@@ -2407,8 +2317,8 @@ fetch('garmin_data.json?t=' + Date.now())
 // Dados reais Garmin Connect (exportação Mai 2026)
 // weeklyTrainingLoadSum normalizado para escala CTL/ATL
 const weeks = ['23/02','02/03','09/03','16/03','23/03','30/03','06/04','13/04','20/04','27/04','04/05','11/05','18/05'];
-const ctl   = [66, 63, 67, 66, 68, 71, 73, 69, 61, 60, 58, 56, 52];
-const atl   = [66, 50, 87, 57, 77, 89, 84, 45, 21, 57, 50, 46, 31];
+const ctl   = [38, 41, 45, 49, 53, 57, 60, 58, 55, 52, 50, 49, 52];  // CTL = média exp 42d
+const atl   = [38, 50, 62, 46, 64, 72, 68, 40, 24, 48, 45, 42, 31];  // ATL = média exp 7d
 const tsb   = ctl.map((v,i) => v - atl[i]);
 
 const ctx = document.getElementById('loadChart').getContext('2d');
@@ -2674,14 +2584,60 @@ function switchNutr(tab) {
 }
 
 // ════════════════════════════════════════════
-//  GARMIN TOGGLE
+//  NUTRIÇÃO — HOJE (contexto dinâmico)
 // ════════════════════════════════════════════
-function toggleGarmin() {
-  const body    = document.getElementById('garmin-body');
-  const chevron = document.getElementById('garmin-chevron');
-  const open    = body.classList.toggle('open');
-  chevron.classList.toggle('open', open);
+function buildNutrHoje() {
+  const today = new Date();
+  const todayStr = today.toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit', month:'2-digit'})
+                        .replace('.','').replace(', ','/')
+                        .replace(/^\w/, c => c.toUpperCase());
+
+  // Detecta dia da semana (0=Dom → ajusta pra segunda como início)
+  const dow = today.getDay(); // 0=Dom,1=Seg...6=Sáb
+  const dowOffset = [6,0,1,2,3,4,5][dow]; // 0=Seg,1=Ter,...,6=Dom
+
+  let todayWorkouts = [];
+  let isRest = true;
+
+  // Procura nos WEEKS qual semana inclui hoje
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const WK_STARTS = ['2026-05-25','2026-06-01','2026-06-08','2026-06-15','2026-06-22',
+                     '2026-06-29','2026-07-06','2026-07-13','2026-07-20','2026-07-27','2026-08-03'];
+  const STARTS = WK_STARTS.map(s => new Date(s + 'T12:00:00'));
+  let weekIdx = -1;
+  for (let i = STARTS.length - 1; i >= 0; i--) {
+    if (todayDate >= STARTS[i]) { weekIdx = i; break; }
+  }
+
+  if (weekIdx >= 0 && WEEKS[weekIdx]) {
+    const DOW_PT = {Seg:0,Ter:1,Qua:2,Qui:3,Sex:4,Sáb:5,Dom:6};
+    todayWorkouts = WEEKS[weekIdx].days.filter(d => {
+      const prefix = d.dow.split(' ')[0];
+      return DOW_PT[prefix] === dowOffset;
+    });
+    isRest = todayWorkouts.length === 0 || todayWorkouts.every(d => d.disc === 'rest');
+  }
+
+  const el = document.getElementById('nutr-hoje-box');
+  if (!el) return;
+
+  if (isRest || todayWorkouts.length === 0) {
+    el.innerHTML = `
+      <span class="nutr-hoje-label">HOJE</span>
+      <span class="nutr-hoje-wo">Dia de descanso — use a coluna <em>Dia de Descanso</em></span>
+      <span class="nutr-hoje-tag rest">😴 REST</span>`;
+  } else {
+    const wos = todayWorkouts.filter(d => d.disc !== 'rest');
+    const icons = {run:'🏃',swim:'🏊',bike:'🚴',brick:'🧱',strength:'💪'};
+    const names = wos.map(d => `${icons[d.disc] || '🎯'} ${d.name}`).join(' + ');
+    const zones = [...new Set(wos.map(d => d.zone))].join('/');
+    el.innerHTML = `
+      <span class="nutr-hoje-label">HOJE</span>
+      <span class="nutr-hoje-wo">${names}</span>
+      <span class="nutr-hoje-tag">${zones} · use coluna Treino</span>`;
+  }
 }
+buildNutrHoje();
 
 // ════════════════════════════════════════════
 //  ANIMATE BARS ON LOAD
@@ -2694,6 +2650,45 @@ setTimeout(() => {
   });
   updateWeekMetric();
 }, 300);
+
+// ════════════════════════════════════════════
+//  LAYOUT — reordenar seções e remover obsoletas
+// ════════════════════════════════════════════
+(function layoutReorder() {
+  const main = document.querySelector('.main');
+  if (!main) return;
+
+  // Helper: coletar todos siblings até próximo h2.section-title
+  function collectSection(startEl) {
+    const els = [];
+    let el = startEl;
+    while (el) {
+      const nxt = el.nextElementSibling;
+      els.push(el);
+      if (!nxt || (nxt.tagName === 'H2' && nxt.classList.contains('section-title'))) break;
+      el = nxt;
+    }
+    return els;
+  }
+
+  let nutrStart = null, weeklyStart = null, metricsStart = null, chartStart = null;
+  main.querySelectorAll('h2.section-title').forEach(h2 => {
+    const t = h2.textContent;
+    if (t.includes('NUTRIÇÃO'))       nutrStart    = h2;
+    else if (t.includes('PLANO DE'))  weeklyStart  = h2;
+    else if (t.includes('MÉTRICAS'))  metricsStart = h2;
+    else if (t.includes('CARGA DE'))  chartStart   = h2;
+  });
+
+  // Remove métricas e gráfico de carga
+  if (metricsStart) collectSection(metricsStart).forEach(el => el.remove());
+  if (chartStart)   collectSection(chartStart).forEach(el => el.remove());
+
+  // Mover nutrição para antes do plano semanal
+  if (nutrStart && weeklyStart) {
+    collectSection(nutrStart).forEach(el => main.insertBefore(el, weeklyStart));
+  }
+})();
 </script>
 </body>
 </html>

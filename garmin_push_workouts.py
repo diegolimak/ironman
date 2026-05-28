@@ -157,20 +157,79 @@ def parse_duration_seconds(dur_str: str) -> int:
         except: pass
     return max(total, 1800)  # minimum 30min
 
-def push_workouts(week_idx: int):
-    try:
-        from garminconnect import Garmin
-    except ImportError:
-        log("Instalando garminconnect...")
-        os.system(f"{sys.executable} -m pip install garminconnect garth")
-        from garminconnect import Garmin
+def load_garmin_client():
+    """Load Garmin client — tries Bearer token, then OAuth2 via garth."""
+    import requests as _req
 
     if not os.path.isdir(TOKEN_DIR):
-        log("❌ Token não encontrado. Execute garmin_auth.py primeiro.")
+        log("❌ Token não encontrado. Execute garmin_get_token.py primeiro.")
         sys.exit(1)
 
-    client = Garmin()
-    client.garth.load(TOKEN_DIR)
+    # ── Prioridade 1: Bearer token manual (garmin_get_token.py) ──
+    oauth2_file = os.path.join(TOKEN_DIR, "oauth2_token.json")
+    if os.path.exists(oauth2_file):
+        with open(oauth2_file) as f:
+            tok = json.load(f)
+        access_token = tok.get("access_token", "")
+        if access_token:
+            client = BearerGarminClient(access_token)
+            # Testa se funciona
+            try:
+                r = client._get("/userprofile-service/userprofile")
+                if r is not None:
+                    log("✓ Conectado via Bearer token")
+                    return client
+            except Exception as e:
+                log(f"⚠ Bearer token inválido ({e})")
+
+    # ── Fallback: garminconnect OAuth2 via garth ──
+    try:
+        from garminconnect import Garmin
+        api = Garmin()
+        api.garth.load(TOKEN_DIR)
+        log("✓ Conectado via garth OAuth2")
+        return api
+    except Exception as e:
+        log(f"⚠ garth falhou: {e}")
+
+    log("❌ Nenhum método de auth disponível.")
+    log("   Execute:  python garmin_get_token.py")
+    sys.exit(1)
+
+class BearerGarminClient:
+    """Cliente REST usando Bearer token JWT do Garmin Connect."""
+    BASE = "https://connect.garmin.com/gc-api"
+
+    def __init__(self, access_token):
+        import requests
+        self.session = requests.Session()
+        self.session.headers.update({
+            "Authorization": f"Bearer {access_token}",
+            "NK": "NT",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Origin": "https://connect.garmin.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        })
+
+    def _get(self, path, **params):
+        r = self.session.get(self.BASE + path, params=params)
+        r.raise_for_status()
+        return r.json() if r.content else {}
+
+    def _post(self, path, body=None, **kwargs):
+        r = self.session.post(self.BASE + path, json=body, **kwargs)
+        r.raise_for_status()
+        return r.json() if r.content else {}
+
+    def add_workout(self, payload):
+        return self._post("/workout-service/workout", payload)
+
+    def schedule_workout(self, workout_id, date_str):
+        return self._post(f"/workout-service/schedule/{workout_id}", body={"date": date_str})
+
+def push_workouts(week_idx: int):
+    client = load_garmin_client()
     log(f"✓ Conectado ao Garmin Connect")
 
     # Load week data from JS file (parse it)
