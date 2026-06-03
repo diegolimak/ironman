@@ -254,6 +254,13 @@
   .twi-info { flex: 1; min-width: 0; }
   .twi-name { font-size: 0.9rem; font-weight: 600; }
   .twi-meta { font-family: var(--font-mono); font-size: 0.63rem; color: var(--muted); margin-top: 0.1rem; }
+  .twi-zone-tag {
+    display: flex; flex-direction: column; align-items: center;
+    border: 1.5px solid; border-radius: 8px;
+    padding: 0.25rem 0.55rem; min-width: 72px; flex-shrink: 0;
+  }
+  .twi-zone-lbl { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+  .twi-zone-fc  { font-family: var(--font-mono); font-size: 0.58rem; opacity: 0.85; white-space: nowrap; }
   .twi-check {
     width: 22px; height: 22px; border-radius: 5px;
     border: 1.5px solid rgba(255,255,255,0.15);
@@ -2391,12 +2398,33 @@ updateWeekMetric();
     return;
   }
 
+  // FC range por zona (bpm para atleta com FCmax ~185)
+  const ZONE_FC = {
+    'Z1':    'FC < 148',
+    'Z1/Z2': 'FC 130–155',
+    'Z2':    'FC 148–165',
+    'Z2/Z3': 'FC 148–175',
+    'Z3':    'FC 165–175',
+    'Z3/Z4': 'FC 165–180',
+    'Z4':    'FC 175–185',
+    'REST':  'Descanso',
+  };
+
   list.innerHTML = todayDays.map(d => {
+    const fcRange = ZONE_FC[d.zone] || d.zone;
+    const zoneColor = d.zone.includes('Z4') ? '#e8501a'
+                    : d.zone.includes('Z3') ? '#ffc800'
+                    : d.zone.includes('Z2') ? '#00e676'
+                    : '#888';
     return `<div class="today-w-item twi-${d.disc}">
       <div class="twi-icon">${d.icon}</div>
       <div class="twi-info">
         <div class="twi-name">${d.name}</div>
-        <div class="twi-meta">⏱ ${d.dur}${d.meta ? ' · 📏 '+d.meta : ''} · ${d.zone}</div>
+        <div class="twi-meta">⏱ ${d.dur}${d.meta ? ' · 📏 '+d.meta : ''}</div>
+      </div>
+      <div class="twi-zone-tag" style="border-color:${zoneColor};color:${zoneColor}">
+        <span class="twi-zone-lbl">${d.zone}</span>
+        <span class="twi-zone-fc">${fcRange}</span>
       </div>
     </div>`;
   }).join('');
