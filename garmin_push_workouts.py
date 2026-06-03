@@ -36,14 +36,16 @@ WEEK_STARTS = [
 DOW_PT = { "Seg":0, "Ter":1, "Qua":2, "Qui":3, "Sex":4, "Sáb":5, "Dom":6 }
 
 SPORT_MAP = {
-    "swim":     ("swimming",   "lap_swimming"),
-    "bike":     ("cycling",    "cycling"),
-    "run":      ("running",    "running"),
-    "brick":    ("multi_sport","other"),
-    "strength": ("strength_training", "strength_training"),
+    "swim":     ("swimming",          "lap_swimming",        4),   # 4 = swimming
+    "bike":     ("cycling",           "cycling",             2),   # 2 = cycling
+    "run":      ("running",           "running",             1),   # 1 = running
+    "brick":    ("multi_sport",       "other",               15),  # 15 = multi_sport
+    "strength": ("strength_training", "strength_training",   5),   # 5 = strength
     "rest":     None,
-    "race":     ("multi_sport","other"),
+    "race":     ("multi_sport",       "other",               15),
 }
+
+SPORT_TYPE_ID = {k: v[2] for k, v in SPORT_MAP.items() if v}
 
 ZONE_TARGETS = {
     "Z1":  {"targetHrZone": 1},
@@ -78,7 +80,7 @@ def build_workout_payload(day: dict, scheduled_date: datetime.date) -> dict:
     if not sport_info:
         return None
 
-    sport_type, sub_sport = sport_info
+    sport_type, sub_sport, sport_type_id = sport_info
     steps_raw = [s.strip() for s in day["detail"].split("|") if s.strip()]
 
     # Build workout steps
@@ -128,11 +130,11 @@ def build_workout_payload(day: dict, scheduled_date: datetime.date) -> dict:
     return {
         "workoutName": f"[IRONMAN] {day['name'][:50]}",
         "description": f"Semana do plano IRONMAN 70.3 Rio | {day['zone']} | {day['dur']}",
-        "sportType": {"sportTypeId": 1, "sportTypeKey": sport_type},
+        "sportType": {"sportTypeId": sport_type_id, "sportTypeKey": sport_type},
         "subSportType": sub_sport,
         "workoutSegments": [{
             "segmentOrder": 1,
-            "sportType": {"sportTypeId": 1, "sportTypeKey": sport_type},
+            "sportType": {"sportTypeId": sport_type_id, "sportTypeKey": sport_type},
             "workoutSteps": workout_steps,
         }],
         "estimatedDurationInSecs": parse_duration_seconds(day.get("dur", "60min")),

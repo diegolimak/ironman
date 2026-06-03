@@ -25,11 +25,11 @@
   const DOW_PT = { 'Seg':0,'Ter':1,'Qua':2,'Qui':3,'Sex':4,'Sáb':5,'Dom':6 };
 
   const SPORT = {
-    run:      { sportTypeId: 1, sportTypeKey: 'running'   },
-    swim:     { sportTypeId: 5, sportTypeKey: 'swimming'  },
-    bike:     { sportTypeId: 2, sportTypeKey: 'cycling'   },
-    brick:    { sportTypeId: 15, sportTypeKey: 'multi_sport' },
-    strength: { sportTypeId: 4, sportTypeKey: 'fitness_equipment' },
+    run:      { sportTypeId: 1,  sportTypeKey: 'running'          },
+    swim:     { sportTypeId: 4,  sportTypeKey: 'swimming'         },  // 4 = swimming (NÃO 5!)
+    bike:     { sportTypeId: 2,  sportTypeKey: 'cycling'          },
+    brick:    { sportTypeId: 15, sportTypeKey: 'multi_sport'      },
+    strength: { sportTypeId: 5,  sportTypeKey: 'strength_training' }, // 5 = strength (NÃO swim!)
   };
 
   const HR_ZONE = { 'Z1':1,'Z1/Z2':2,'Z2':2,'Z2/Z3':3,'Z3':3,'Z3/Z4':4,'Z4':4,'REST':0 };
