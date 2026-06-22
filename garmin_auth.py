@@ -75,14 +75,59 @@ def auth_via_chrome():
     input("Pressione ENTER quando estiver logado no Garmin Connect no Chrome...")
 
     try:
-        import browser_cookie3, requests
+        import requests
+        cookies = None
 
-        log("\nLendo cookies do Chrome...")
-        cj = browser_cookie3.chrome(domain_name='.garmin.com')
-        cookies = {c.name: c.value for c in cj}
+        # ── Tentativa 1: arquivo manual exportado via Cookie-Editor ──
+        manual_file = os.path.join(TOKEN_DIR, "chrome_cookies.json")
+        if os.path.exists(manual_file):
+            log(f"\nArquivo de cookies encontrado: {manual_file}")
+            with open(manual_file) as f:
+                raw = json.load(f)
+            # Suporta formato Cookie-Editor (lista de dicts) ou dict simples
+            if isinstance(raw, list):
+                cookies = {c['name']: c['value'] for c in raw if c.get('value')}
+            else:
+                cookies = raw
+            if cookies:
+                log(f"  ✓ {len(cookies)} cookies carregados")
 
+        # ── Tentativa 2: browser_cookie3 (funciona no Chrome < v127) ──
         if not cookies:
-            log("❌ Nenhum cookie Garmin encontrado. Verifique se está logado no Chrome.")
+            try:
+                import browser_cookie3
+                log("\nLendo cookies do Chrome via browser_cookie3...")
+                cj = browser_cookie3.chrome(domain_name='.garmin.com')
+                cookies = {c.name: c.value for c in cj}
+                if cookies:
+                    log(f"  ✓ {len(cookies)} cookies encontrados")
+            except Exception as e:
+                log(f"  ⚠ browser_cookie3 não funcionou: {e}")
+
+        # ── Sem cookies → instruções para exportar manualmente ──
+        if not cookies:
+            os.makedirs(TOKEN_DIR, exist_ok=True)
+            log("\n" + "═"*55)
+            log("  Chrome v127+ bloqueia acesso automático a cookies.")
+            log("  Faça a exportação manual em 30 segundos:")
+            log("═"*55)
+            log("")
+            log("  1. Abra o Chrome e acesse https://connect.garmin.com")
+            log("     (certifique-se de estar LOGADO)")
+            log("")
+            log("  2. Instale a extensão gratuita 'Cookie-Editor':")
+            log("     https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm")
+            log("")
+            log("  3. Na aba do Garmin Connect, clique no ícone da extensão")
+            log("     → botão 'Export' → 'Export as JSON'")
+            log("     (copia automaticamente para o clipboard)")
+            log("")
+            log(f"  4. Crie a pasta: {TOKEN_DIR}")
+            log(f"     Abra o Notepad, cole (Ctrl+V) e salve como:")
+            log(f"     chrome_cookies.json   (dentro da pasta acima)")
+            log("")
+            log("  5. Execute garmin_auth.py novamente — vai funcionar!")
+            log("═"*55)
             return False
 
         log(f"  {len(cookies)} cookies encontrados: {list(cookies.keys())[:6]}...")
