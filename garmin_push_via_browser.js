@@ -208,11 +208,13 @@
     };
   }
 
-  // Extrai distância em metros de um fragmento ("6.5km" → 6500, "1500m" → 1500)
+  // Extrai distância em metros de um fragmento ("6.5km" → 6500, "1900m" → 1900)
+  // ATENÇÃO: "1.900m" em PT tem ponto como milhar — usar "1900m" sem ponto nos detalhes
   function fragDist(s) {
     const km = (s+'').match(/(\d+(?:[.,]\d+)?)\s*km/i);
     if (km) return Math.round(parseFloat(km[1].replace(',','.')) * 1000);
-    const mt = (s+'').match(/(\d+)\s*m(?:etros?)?\b/i);
+    // \b garante que captura número inteiro (não "900" de "1.900")
+    const mt = (s+'').match(/\b(\d+)\s*m(?:etros?)?\b/i);
     if (mt) return parseInt(mt[1]);
     return 0;
   }
