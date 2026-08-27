@@ -2549,11 +2549,10 @@ const MWEEKS = [
 // ════════════════════════════════════════════
 //  ATHLETE SYSTEM
 // ════════════════════════════════════════════
-const ALL_ATHLETE_WEEKS = {
-  diego:     WEEKS,
-  guilherme: GWEEKS,
-  matheus:   MWEEKS
-};
+// NOTE: WEEKS is declared later — accessed lazily via function
+function getAllAthleteWeeks() {
+  return { diego: WEEKS, guilherme: GWEEKS, matheus: MWEEKS };
+}
 const ATHLETE_META = {
   diego:     { name:'Diego',     level:'Experiente · IM 70.3 ✓',  color:'var(--orange)' },
   guilherme: { name:'Guilherme', level:'Iniciante · 1ª prova',     color:'#00d4ff' },
@@ -2564,7 +2563,7 @@ let activeAthlete = 'diego';
 function setAthlete(name) {
   activeAthlete = name;
   WEEKS.length = 0;
-  ALL_ATHLETE_WEEKS[name].forEach(w => WEEKS.push(w));
+  getAllAthleteWeeks()[name].forEach(w => WEEKS.push(w));
 
   // Update tab buttons
   ['diego','guilherme','matheus'].forEach(a => {
@@ -2597,7 +2596,7 @@ function setAthlete(name) {
 function initAthlete() {
   try {
     const saved = localStorage.getItem('activeAthlete');
-    if (saved && ALL_ATHLETE_WEEKS[saved] && saved !== 'diego') {
+    if (saved && getAllAthleteWeeks()[saved] && saved !== 'diego') {
       setAthlete(saved);
     } else {
       // Ensure diego tab is visually active
