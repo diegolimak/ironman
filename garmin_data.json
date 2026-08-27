@@ -1,0 +1,357 @@
+{
+  "last_sync": "2026-08-27T10:00:00Z",
+  "date": "2026-08-27",
+  "athlete": "Diego Lima",
+  "ownerId": 123026754,
+  "displayName": "b29f4cd4-47a6-4489-8b15-806f31a63303",
+  "vo2max": 46,
+  "restingHeartRate": null,
+  "highlight": {
+    "race": "IRONMAN 70.3 Rio de Janeiro",
+    "date": "2026-08-09",
+    "result": "7:29:01",
+    "distance_km": 111.91,
+    "calories": 4619,
+    "elevation": 265,
+    "status": "CONCLUÍDO ✅"
+  },
+  "recent_activities": [
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-26 07:00:00",
+      "distance": 0,
+      "duration": 1754,
+      "averageHR": 99,
+      "maxHR": 121,
+      "calories": 133,
+      "totalSets": 20
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-25 07:00:00",
+      "distance": 0,
+      "duration": 3462,
+      "averageHR": 102,
+      "maxHR": 148,
+      "calories": 264,
+      "totalSets": 37
+    },
+    {
+      "activityName": "São Paulo Corrida",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-08-23 08:00:00",
+      "distance": 5010,
+      "duration": 1710,
+      "averageHR": 153,
+      "calories": 390,
+      "locationName": "São Paulo"
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-21 07:00:00",
+      "distance": 0,
+      "duration": 1671,
+      "averageHR": 101,
+      "maxHR": 126,
+      "calories": 131,
+      "totalSets": 20
+    },
+    {
+      "activityName": "Natação em piscina",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-08-20 06:30:00",
+      "distance": 1000,
+      "duration": 1144,
+      "calories": 240
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-19 07:00:00",
+      "distance": 0,
+      "duration": 3301,
+      "averageHR": 102,
+      "maxHR": 117,
+      "calories": 251,
+      "totalSets": 33
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-18 07:00:00",
+      "distance": 0,
+      "duration": 2164,
+      "averageHR": 105,
+      "maxHR": 150,
+      "calories": 192,
+      "totalSets": 24
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-17 07:00:00",
+      "distance": 0,
+      "duration": 2098,
+      "averageHR": 102,
+      "maxHR": 128,
+      "calories": 173,
+      "totalSets": 23
+    },
+    {
+      "activityName": "Natação em piscina",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-08-14 06:30:00",
+      "distance": 1050,
+      "duration": 2736,
+      "calories": 264
+    },
+    {
+      "activityName": "Força",
+      "activityType": { "typeKey": "strength_training" },
+      "startTimeLocal": "2026-08-14 09:00:00",
+      "distance": 0,
+      "duration": 2256,
+      "averageHR": 99,
+      "maxHR": 138,
+      "calories": 175,
+      "totalSets": 19
+    },
+    {
+      "activityName": "IRONMAN 70.3 RJ",
+      "activityType": { "typeKey": "multi_sport" },
+      "startTimeLocal": "2026-08-09 07:00:00",
+      "distance": 111910,
+      "duration": 26941,
+      "calories": 4619,
+      "locationName": "Rio de Janeiro",
+      "elevationGain": 265,
+      "avgSpeed": 15.0,
+      "_race": true
+    },
+    {
+      "activityName": "Rio de Janeiro Ciclismo",
+      "activityType": { "typeKey": "cycling" },
+      "startTimeLocal": "2026-08-08 09:00:00",
+      "distance": 12390,
+      "duration": 3569,
+      "locationName": "Rio de Janeiro"
+    },
+    {
+      "activityName": "Rio de Janeiro Corrida",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-08-06 07:00:00",
+      "distance": 11250,
+      "duration": 4101,
+      "averageHR": 153,
+      "locationName": "Rio de Janeiro"
+    },
+    {
+      "activityName": "Rio de Janeiro Natação em alto mar",
+      "activityType": { "typeKey": "open_water_swimming" },
+      "startTimeLocal": "2026-08-06 06:00:00",
+      "distance": 1133,
+      "duration": 3131,
+      "calories": 260,
+      "locationName": "Rio de Janeiro"
+    },
+    {
+      "activityName": "Rio de Janeiro Natação em alto mar",
+      "activityType": { "typeKey": "open_water_swimming" },
+      "startTimeLocal": "2026-08-05 06:00:00",
+      "distance": 823,
+      "duration": 3460,
+      "calories": 289,
+      "locationName": "Rio de Janeiro"
+    },
+    {
+      "activityName": "Brasília Natação em alto mar",
+      "activityType": { "typeKey": "open_water_swimming" },
+      "startTimeLocal": "2026-08-02 06:30:00",
+      "distance": 1034,
+      "duration": 1788,
+      "calories": 311,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "[IRONMAN] 1.000m",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-07-31 06:30:00",
+      "distance": 750,
+      "duration": 1223,
+      "calories": 180
+    },
+    {
+      "activityName": "[IRONMAN] 10km",
+      "activityType": { "typeKey": "treadmill_running" },
+      "startTimeLocal": "2026-07-30 19:00:00",
+      "distance": 10000,
+      "duration": 3508,
+      "averageHR": 145
+    },
+    {
+      "activityName": "[IRONMAN] 50km",
+      "activityType": { "typeKey": "virtual_ride" },
+      "startTimeLocal": "2026-07-29 19:00:00",
+      "distance": 0,
+      "duration": 4313
+    },
+    {
+      "activityName": "Brasília Corrida",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-07-26 07:30:00",
+      "distance": 10020,
+      "duration": 3238,
+      "averageHR": 154,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "[IRONMAN] OWS 1.",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-07-24 06:30:00",
+      "distance": 1500,
+      "duration": 1854,
+      "calories": 360
+    },
+    {
+      "activityName": "[IRONMAN] 12km",
+      "activityType": { "typeKey": "treadmill_running" },
+      "startTimeLocal": "2026-07-23 19:30:00",
+      "distance": 12040,
+      "duration": 4264,
+      "averageHR": 148
+    },
+    {
+      "activityName": "[IRONMAN] 80km",
+      "activityType": { "typeKey": "virtual_ride" },
+      "startTimeLocal": "2026-07-22 19:00:00",
+      "distance": 0,
+      "duration": 6605
+    },
+    {
+      "activityName": "[IRONMAN] 2.000m",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-07-21 06:30:00",
+      "distance": 2000,
+      "duration": 2421,
+      "calories": 480
+    },
+    {
+      "activityName": "Taguatinga Ciclismo",
+      "activityType": { "typeKey": "cycling" },
+      "startTimeLocal": "2026-07-19 07:00:00",
+      "distance": 91180,
+      "duration": 14226,
+      "locationName": "Taguatinga",
+      "elevationGain": 719
+    },
+    {
+      "activityName": "Taguatinga Corrida",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-07-19 12:30:00",
+      "distance": 10020,
+      "duration": 3585,
+      "averageHR": 154,
+      "locationName": "Taguatinga"
+    },
+    {
+      "activityName": "Brasília - [IRONMAN] 21km",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-07-18 07:00:00",
+      "distance": 19240,
+      "duration": 7601,
+      "averageHR": 159,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "[IRONMAN] 1.500m",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-07-17 06:30:00",
+      "distance": 1500,
+      "duration": 1847,
+      "calories": 360
+    },
+    {
+      "activityName": "Taguatinga - [IRONMAN] 100km",
+      "activityType": { "typeKey": "cycling" },
+      "startTimeLocal": "2026-07-12 07:00:00",
+      "distance": 100180,
+      "duration": 15689,
+      "locationName": "Taguatinga",
+      "elevationGain": 742
+    },
+    {
+      "activityName": "Brasília - [IRONMAN] 20km",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-07-11 07:00:00",
+      "distance": 20020,
+      "duration": 7271,
+      "averageHR": 167,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "Taguatinga Multiesporte",
+      "activityType": { "typeKey": "multi_sport" },
+      "startTimeLocal": "2026-06-28 07:00:00",
+      "distance": 71290,
+      "duration": 13287,
+      "calories": 2375,
+      "locationName": "Taguatinga",
+      "elevationGain": 558
+    },
+    {
+      "activityName": "Brasília - [IRONMAN] 22km",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-06-27 07:00:00",
+      "distance": 21850,
+      "duration": 8215,
+      "averageHR": 162,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "[IRONMAN] 2.500m",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-06-23 06:30:00",
+      "distance": 2500,
+      "duration": 2880,
+      "calories": 603
+    },
+    {
+      "activityName": "Brasília Natação em alto mar",
+      "activityType": { "typeKey": "open_water_swimming" },
+      "startTimeLocal": "2026-06-20 06:30:00",
+      "distance": 2012,
+      "duration": 3001,
+      "calories": 451,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "Brasília - [IRONMAN] 12km",
+      "activityType": { "typeKey": "running" },
+      "startTimeLocal": "2026-06-04 07:00:00",
+      "distance": 12100,
+      "duration": 4186,
+      "averageHR": 155,
+      "locationName": "Brasília"
+    },
+    {
+      "activityName": "[IRONMAN] 100km",
+      "activityType": { "typeKey": "virtual_ride" },
+      "startTimeLocal": "2026-06-03 19:00:00",
+      "distance": 100000,
+      "duration": 12251
+    },
+    {
+      "activityName": "Natação em piscina",
+      "activityType": { "typeKey": "lap_swimming" },
+      "startTimeLocal": "2026-06-02 19:30:00",
+      "distance": 1300,
+      "duration": 2470,
+      "calories": 321
+    }
+  ],
+  "activities_today": [],
+  "_note": "Sync via Chrome browser 2026-08-27. Cobre Jun-Ago 2026 incluindo IRONMAN 70.3 Rio (09/08). Iniciando bloco Sprint MSK (01/09)."
+}
