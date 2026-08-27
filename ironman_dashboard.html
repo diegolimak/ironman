@@ -846,6 +846,51 @@
   .roadmap-item.current .roadmap-name { color: #00d4ff; }
   .roadmap-item.done .roadmap-name { color: #00e676; }
 
+
+  /* ── ATHLETE TABS ── */
+  .athlete-selector {
+    display: flex; gap: 0.6rem; padding: 1rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+  .ath-tab {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.7rem 1.2rem;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer; color: var(--muted);
+    font-family: var(--font-body); font-size: 0.85rem;
+    transition: all 0.2s; text-align: left;
+    flex: 1; min-width: 140px;
+  }
+  .ath-tab:hover { border-color: rgba(255,255,255,0.18); color: var(--text); }
+  .ath-tab.active-diego  { border-color: var(--orange); background: var(--orange-dim); color: var(--text); }
+  .ath-tab.active-guilherme { border-color: #00d4ff; background: rgba(0,212,255,0.1); color: var(--text); }
+  .ath-tab.active-matheus   { border-color: var(--green); background: var(--green-dim); color: var(--text); }
+  .ath-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .ath-avatar.diego     { background: var(--orange-dim); color: var(--orange); border: 1.5px solid var(--orange); }
+  .ath-avatar.guilherme { background: rgba(0,212,255,0.12); color: #00d4ff; border: 1.5px solid #00d4ff; }
+  .ath-avatar.matheus   { background: var(--green-dim); color: var(--green); border: 1.5px solid var(--green); }
+  .ath-info { display: flex; flex-direction: column; gap: 0.1rem; }
+  .ath-name { font-weight: 600; font-size: 0.9rem; }
+  .ath-sub  { font-size: 0.68rem; color: var(--muted); font-family: var(--font-mono); }
+  .ath-tab.active-diego  .ath-sub,
+  .ath-tab.active-guilherme .ath-sub,
+  .ath-tab.active-matheus   .ath-sub { color: var(--muted); }
+  .ath-badge {
+    margin-left: auto;
+    font-size: 0.6rem; font-family: var(--font-mono);
+    padding: 0.15rem 0.5rem; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .ath-badge.exp  { background: rgba(232,80,26,0.15); color: var(--orange); }
+  .ath-badge.beg  { background: rgba(0,230,118,0.12); color: var(--green); }
+
   /* ── GARMIN STATUS ── */
   .gs-grid {
     display: grid;
@@ -1417,6 +1462,35 @@
 
 <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
 <main class="main">
+  <!-- ═══ ATHLETE SELECTOR ═══ -->
+  <div class="athlete-selector" id="athlete-selector">
+    <button class="ath-tab active-diego" id="athtab-diego" onclick="setAthlete('diego')">
+      <div class="ath-avatar diego">D</div>
+      <div class="ath-info">
+        <div class="ath-name">Diego</div>
+        <div class="ath-sub">⚡ Sprint MSK · 14 semanas</div>
+      </div>
+      <span class="ath-badge exp">EXPERIENTE</span>
+    </button>
+    <button class="ath-tab" id="athtab-guilherme" onclick="setAthlete('guilherme')">
+      <div class="ath-avatar guilherme">G</div>
+      <div class="ath-info">
+        <div class="ath-name">Guilherme</div>
+        <div class="ath-sub">🏁 1ª prova da vida</div>
+      </div>
+      <span class="ath-badge beg">INICIANTE</span>
+    </button>
+    <button class="ath-tab" id="athtab-matheus" onclick="setAthlete('matheus')">
+      <div class="ath-avatar matheus">M</div>
+      <div class="ath-info">
+        <div class="ath-name">Matheus</div>
+        <div class="ath-sub">🏁 1ª prova da vida</div>
+      </div>
+      <span class="ath-badge beg">INICIANTE</span>
+    </button>
+  </div>
+
+
 
   <!-- ═══ TODAY ═══ -->
   <section class="today-section" id="today-section">
@@ -2025,6 +2099,515 @@
 
 
 <script>
+
+const GWEEKS = [
+  /* ── BEG SP1 (1–7 Set): Boas-Vindas ao Triathlon ── */
+  {
+    id:'gw01',name:"SP1 — Boas-Vindas ao Triathlon",
+    range:"1–7 Set 2026",
+    type:'build',label:'BASE',
+    swim:0.8,bike:20,run:8,
+    days:[
+      {id:'gw01d01',dow:'Ter 01/09',disc:'swim',icon:'🏊',name:"400m — Conheça a piscina",detail:"400m no seu ritmo, descansando a cada 100m. Não é para ter pressa — é para sentir a água. Se precisar usar flutuador, use. Foco: respiração e não afundar 😄",dur:'25min',zone:'Z1',meta:'400m'},
+      {id:'gw01d02',dow:'Qua 02/09',disc:'run',icon:'🏃',name:"20min — Caminha + trota",detail:"20min de caminhada com trechos de trote leve. Sugestão: 2min andando + 2min trotando. Sem pressão de pace. O objetivo é se mover.",dur:'20min',zone:'Z1',meta:'~2km'},
+      {id:'gw01d03',dow:'Qui 03/09',disc:'bike',icon:'🚴',name:"20min — Passeio de bike",detail:"20min de passeio de bike. Rua ou indoor, sem importar. Perceba como é pedalar com intenção de treino — relaxado, constante.",dur:'20min',zone:'Z1',meta:'~7km'},
+      {id:'gw01d04',dow:'Sáb 05/09',disc:'swim',icon:'🏊',name:"400m — Segunda ida à piscina",detail:"400m. Foco em respiração: expire embaixo d'água, inspire de lado. Se conseguir fazer 4x100m com 30s de descanso, ótimo.",dur:'25min',zone:'Z1',meta:'400m'},
+      {id:'gw01d05',dow:'Dom 06/09',disc:'bike',icon:'🚴',name:"30min — Bike + 10min caminhada",detail:"30min de bike + 10min de caminhada ao final. Primeira ideia de encadear duas modalidades.",dur:'40min',zone:'Z1',meta:'~10km'}
+    ]
+  },
+  /* ── BEG SP2 (8–14 Set): Encontrando o Ritmo ── */
+  {
+    id:'gw02',name:"SP2 — Encontrando o Ritmo",
+    range:"8–14 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.0,bike:25,run:12,
+    days:[
+      {id:'gw02d01',dow:'Seg 08/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Seu corpo precisa absorver a semana 1.",dur:'—',zone:'REST',meta:''},
+      {id:'gw02d02',dow:'Ter 09/09',disc:'swim',icon:'🏊',name:"500m — Mais confiante",detail:"5x100m com 20s descanso. Foco em manter ritmo constante. Cada 100m deveria se sentir igual ao anterior.",dur:'30min',zone:'Z1',meta:'500m'},
+      {id:'gw02d03',dow:'Qua 10/09',disc:'run',icon:'🏃',name:"25min — Trote Contínuo",detail:"25min de trote contínuo se conseguir, ou com pausas curtas. FC baixa — você deve conseguir falar uma frase inteira enquanto corre.",dur:'25min',zone:'Z1',meta:'~3km'},
+      {id:'gw02d04',dow:'Qui 11/09',disc:'bike',icon:'🚴',name:"30min — Bike Constante",detail:"30min de bike em ritmo constante. Tente manter a mesma velocidade durante toda a sessão.",dur:'30min',zone:'Z1',meta:'~10km'},
+      {id:'gw02d05',dow:'Sáb 13/09',disc:'run',icon:'🏃',name:"30min — Long Run da semana",detail:"30min de corrida contínua. Se precisar caminhar, caminhe 1min e retome. É normal.",dur:'30min',zone:'Z1',meta:'~3.5km'},
+      {id:'gw02d06',dow:'Dom 14/09',disc:'bike',icon:'🚴',name:"40min — Passeio longo",detail:"40min de bike. Pode ser um passeio em rua plana. Descubra como é o seu corpo numa sessão um pouco mais longa.",dur:'40min',zone:'Z1',meta:'~15km'}
+    ]
+  },
+  /* ── BEG SP3 (15–21 Set): Construindo Hábitos ── */
+  {
+    id:'gw03',name:"SP3 — Construindo Hábitos",
+    range:"15–21 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.2,bike:30,run:14,
+    days:[
+      {id:'gw03d01',dow:'Seg 15/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw03d02',dow:'Ter 16/09',disc:'swim',icon:'🏊',name:"600m — Avançando",detail:"6x100m com 15s descanso. Ou 2x200m com 1min. Você escolhe. O importante é chegar nos 600m.",dur:'35min',zone:'Z1',meta:'600m'},
+      {id:'gw03d03',dow:'Qua 17/09',disc:'run',icon:'🏃',name:"30min — Trote + 2x5min Z2",detail:"20min trote fácil + 2x5min um pouco mais forte (sente o coração subir levemente). Primeiro estímulo de intensidade.",dur:'30min',zone:'Z1/Z2',meta:'~3.5km'},
+      {id:'gw03d04',dow:'Qui 18/09',disc:'bike',icon:'🚴',name:"35min — Bike",detail:"35min bike constante. Já deve se sentir mais confortável no selim.",dur:'35min',zone:'Z1',meta:'~13km'},
+      {id:'gw03d05',dow:'Sex 19/09',disc:'swim',icon:'🏊',name:"500m — Foco Técnico",detail:"500m focando na braçada: mão entra na água esticada, puxa até a coxa, sai lateral. Pode nadar mais lento se precisar focar nisso.",dur:'30min',zone:'Z1',meta:'500m'},
+      {id:'gw03d06',dow:'Sáb 20/09',disc:'run',icon:'🏃',name:"35min — Long Run",detail:"35min de corrida. Você já tem 3 semanas de base — perceba como ficou mais fácil.",dur:'35min',zone:'Z1',meta:'~4km'},
+      {id:'gw03d07',dow:'Dom 21/09',disc:'bike',icon:'🚴',name:"45min — Bike Longo",detail:"45min de bike. Maior sessão até agora. Hidrate bem durante.",dur:'45min',zone:'Z1',meta:'~17km'}
+    ]
+  },
+  /* ── BEG SP4 (22–28 Set): Chegando nas Distâncias ── */
+  {
+    id:'gw04',name:"SP4 — Chegando nas Distâncias",
+    range:"22–28 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.5,bike:35,run:16,
+    days:[
+      {id:'gw04d01',dow:'Seg 22/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw04d02',dow:'Ter 23/09',disc:'swim',icon:'🏊',name:"700m — Quase lá!",detail:"7x100m com 15s ou 2x300m + 1x100m. Você está a 50m da distância da prova! Perceba isso.",dur:'35min',zone:'Z1',meta:'700m'},
+      {id:'gw04d03',dow:'Qua 24/09',disc:'run',icon:'🏃',name:"35min — Sabe que consegue",detail:"35min contínuo. Se tiver fluindo, experimente os últimos 5min um pouco mais rápido.",dur:'35min',zone:'Z1/Z2',meta:'~4km'},
+      {id:'gw04d04',dow:'Qui 25/09',disc:'bike',icon:'🚴',name:"40min — Bike + estímulo",detail:"30min Z1 + 2x5min um pouco mais forte. Comece a pedalar com propósito.",dur:'40min',zone:'Z1/Z2',meta:'~15km'},
+      {id:'gw04d05',dow:'Sex 26/09',disc:'swim',icon:'🏊',name:"500m — Recuperativo",detail:"500m muito fácil. Semana boa — essa é a sessão de descanso ativo.",dur:'25min',zone:'Z1',meta:'500m'},
+      {id:'gw04d06',dow:'Sáb 27/09',disc:'run',icon:'🏃',name:"5km — PRIMEIRA VEZ! 🎉",detail:"Tente correr 5km pela primeira vez (ou com o mínimo de pausa possível). Este é o objetivo da prova. Anote o tempo — vai melhorar muito!",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw04d07',dow:'Dom 28/09',disc:'bike',icon:'🚴',name:"20km — DISTÂNCIA DA PROVA! 🎉",detail:"20km de bike! Distância exata da prova. Se conseguir pedalar 20km hoje, vai conseguir na prova. Anote o tempo.",dur:'50min',zone:'Z1',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP5 (29 Set–5 Out): Consolidando ── */
+  {
+    id:'gw05',name:"SP5 — Consolidando",
+    range:"29 Set–5 Out 2026",
+    type:'build',label:'BUILD',
+    swim:1.8,bike:40,run:18,
+    days:[
+      {id:'gw05d01',dow:'Seg 29/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Semana 4 foi grande — deixe o corpo assimilar.",dur:'—',zone:'REST',meta:''},
+      {id:'gw05d02',dow:'Ter 30/09',disc:'swim',icon:'🏊',name:"750m — DISTÂNCIA DA PROVA! 🎉",detail:"Você consegue nadar 750m! 7x100m c/ 15s ou 3x250m c/ 1min. Faça no seu tempo. Chegou até aqui!",dur:'40min',zone:'Z1',meta:'750m'},
+      {id:'gw05d03',dow:'Qua 01/10',disc:'run',icon:'🏃',name:"5km — Mais confortável",detail:"5km novamente. Deve estar mais fácil do que na semana passada. Compare os tempos.",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw05d04',dow:'Qui 02/10',disc:'bike',icon:'🚴',name:"45min — Z1/Z2",detail:"45min de bike. Pode incluir uma pequena subida se houver no percurso.",dur:'45min',zone:'Z1/Z2',meta:'~18km'},
+      {id:'gw05d05',dow:'Sex 03/10',disc:'swim',icon:'🏊',name:"600m — Técnica",detail:"600m com foco em técnica: respiração, pegada, rolamento. Qualidade acima de velocidade.",dur:'30min',zone:'Z1',meta:'600m'},
+      {id:'gw05d06',dow:'Sáb 04/10',disc:'run',icon:'🏃',name:"5km",detail:"5km. Sua terceira vez rodando 5km. Está ficando natural!",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw05d07',dow:'Dom 05/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km de bike. Solidificando a distância da prova na perna.",dur:'50min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP6 (6–12 Out): Primeiro Brick ── */
+  {
+    id:'gw06',name:"SP6 — Primeiro Brick! 🧱",
+    range:"6–12 Out 2026",
+    type:'build',label:'BUILD',
+    swim:2.0,bike:40,run:16,
+    days:[
+      {id:'gw06d01',dow:'Seg 06/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw06d02',dow:'Ter 07/10',disc:'swim',icon:'🏊',name:"750m — Fluindo",detail:"750m. Cada semana fica mais fácil. 8x100m c/ 10s de descanso — diminuindo o descanso!",dur:'35min',zone:'Z1',meta:'750m'},
+      {id:'gw06d03',dow:'Qua 08/10',disc:'run',icon:'🏃',name:"5km",detail:"5km. Você já tem isso de bandeja.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw06d04',dow:'Qui 09/10',disc:'brick',icon:'🧱',name:"🧱 PRIMEIRO BRICK! 10km bike + 2km run",detail:"MARCO HISTÓRICO! Primeiro brick da vida. Pedale 10km e vá correr 2km direto. A sensação de pernas pesadas é normal — todo triatleta sente isso. É passageira. PODE FAZER!",dur:'45min',zone:'Z1/Z2',meta:'10km + 2km'},
+      {id:'gw06d05',dow:'Sex 10/10',disc:'swim',icon:'🏊',name:"600m — Recuperativo",detail:"600m fácil. Você acabou de fazer seu primeiro brick!",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'gw06d06',dow:'Sáb 11/10',disc:'run',icon:'🏃',name:"5km — Sábado fixo",detail:"5km. Sábado virou dia de corrida.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw06d07',dow:'Dom 12/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km de bike. Domingo é bike longa.",dur:'50min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP7 (13–19 Out): Brick Cresce ── */
+  {
+    id:'gw07',name:"SP7 — Brick Cresce",
+    range:"13–19 Out 2026",
+    type:'build',label:'BUILD',
+    swim:2.0,bike:45,run:18,
+    days:[
+      {id:'gw07d01',dow:'Seg 13/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw07d02',dow:'Ter 14/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Faça em menos paradas do que na semana passada.",dur:'35min',zone:'Z1',meta:'750m'},
+      {id:'gw07d03',dow:'Qua 15/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw07d04',dow:'Qui 16/10',disc:'bike',icon:'🚴',name:"20km — Solidificando",detail:"20km de bike. Cada vez mais confortável.",dur:'50min',zone:'Z1/Z2',meta:'20km'},
+      {id:'gw07d05',dow:'Sex 17/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m técnica e prazer.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'gw07d06',dow:'Sáb 18/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw07d07',dow:'Dom 19/10',disc:'brick',icon:'🧱',name:"🧱 BRICK: 15km bike + 3km run",detail:"Brick maior! 15km de bike + 3km de corrida. Tempo de transição conta! Saia da bike rápido, coloque o tênis e corra. Vai sair bem.",dur:'1h',zone:'Z1/Z2',meta:'15km + 3km'}
+    ]
+  },
+  /* ── BEG SP8 (20–26 Out): Confiança Total ── */
+  {
+    id:'gw08',name:"SP8 — Confiança Total",
+    range:"20–26 Out 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:45,run:18,
+    days:[
+      {id:'gw08d01',dow:'Seg 20/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw08d02',dow:'Ter 21/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Sua nadadeira favorita.",dur:'33min',zone:'Z1',meta:'750m'},
+      {id:'gw08d03',dow:'Qua 22/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'32min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw08d04',dow:'Qui 23/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km bike.",dur:'50min',zone:'Z1/Z2',meta:'20km'},
+      {id:'gw08d05',dow:'Sex 24/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'gw08d06',dow:'Sáb 25/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'32min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw08d07',dow:'Dom 26/10',disc:'brick',icon:'🧱',name:"🧱 BRICK: 20km bike + 3km run",detail:"Brick evoluído! 20km de bike (distância exata da prova) + 3km de run. Você JÁ FAZ a prova em partes. Falta só juntar tudo!",dur:'1h10',zone:'Z1/Z2',meta:'20km + 3km'}
+    ]
+  },
+  /* ── BEG SP9 (27 Out–2 Nov): Simulação Crescente ── */
+  {
+    id:'gw09',name:"SP9 — Simulação Crescente",
+    range:"27 Out–2 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:45,run:20,
+    days:[
+      {id:'gw09d01',dow:'Seg 27/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw09d02',dow:'Ter 28/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Tente com menos pausas desta vez.",dur:'32min',zone:'Z1/Z2',meta:'750m'},
+      {id:'gw09d03',dow:'Qua 29/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'31min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw09d04',dow:'Qui 30/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'48min',zone:'Z1/Z2',meta:'20km'},
+      {id:'gw09d05',dow:'Sex 31/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m fácil.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'gw09d06',dow:'Sáb 01/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'31min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw09d07',dow:'Dom 02/11',disc:'brick',icon:'🧱',name:"🧱 BRICK: 20km bike + 4km run",detail:"20km bike + 4km run. Chegando perto do brick completo (20 + 5). Você está voando!",dur:'1h15',zone:'Z1/Z2',meta:'20km + 4km'}
+    ]
+  },
+  /* ── BEG SP10 (3–9 Nov): BRICK COMPLETO ── */
+  {
+    id:'gw10',name:"SP10 — Brick Completo! 🏁",
+    range:"3–9 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:20,
+    days:[
+      {id:'gw10d01',dow:'Seg 03/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Semana grande vem aí.",dur:'—',zone:'REST',meta:''},
+      {id:'gw10d02',dow:'Ter 04/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m.",dur:'32min',zone:'Z1/Z2',meta:'750m'},
+      {id:'gw10d03',dow:'Qua 05/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw10d04',dow:'Qui 06/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'48min',zone:'Z1/Z2',meta:'20km'},
+      {id:'gw10d05',dow:'Sex 07/11',disc:'swim',icon:'🏊',name:"500m — Descanso",detail:"500m fácil. Preserve energia para o brick de domingo.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'gw10d06',dow:'Sáb 08/11',disc:'rest',icon:'😴',name:"Descanso — Guardando para o Brick",detail:"Descanse hoje. Amanhã é o dia mais importante do bloco de treino.",dur:'—',zone:'REST',meta:''},
+      {id:'gw10d07',dow:'Dom 09/11',disc:'brick',icon:'🧱',name:"🧱🏁 BRICK COMPLETO! 20km bike + 5km run",detail:"SIMULAÇÃO COMPLETA DA PROVA! (sem o nado, que é mais difícil de simular). 20km bike no ritmo que vai usar na prova + 5km de corrida na sequência. Se conseguiu: VOCÊ VAI TERMINAR A PROVA! Isso é certeza.",dur:'1h30',zone:'Z1/Z2',meta:'20km + 5km'}
+    ]
+  },
+  /* ── BEG SP11 (10–16 Nov): Refinamento ── */
+  {
+    id:'gw11',name:"SP11 — Refinamento",
+    range:"10–16 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:18,
+    days:[
+      {id:'gw11d01',dow:'Seg 10/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Você fez o brick completo — deixe o corpo absorver.",dur:'—',zone:'REST',meta:''},
+      {id:'gw11d02',dow:'Ter 11/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Agora com mais controle.",dur:'30min',zone:'Z1/Z2',meta:'750m'},
+      {id:'gw11d03',dow:'Qua 12/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw11d04',dow:'Qui 13/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'47min',zone:'Z1/Z2',meta:'20km'},
+      {id:'gw11d05',dow:'Sex 14/11',disc:'swim',icon:'🏊',name:"500m",detail:"500m.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'gw11d06',dow:'Sáb 15/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw11d07',dow:'Dom 16/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'47min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP12 (17–23 Nov): Último Esforço ── */
+  {
+    id:'gw12',name:"SP12 — Último Esforço",
+    range:"17–23 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:18,
+    days:[
+      {id:'gw12d01',dow:'Seg 17/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'gw12d02',dow:'Ter 18/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m.",dur:'30min',zone:'Z1/Z2',meta:'750m'},
+      {id:'gw12d03',dow:'Qua 19/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'29min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw12d04',dow:'Qui 20/11',disc:'brick',icon:'🧱',name:"🧱 BRICK Final — 20km + 5km",detail:"Brick final antes do taper. 20km bike + 5km run. Se saiu bem: você está pronto. Se saiu difícil: é o cansaço, não falta de preparo. A prova vai ser mais fácil.",dur:'1h30',zone:'Z1/Z2',meta:'20km + 5km'},
+      {id:'gw12d05',dow:'Sex 21/11',disc:'swim',icon:'🏊',name:"500m",detail:"500m fácil.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'gw12d06',dow:'Sáb 22/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'29min',zone:'Z1/Z2',meta:'5km'},
+      {id:'gw12d07',dow:'Dom 23/11',disc:'bike',icon:'🚴',name:"15km suave",detail:"15km tranquilo. Começa o taper.",dur:'38min',zone:'Z1',meta:'15km'}
+    ]
+  },
+  /* ── BEG SP13 (24–30 Nov): Taper ── */
+  {
+    id:'gw13',name:"SP13 — Taper",
+    range:"24–30 Nov 2026",
+    type:'taper',label:'TAPER',
+    swim:1.0,bike:20,run:10,
+    days:[
+      {id:'gw13d01',dow:'Seg 24/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Volume cai agora. Pode parecer que está perdendo forma — não está. Está descansando para a prova.",dur:'—',zone:'REST',meta:''},
+      {id:'gw13d02',dow:'Ter 25/11',disc:'swim',icon:'🏊',name:"500m — Mantendo o toque",detail:"500m tranquilo. Só para manter o ritmo da água.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'gw13d03',dow:'Qua 26/11',disc:'run',icon:'🏃',name:"3km suave",detail:"3km de trote muito leve. As pernas ficam leves com o taper.",dur:'20min',zone:'Z1',meta:'3km'},
+      {id:'gw13d04',dow:'Qui 27/11',disc:'bike',icon:'🚴',name:"20min leve",detail:"20min de bike. Apenas para se sentir bem.",dur:'20min',zone:'Z1',meta:'~7km'},
+      {id:'gw13d05',dow:'Sex 28/11',disc:'swim',icon:'🏊',name:"300m — Levíssimo",detail:"300m. Apenas tocar a água.",dur:'15min',zone:'Z1',meta:'300m'},
+      {id:'gw13d06',dow:'Sáb 29/11',disc:'run',icon:'🏃',name:"2km + strides suaves",detail:"2km trote + 4x30m aceleração suave. Pernas frescas!",dur:'15min',zone:'Z1',meta:'2km'},
+      {id:'gw13d07',dow:'Dom 30/11',disc:'rest',icon:'😴',name:"Descanso Total",detail:"Descanse. A prova é em 6 dias. Logística, alimentação, sono.",dur:'—',zone:'REST',meta:''}
+    ]
+  },
+  /* ── BEG SP14 (1–6 Dez): Race Week ── */
+  {
+    id:'gw14',name:"SP14 — Race Week",
+    range:"1–6 Dez 2026",
+    type:'taper',label:'RACE',
+    swim:0.4,bike:10,run:3,
+    days:[
+      {id:'gw14d01',dow:'Seg 01/12',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Sonho grande chegando.",dur:'—',zone:'REST',meta:''},
+      {id:'gw14d02',dow:'Ter 02/12',disc:'swim',icon:'🏊',name:"400m — Fácil",detail:"400m tranquilo. Sentir a água. Nada de esforço.",dur:'18min',zone:'Z1',meta:'400m'},
+      {id:'gw14d03',dow:'Qua 03/12',disc:'run',icon:'🏃',name:"10min trote + 3 acelerações",detail:"10min de trote leve + 3x20m aceleração suave. Deixar as pernas acordadas.",dur:'15min',zone:'Z1',meta:'~1.5km'},
+      {id:'gw14d04',dow:'Qui 04/12',disc:'bike',icon:'🚴',name:"10min bike leve",detail:"10min de bike. Muito suave.",dur:'10min',zone:'Z1',meta:'~4km'},
+      {id:'gw14d05',dow:'Sex 05/12',disc:'rest',icon:'😴',name:"DESCANSO TOTAL — Logística",detail:"Zero treino. Organize o kit: chip, toalha, óculos de natação, capacete, tênis, lycra/trisuit. Jantar leve (19h): macarrão + frango. Durma cedo! Acorde às 5h.",dur:'—',zone:'REST',meta:'Logística'},
+      {id:'gw14d06',dow:'Dom 06/12',disc:'race',icon:'🏁',name:"🏁 SPRINT MSK — 1ª PROVA DA VIDA!",detail:"Natação 750m · T1 · Ciclismo 20km · T2 · Corrida 5km | Objetivo: CRUZAR A LINHA DE CHEGADA! | Não importa o tempo. Importa chegar. Você treinou 14 semanas para este momento. ACREDITE! GOOO!! 🚀",dur:'~1h30',zone:'RACE',meta:'SPRINT MSK 🏁'}
+    ]
+  }
+];
+
+const MWEEKS = [
+  /* ── BEG SP1 (1–7 Set): Boas-Vindas ao Triathlon ── */
+  {
+    id:'mw01',name:"SP1 — Boas-Vindas ao Triathlon",
+    range:"1–7 Set 2026",
+    type:'build',label:'BASE',
+    swim:0.8,bike:20,run:8,
+    days:[
+      {id:'mw01d01',dow:'Ter 01/09',disc:'swim',icon:'🏊',name:"400m — Conheça a piscina",detail:"400m no seu ritmo, descansando a cada 100m. Não é para ter pressa — é para sentir a água. Se precisar usar flutuador, use. Foco: respiração e não afundar 😄",dur:'25min',zone:'Z1',meta:'400m'},
+      {id:'mw01d02',dow:'Qua 02/09',disc:'run',icon:'🏃',name:"20min — Caminha + trota",detail:"20min de caminhada com trechos de trote leve. Sugestão: 2min andando + 2min trotando. Sem pressão de pace. O objetivo é se mover.",dur:'20min',zone:'Z1',meta:'~2km'},
+      {id:'mw01d03',dow:'Qui 03/09',disc:'bike',icon:'🚴',name:"20min — Passeio de bike",detail:"20min de passeio de bike. Rua ou indoor, sem importar. Perceba como é pedalar com intenção de treino — relaxado, constante.",dur:'20min',zone:'Z1',meta:'~7km'},
+      {id:'mw01d04',dow:'Sáb 05/09',disc:'swim',icon:'🏊',name:"400m — Segunda ida à piscina",detail:"400m. Foco em respiração: expire embaixo d'água, inspire de lado. Se conseguir fazer 4x100m com 30s de descanso, ótimo.",dur:'25min',zone:'Z1',meta:'400m'},
+      {id:'mw01d05',dow:'Dom 06/09',disc:'bike',icon:'🚴',name:"30min — Bike + 10min caminhada",detail:"30min de bike + 10min de caminhada ao final. Primeira ideia de encadear duas modalidades.",dur:'40min',zone:'Z1',meta:'~10km'}
+    ]
+  },
+  /* ── BEG SP2 (8–14 Set): Encontrando o Ritmo ── */
+  {
+    id:'mw02',name:"SP2 — Encontrando o Ritmo",
+    range:"8–14 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.0,bike:25,run:12,
+    days:[
+      {id:'mw02d01',dow:'Seg 08/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Seu corpo precisa absorver a semana 1.",dur:'—',zone:'REST',meta:''},
+      {id:'mw02d02',dow:'Ter 09/09',disc:'swim',icon:'🏊',name:"500m — Mais confiante",detail:"5x100m com 20s descanso. Foco em manter ritmo constante. Cada 100m deveria se sentir igual ao anterior.",dur:'30min',zone:'Z1',meta:'500m'},
+      {id:'mw02d03',dow:'Qua 10/09',disc:'run',icon:'🏃',name:"25min — Trote Contínuo",detail:"25min de trote contínuo se conseguir, ou com pausas curtas. FC baixa — você deve conseguir falar uma frase inteira enquanto corre.",dur:'25min',zone:'Z1',meta:'~3km'},
+      {id:'mw02d04',dow:'Qui 11/09',disc:'bike',icon:'🚴',name:"30min — Bike Constante",detail:"30min de bike em ritmo constante. Tente manter a mesma velocidade durante toda a sessão.",dur:'30min',zone:'Z1',meta:'~10km'},
+      {id:'mw02d05',dow:'Sáb 13/09',disc:'run',icon:'🏃',name:"30min — Long Run da semana",detail:"30min de corrida contínua. Se precisar caminhar, caminhe 1min e retome. É normal.",dur:'30min',zone:'Z1',meta:'~3.5km'},
+      {id:'mw02d06',dow:'Dom 14/09',disc:'bike',icon:'🚴',name:"40min — Passeio longo",detail:"40min de bike. Pode ser um passeio em rua plana. Descubra como é o seu corpo numa sessão um pouco mais longa.",dur:'40min',zone:'Z1',meta:'~15km'}
+    ]
+  },
+  /* ── BEG SP3 (15–21 Set): Construindo Hábitos ── */
+  {
+    id:'mw03',name:"SP3 — Construindo Hábitos",
+    range:"15–21 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.2,bike:30,run:14,
+    days:[
+      {id:'mw03d01',dow:'Seg 15/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw03d02',dow:'Ter 16/09',disc:'swim',icon:'🏊',name:"600m — Avançando",detail:"6x100m com 15s descanso. Ou 2x200m com 1min. Você escolhe. O importante é chegar nos 600m.",dur:'35min',zone:'Z1',meta:'600m'},
+      {id:'mw03d03',dow:'Qua 17/09',disc:'run',icon:'🏃',name:"30min — Trote + 2x5min Z2",detail:"20min trote fácil + 2x5min um pouco mais forte (sente o coração subir levemente). Primeiro estímulo de intensidade.",dur:'30min',zone:'Z1/Z2',meta:'~3.5km'},
+      {id:'mw03d04',dow:'Qui 18/09',disc:'bike',icon:'🚴',name:"35min — Bike",detail:"35min bike constante. Já deve se sentir mais confortável no selim.",dur:'35min',zone:'Z1',meta:'~13km'},
+      {id:'mw03d05',dow:'Sex 19/09',disc:'swim',icon:'🏊',name:"500m — Foco Técnico",detail:"500m focando na braçada: mão entra na água esticada, puxa até a coxa, sai lateral. Pode nadar mais lento se precisar focar nisso.",dur:'30min',zone:'Z1',meta:'500m'},
+      {id:'mw03d06',dow:'Sáb 20/09',disc:'run',icon:'🏃',name:"35min — Long Run",detail:"35min de corrida. Você já tem 3 semanas de base — perceba como ficou mais fácil.",dur:'35min',zone:'Z1',meta:'~4km'},
+      {id:'mw03d07',dow:'Dom 21/09',disc:'bike',icon:'🚴',name:"45min — Bike Longo",detail:"45min de bike. Maior sessão até agora. Hidrate bem durante.",dur:'45min',zone:'Z1',meta:'~17km'}
+    ]
+  },
+  /* ── BEG SP4 (22–28 Set): Chegando nas Distâncias ── */
+  {
+    id:'mw04',name:"SP4 — Chegando nas Distâncias",
+    range:"22–28 Set 2026",
+    type:'build',label:'BASE',
+    swim:1.5,bike:35,run:16,
+    days:[
+      {id:'mw04d01',dow:'Seg 22/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw04d02',dow:'Ter 23/09',disc:'swim',icon:'🏊',name:"700m — Quase lá!",detail:"7x100m com 15s ou 2x300m + 1x100m. Você está a 50m da distância da prova! Perceba isso.",dur:'35min',zone:'Z1',meta:'700m'},
+      {id:'mw04d03',dow:'Qua 24/09',disc:'run',icon:'🏃',name:"35min — Sabe que consegue",detail:"35min contínuo. Se tiver fluindo, experimente os últimos 5min um pouco mais rápido.",dur:'35min',zone:'Z1/Z2',meta:'~4km'},
+      {id:'mw04d04',dow:'Qui 25/09',disc:'bike',icon:'🚴',name:"40min — Bike + estímulo",detail:"30min Z1 + 2x5min um pouco mais forte. Comece a pedalar com propósito.",dur:'40min',zone:'Z1/Z2',meta:'~15km'},
+      {id:'mw04d05',dow:'Sex 26/09',disc:'swim',icon:'🏊',name:"500m — Recuperativo",detail:"500m muito fácil. Semana boa — essa é a sessão de descanso ativo.",dur:'25min',zone:'Z1',meta:'500m'},
+      {id:'mw04d06',dow:'Sáb 27/09',disc:'run',icon:'🏃',name:"5km — PRIMEIRA VEZ! 🎉",detail:"Tente correr 5km pela primeira vez (ou com o mínimo de pausa possível). Este é o objetivo da prova. Anote o tempo — vai melhorar muito!",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw04d07',dow:'Dom 28/09',disc:'bike',icon:'🚴',name:"20km — DISTÂNCIA DA PROVA! 🎉",detail:"20km de bike! Distância exata da prova. Se conseguir pedalar 20km hoje, vai conseguir na prova. Anote o tempo.",dur:'50min',zone:'Z1',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP5 (29 Set–5 Out): Consolidando ── */
+  {
+    id:'mw05',name:"SP5 — Consolidando",
+    range:"29 Set–5 Out 2026",
+    type:'build',label:'BUILD',
+    swim:1.8,bike:40,run:18,
+    days:[
+      {id:'mw05d01',dow:'Seg 29/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Semana 4 foi grande — deixe o corpo assimilar.",dur:'—',zone:'REST',meta:''},
+      {id:'mw05d02',dow:'Ter 30/09',disc:'swim',icon:'🏊',name:"750m — DISTÂNCIA DA PROVA! 🎉",detail:"Você consegue nadar 750m! 7x100m c/ 15s ou 3x250m c/ 1min. Faça no seu tempo. Chegou até aqui!",dur:'40min',zone:'Z1',meta:'750m'},
+      {id:'mw05d03',dow:'Qua 01/10',disc:'run',icon:'🏃',name:"5km — Mais confortável",detail:"5km novamente. Deve estar mais fácil do que na semana passada. Compare os tempos.",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw05d04',dow:'Qui 02/10',disc:'bike',icon:'🚴',name:"45min — Z1/Z2",detail:"45min de bike. Pode incluir uma pequena subida se houver no percurso.",dur:'45min',zone:'Z1/Z2',meta:'~18km'},
+      {id:'mw05d05',dow:'Sex 03/10',disc:'swim',icon:'🏊',name:"600m — Técnica",detail:"600m com foco em técnica: respiração, pegada, rolamento. Qualidade acima de velocidade.",dur:'30min',zone:'Z1',meta:'600m'},
+      {id:'mw05d06',dow:'Sáb 04/10',disc:'run',icon:'🏃',name:"5km",detail:"5km. Sua terceira vez rodando 5km. Está ficando natural!",dur:'35min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw05d07',dow:'Dom 05/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km de bike. Solidificando a distância da prova na perna.",dur:'50min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP6 (6–12 Out): Primeiro Brick ── */
+  {
+    id:'mw06',name:"SP6 — Primeiro Brick! 🧱",
+    range:"6–12 Out 2026",
+    type:'build',label:'BUILD',
+    swim:2.0,bike:40,run:16,
+    days:[
+      {id:'mw06d01',dow:'Seg 06/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw06d02',dow:'Ter 07/10',disc:'swim',icon:'🏊',name:"750m — Fluindo",detail:"750m. Cada semana fica mais fácil. 8x100m c/ 10s de descanso — diminuindo o descanso!",dur:'35min',zone:'Z1',meta:'750m'},
+      {id:'mw06d03',dow:'Qua 08/10',disc:'run',icon:'🏃',name:"5km",detail:"5km. Você já tem isso de bandeja.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw06d04',dow:'Qui 09/10',disc:'brick',icon:'🧱',name:"🧱 PRIMEIRO BRICK! 10km bike + 2km run",detail:"MARCO HISTÓRICO! Primeiro brick da vida. Pedale 10km e vá correr 2km direto. A sensação de pernas pesadas é normal — todo triatleta sente isso. É passageira. PODE FAZER!",dur:'45min',zone:'Z1/Z2',meta:'10km + 2km'},
+      {id:'mw06d05',dow:'Sex 10/10',disc:'swim',icon:'🏊',name:"600m — Recuperativo",detail:"600m fácil. Você acabou de fazer seu primeiro brick!",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'mw06d06',dow:'Sáb 11/10',disc:'run',icon:'🏃',name:"5km — Sábado fixo",detail:"5km. Sábado virou dia de corrida.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw06d07',dow:'Dom 12/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km de bike. Domingo é bike longa.",dur:'50min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP7 (13–19 Out): Brick Cresce ── */
+  {
+    id:'mw07',name:"SP7 — Brick Cresce",
+    range:"13–19 Out 2026",
+    type:'build',label:'BUILD',
+    swim:2.0,bike:45,run:18,
+    days:[
+      {id:'mw07d01',dow:'Seg 13/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw07d02',dow:'Ter 14/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Faça em menos paradas do que na semana passada.",dur:'35min',zone:'Z1',meta:'750m'},
+      {id:'mw07d03',dow:'Qua 15/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw07d04',dow:'Qui 16/10',disc:'bike',icon:'🚴',name:"20km — Solidificando",detail:"20km de bike. Cada vez mais confortável.",dur:'50min',zone:'Z1/Z2',meta:'20km'},
+      {id:'mw07d05',dow:'Sex 17/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m técnica e prazer.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'mw07d06',dow:'Sáb 18/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'33min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw07d07',dow:'Dom 19/10',disc:'brick',icon:'🧱',name:"🧱 BRICK: 15km bike + 3km run",detail:"Brick maior! 15km de bike + 3km de corrida. Tempo de transição conta! Saia da bike rápido, coloque o tênis e corra. Vai sair bem.",dur:'1h',zone:'Z1/Z2',meta:'15km + 3km'}
+    ]
+  },
+  /* ── BEG SP8 (20–26 Out): Confiança Total ── */
+  {
+    id:'mw08',name:"SP8 — Confiança Total",
+    range:"20–26 Out 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:45,run:18,
+    days:[
+      {id:'mw08d01',dow:'Seg 20/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw08d02',dow:'Ter 21/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Sua nadadeira favorita.",dur:'33min',zone:'Z1',meta:'750m'},
+      {id:'mw08d03',dow:'Qua 22/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'32min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw08d04',dow:'Qui 23/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km bike.",dur:'50min',zone:'Z1/Z2',meta:'20km'},
+      {id:'mw08d05',dow:'Sex 24/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'mw08d06',dow:'Sáb 25/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'32min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw08d07',dow:'Dom 26/10',disc:'brick',icon:'🧱',name:"🧱 BRICK: 20km bike + 3km run",detail:"Brick evoluído! 20km de bike (distância exata da prova) + 3km de run. Você JÁ FAZ a prova em partes. Falta só juntar tudo!",dur:'1h10',zone:'Z1/Z2',meta:'20km + 3km'}
+    ]
+  },
+  /* ── BEG SP9 (27 Out–2 Nov): Simulação Crescente ── */
+  {
+    id:'mw09',name:"SP9 — Simulação Crescente",
+    range:"27 Out–2 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:45,run:20,
+    days:[
+      {id:'mw09d01',dow:'Seg 27/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw09d02',dow:'Ter 28/10',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Tente com menos pausas desta vez.",dur:'32min',zone:'Z1/Z2',meta:'750m'},
+      {id:'mw09d03',dow:'Qua 29/10',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'31min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw09d04',dow:'Qui 30/10',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'48min',zone:'Z1/Z2',meta:'20km'},
+      {id:'mw09d05',dow:'Sex 31/10',disc:'swim',icon:'🏊',name:"600m",detail:"600m fácil.",dur:'28min',zone:'Z1',meta:'600m'},
+      {id:'mw09d06',dow:'Sáb 01/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'31min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw09d07',dow:'Dom 02/11',disc:'brick',icon:'🧱',name:"🧱 BRICK: 20km bike + 4km run",detail:"20km bike + 4km run. Chegando perto do brick completo (20 + 5). Você está voando!",dur:'1h15',zone:'Z1/Z2',meta:'20km + 4km'}
+    ]
+  },
+  /* ── BEG SP10 (3–9 Nov): BRICK COMPLETO ── */
+  {
+    id:'mw10',name:"SP10 — Brick Completo! 🏁",
+    range:"3–9 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:20,
+    days:[
+      {id:'mw10d01',dow:'Seg 03/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Semana grande vem aí.",dur:'—',zone:'REST',meta:''},
+      {id:'mw10d02',dow:'Ter 04/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m.",dur:'32min',zone:'Z1/Z2',meta:'750m'},
+      {id:'mw10d03',dow:'Qua 05/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw10d04',dow:'Qui 06/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'48min',zone:'Z1/Z2',meta:'20km'},
+      {id:'mw10d05',dow:'Sex 07/11',disc:'swim',icon:'🏊',name:"500m — Descanso",detail:"500m fácil. Preserve energia para o brick de domingo.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'mw10d06',dow:'Sáb 08/11',disc:'rest',icon:'😴',name:"Descanso — Guardando para o Brick",detail:"Descanse hoje. Amanhã é o dia mais importante do bloco de treino.",dur:'—',zone:'REST',meta:''},
+      {id:'mw10d07',dow:'Dom 09/11',disc:'brick',icon:'🧱',name:"🧱🏁 BRICK COMPLETO! 20km bike + 5km run",detail:"SIMULAÇÃO COMPLETA DA PROVA! (sem o nado, que é mais difícil de simular). 20km bike no ritmo que vai usar na prova + 5km de corrida na sequência. Se conseguiu: VOCÊ VAI TERMINAR A PROVA! Isso é certeza.",dur:'1h30',zone:'Z1/Z2',meta:'20km + 5km'}
+    ]
+  },
+  /* ── BEG SP11 (10–16 Nov): Refinamento ── */
+  {
+    id:'mw11',name:"SP11 — Refinamento",
+    range:"10–16 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:18,
+    days:[
+      {id:'mw11d01',dow:'Seg 10/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Você fez o brick completo — deixe o corpo absorver.",dur:'—',zone:'REST',meta:''},
+      {id:'mw11d02',dow:'Ter 11/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m. Agora com mais controle.",dur:'30min',zone:'Z1/Z2',meta:'750m'},
+      {id:'mw11d03',dow:'Qua 12/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw11d04',dow:'Qui 13/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'47min',zone:'Z1/Z2',meta:'20km'},
+      {id:'mw11d05',dow:'Sex 14/11',disc:'swim',icon:'🏊',name:"500m",detail:"500m.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'mw11d06',dow:'Sáb 15/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'30min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw11d07',dow:'Dom 16/11',disc:'bike',icon:'🚴',name:"20km",detail:"20km.",dur:'47min',zone:'Z1/Z2',meta:'20km'}
+    ]
+  },
+  /* ── BEG SP12 (17–23 Nov): Último Esforço ── */
+  {
+    id:'mw12',name:"SP12 — Último Esforço",
+    range:"17–23 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:2.0,bike:40,run:18,
+    days:[
+      {id:'mw12d01',dow:'Seg 17/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'mw12d02',dow:'Ter 18/11',disc:'swim',icon:'🏊',name:"750m",detail:"750m.",dur:'30min',zone:'Z1/Z2',meta:'750m'},
+      {id:'mw12d03',dow:'Qua 19/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'29min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw12d04',dow:'Qui 20/11',disc:'brick',icon:'🧱',name:"🧱 BRICK Final — 20km + 5km",detail:"Brick final antes do taper. 20km bike + 5km run. Se saiu bem: você está pronto. Se saiu difícil: é o cansaço, não falta de preparo. A prova vai ser mais fácil.",dur:'1h30',zone:'Z1/Z2',meta:'20km + 5km'},
+      {id:'mw12d05',dow:'Sex 21/11',disc:'swim',icon:'🏊',name:"500m",detail:"500m fácil.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'mw12d06',dow:'Sáb 22/11',disc:'run',icon:'🏃',name:"5km",detail:"5km.",dur:'29min',zone:'Z1/Z2',meta:'5km'},
+      {id:'mw12d07',dow:'Dom 23/11',disc:'bike',icon:'🚴',name:"15km suave",detail:"15km tranquilo. Começa o taper.",dur:'38min',zone:'Z1',meta:'15km'}
+    ]
+  },
+  /* ── BEG SP13 (24–30 Nov): Taper ── */
+  {
+    id:'mw13',name:"SP13 — Taper",
+    range:"24–30 Nov 2026",
+    type:'taper',label:'TAPER',
+    swim:1.0,bike:20,run:10,
+    days:[
+      {id:'mw13d01',dow:'Seg 24/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Volume cai agora. Pode parecer que está perdendo forma — não está. Está descansando para a prova.",dur:'—',zone:'REST',meta:''},
+      {id:'mw13d02',dow:'Ter 25/11',disc:'swim',icon:'🏊',name:"500m — Mantendo o toque",detail:"500m tranquilo. Só para manter o ritmo da água.",dur:'22min',zone:'Z1',meta:'500m'},
+      {id:'mw13d03',dow:'Qua 26/11',disc:'run',icon:'🏃',name:"3km suave",detail:"3km de trote muito leve. As pernas ficam leves com o taper.",dur:'20min',zone:'Z1',meta:'3km'},
+      {id:'mw13d04',dow:'Qui 27/11',disc:'bike',icon:'🚴',name:"20min leve",detail:"20min de bike. Apenas para se sentir bem.",dur:'20min',zone:'Z1',meta:'~7km'},
+      {id:'mw13d05',dow:'Sex 28/11',disc:'swim',icon:'🏊',name:"300m — Levíssimo",detail:"300m. Apenas tocar a água.",dur:'15min',zone:'Z1',meta:'300m'},
+      {id:'mw13d06',dow:'Sáb 29/11',disc:'run',icon:'🏃',name:"2km + strides suaves",detail:"2km trote + 4x30m aceleração suave. Pernas frescas!",dur:'15min',zone:'Z1',meta:'2km'},
+      {id:'mw13d07',dow:'Dom 30/11',disc:'rest',icon:'😴',name:"Descanso Total",detail:"Descanse. A prova é em 6 dias. Logística, alimentação, sono.",dur:'—',zone:'REST',meta:''}
+    ]
+  },
+  /* ── BEG SP14 (1–6 Dez): Race Week ── */
+  {
+    id:'mw14',name:"SP14 — Race Week",
+    range:"1–6 Dez 2026",
+    type:'taper',label:'RACE',
+    swim:0.4,bike:10,run:3,
+    days:[
+      {id:'mw14d01',dow:'Seg 01/12',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Sonho grande chegando.",dur:'—',zone:'REST',meta:''},
+      {id:'mw14d02',dow:'Ter 02/12',disc:'swim',icon:'🏊',name:"400m — Fácil",detail:"400m tranquilo. Sentir a água. Nada de esforço.",dur:'18min',zone:'Z1',meta:'400m'},
+      {id:'mw14d03',dow:'Qua 03/12',disc:'run',icon:'🏃',name:"10min trote + 3 acelerações",detail:"10min de trote leve + 3x20m aceleração suave. Deixar as pernas acordadas.",dur:'15min',zone:'Z1',meta:'~1.5km'},
+      {id:'mw14d04',dow:'Qui 04/12',disc:'bike',icon:'🚴',name:"10min bike leve",detail:"10min de bike. Muito suave.",dur:'10min',zone:'Z1',meta:'~4km'},
+      {id:'mw14d05',dow:'Sex 05/12',disc:'rest',icon:'😴',name:"DESCANSO TOTAL — Logística",detail:"Zero treino. Organize o kit: chip, toalha, óculos de natação, capacete, tênis, lycra/trisuit. Jantar leve (19h): macarrão + frango. Durma cedo! Acorde às 5h.",dur:'—',zone:'REST',meta:'Logística'},
+      {id:'mw14d06',dow:'Dom 06/12',disc:'race',icon:'🏁',name:"🏁 SPRINT MSK — 1ª PROVA DA VIDA!",detail:"Natação 750m · T1 · Ciclismo 20km · T2 · Corrida 5km | Objetivo: CRUZAR A LINHA DE CHEGADA! | Não importa o tempo. Importa chegar. Você treinou 14 semanas para este momento. ACREDITE! GOOO!! 🚀",dur:'~1h30',zone:'RACE',meta:'SPRINT MSK 🏁'}
+    ]
+  }
+];
+
+// ════════════════════════════════════════════
+//  ATHLETE SYSTEM
+// ════════════════════════════════════════════
+const ALL_ATHLETE_WEEKS = {
+  diego:     WEEKS,
+  guilherme: GWEEKS,
+  matheus:   MWEEKS
+};
+const ATHLETE_META = {
+  diego:     { name:'Diego',     level:'Experiente · IM 70.3 ✓',  color:'var(--orange)' },
+  guilherme: { name:'Guilherme', level:'Iniciante · 1ª prova',     color:'#00d4ff' },
+  matheus:   { name:'Matheus',   level:'Iniciante · 1ª prova',     color:'var(--green)' }
+};
+let activeAthlete = 'diego';
+
+function setAthlete(name) {
+  activeAthlete = name;
+  WEEKS.length = 0;
+  ALL_ATHLETE_WEEKS[name].forEach(w => WEEKS.push(w));
+
+  // Update tab buttons
+  ['diego','guilherme','matheus'].forEach(a => {
+    const btn = document.getElementById('athtab-' + a);
+    if (!btn) return;
+    btn.className = 'ath-tab' + (a === name ? ' active-' + a : '');
+  });
+
+  // Reset to current week
+  const starts = [
+    new Date('2026-09-01'), new Date('2026-09-08'), new Date('2026-09-15'),
+    new Date('2026-09-22'), new Date('2026-09-29'), new Date('2026-10-06'),
+    new Date('2026-10-13'), new Date('2026-10-20'), new Date('2026-10-27'),
+    new Date('2026-11-03'), new Date('2026-11-10'), new Date('2026-11-17'),
+    new Date('2026-11-24'), new Date('2026-12-01')
+  ];
+  const now = new Date();
+  let idx = 0;
+  for (let i = starts.length - 1; i >= 0; i--) {
+    if (now >= starts[i]) { idx = i; break; }
+  }
+  if (typeof renderWeek === 'function') renderWeek(idx);
+  if (typeof buildToday === 'function') buildToday();
+
+  // Save preference
+  try { localStorage.setItem('activeAthlete', name); } catch(e) {}
+}
+
+// Restore last athlete on load — called after all rendering is done
+function initAthlete() {
+  try {
+    const saved = localStorage.getItem('activeAthlete');
+    if (saved && ALL_ATHLETE_WEEKS[saved] && saved !== 'diego') {
+      setAthlete(saved);
+    } else {
+      // Ensure diego tab is visually active
+      const btn = document.getElementById('athtab-diego');
+      if (btn) btn.className = 'ath-tab active-diego';
+    }
+  } catch(e) {}
+}
+
+
 // ════════════════════════════════════════════
 //  COUNTDOWN
 // ════════════════════════════════════════════
@@ -2505,7 +3088,7 @@ updateWeekMetric();
 // ════════════════════════════════════════════
 //  TODAY SECTION
 // ════════════════════════════════════════════
-(function buildToday() {
+function buildToday() {
   const now   = new Date();
   const today = now.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'2-digit' });
   const dow   = now.getDay(); // 0=Sun
@@ -2573,7 +3156,11 @@ updateWeekMetric();
       </div>
     </div>`;
   }).join('');
-})();
+}
+buildToday();
+
+// Initialize athlete after all rendering complete
+initAthlete();
 
 // ════════════════════════════════════════════
 //  GARMIN LIVE DATA (garmin_data.json)
