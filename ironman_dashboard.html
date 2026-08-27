@@ -2549,9 +2549,10 @@ const MWEEKS = [
 // ════════════════════════════════════════════
 //  ATHLETE SYSTEM
 // ════════════════════════════════════════════
-// NOTE: WEEKS is declared later — accessed lazily via function
+// NOTE: WEEKS is declared later (line ~2663). DIEGO_WEEKS is a snapshot after WEEKS is initialized.
+// Accessed lazily so const hoisting is never an issue.
 function getAllAthleteWeeks() {
-  return { diego: WEEKS, guilherme: GWEEKS, matheus: MWEEKS };
+  return { diego: DIEGO_WEEKS, guilherme: GWEEKS, matheus: MWEEKS };
 }
 const ATHLETE_META = {
   diego:     { name:'Diego',     level:'Experiente · IM 70.3 ✓',  color:'var(--orange)' },
@@ -2884,6 +2885,9 @@ const WEEKS = [
     ]
   }
 ];
+
+// Snapshot imutável dos treinos do Diego (WEEKS é mutado ao trocar de atleta)
+const DIEGO_WEEKS = WEEKS.slice();
 
 const TYPE_BADGE = {
   build:'badge-build', peak:'badge-peak',
