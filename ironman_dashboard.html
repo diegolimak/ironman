@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diego — IRONMAN 70.3 Rio 2026</title>
+<title>Diego — Sprint MSK · Dez 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
@@ -806,6 +806,46 @@
     background: linear-gradient(90deg, var(--purple), rgba(179,157,219,0.4));
   }
 
+  /* ── ROADMAP ── */
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 1100px) { .roadmap-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+  @media (max-width: 700px)  { .roadmap-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+  @media (max-width: 420px)  { .roadmap-grid { grid-template-columns: 1fr !important; } }
+  .roadmap-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    display: flex; flex-direction: column; gap: 0.35rem;
+    position: relative; overflow: hidden;
+  }
+  .roadmap-item.done   { border-color: rgba(0,230,118,0.3); }
+  .roadmap-item.current { border-color: rgba(0,212,255,0.5); box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+  .roadmap-item.future { opacity: 0.65; }
+  .roadmap-year { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); }
+  .roadmap-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    width: fit-content;
+  }
+  .roadmap-badge.done-badge    { background: rgba(0,230,118,0.15); color: #00e676; }
+  .roadmap-badge.current-badge { background: rgba(0,212,255,0.15); color: #00d4ff; }
+  .roadmap-badge.future-badge  { background: rgba(179,157,219,0.12); color: var(--purple); }
+  .roadmap-name { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: 0.05em; color: var(--text); margin-top: 0.2rem; }
+  .roadmap-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+  .roadmap-dist { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
+  .roadmap-item.current .roadmap-name { color: #00d4ff; }
+  .roadmap-item.done .roadmap-name { color: #00e676; }
+
   /* ── GARMIN STATUS ── */
   .gs-grid {
     display: grid;
@@ -1332,7 +1372,7 @@
 
 <!-- ═══════════════ STICKY TOP BAR ═══════════════ -->
 <div class="top-bar" id="top-bar">
-  <div class="tb-brand">IRONMAN 70.3 RIO</div>
+  <div class="tb-brand" style="color:var(--blue)">⚡ SPRINT MSK · DEZ 2026</div>
   <div class="tb-cd">
     <strong id="tb-days">--</strong><span>d</span>
     <strong id="tb-hours">--</strong><span>h</span>
@@ -1347,10 +1387,10 @@
   <div class="hero-grid"></div>
 
   <div class="hero-brand">
-    <span class="hero-mdot">M</span>
-    <h1 class="hero-title">IRONMAN</h1>
+    <span class="hero-mdot" style="color:var(--blue)">⚡</span>
+    <h1 class="hero-title">SPRINT MSK</h1>
   </div>
-  <p class="hero-subtitle">70.3 · RIO DE JANEIRO · AGO 2026</p>
+  <p class="hero-subtitle">BRASÍLIA · 06 DEZ 2026 · 750m · 20km · 5km</p>
 
   <div class="countdown">
     <div class="cd-block">
@@ -1422,15 +1462,80 @@
     </div>
   </section>
 
+  <!-- ═══ ROADMAP ═══ -->
+  <h2 class="section-title">JORNADA DO ATLETA</h2>
+  <div style="margin-bottom:0.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.08em">HISTÓRICO DE PROVAS CONCLUÍDAS</div>
+  <div class="roadmap-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:1rem">
+    <div class="roadmap-item done">
+      <div class="roadmap-year">2023</div>
+      <div class="roadmap-badge done-badge">✅ FEITO</div>
+      <div class="roadmap-name">Sprint MSK</div>
+      <div class="roadmap-date">21 nov 2023</div>
+      <div class="roadmap-dist">🏊 750m · 🚴 20km · 🏃 5km</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="roadmap-year">2025</div>
+      <div class="roadmap-badge done-badge">✅ FEITO</div>
+      <div class="roadmap-name">Metrópole Sprint</div>
+      <div class="roadmap-date">20 mar 2025</div>
+      <div class="roadmap-dist">🏊 750m · 🚴 20km · 🏃 5km</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="roadmap-year">2025</div>
+      <div class="roadmap-badge done-badge">✅ FEITO</div>
+      <div class="roadmap-name">Metrópole Sprint</div>
+      <div class="roadmap-date">27 jul 2025</div>
+      <div class="roadmap-dist">🏊 750m · 🚴 20km · 🏃 5km</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="roadmap-year">2026</div>
+      <div class="roadmap-badge done-badge">✅ FEITO</div>
+      <div class="roadmap-name">IRONMAN 70.3 Brasília</div>
+      <div class="roadmap-date">2026</div>
+      <div class="roadmap-dist">🏊 1,9km · 🚴 90km · 🏃 21,1km</div>
+    </div>
+    <div class="roadmap-item done">
+      <div class="roadmap-year">2026</div>
+      <div class="roadmap-badge done-badge">✅ FEITO</div>
+      <div class="roadmap-name">IRONMAN 70.3 Rio</div>
+      <div class="roadmap-date">09 ago 2026</div>
+      <div class="roadmap-dist">🏊 1,9km · 🚴 90km · 🏃 21,1km</div>
+    </div>
+  </div>
+  <div style="margin-bottom:0.5rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.08em">PRÓXIMAS PROVAS</div>
+  <div class="roadmap-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="roadmap-item current">
+      <div class="roadmap-year">2026</div>
+      <div class="roadmap-badge current-badge">🎯 ALVO ATUAL</div>
+      <div class="roadmap-name">Sprint MSK</div>
+      <div class="roadmap-date">06 de dezembro de 2026</div>
+      <div class="roadmap-dist">🏊 750m · 🚴 20km · 🏃 5km</div>
+    </div>
+    <div class="roadmap-item future">
+      <div class="roadmap-year">2027</div>
+      <div class="roadmap-badge future-badge">🔮 PRÓXIMO</div>
+      <div class="roadmap-name">IRONMAN 70.3 Aracaju</div>
+      <div class="roadmap-date">Novembro 2027</div>
+      <div class="roadmap-dist">🏊 1,9km · 🚴 90km · 🏃 21,1km</div>
+    </div>
+    <div class="roadmap-item future">
+      <div class="roadmap-year">2028+</div>
+      <div class="roadmap-badge future-badge">⚡ SONHO GRANDE</div>
+      <div class="roadmap-name">IRONMAN Full</div>
+      <div class="roadmap-date">2028–2029</div>
+      <div class="roadmap-dist">🏊 3,8km · 🚴 180km · 🏃 42,2km</div>
+    </div>
+  </div>
+
   <!-- METRICS -->
   <h2 class="section-title">MÉTRICAS DA SEMANA</h2>
   <div class="metrics-grid">
 
     <div class="metric-card orange">
-      <div class="metric-icon">🏆</div>
-      <div class="metric-value" id="days-to-race" style="font-size:1.8rem;color:#00e676">FEITO</div>
-      <div class="metric-label">IRONMAN 70.3 Rio</div>
-      <div class="metric-sub">09 de agosto de 2026 ✓</div>
+      <div class="metric-icon">⚡</div>
+      <div class="metric-value" id="days-to-race">101</div>
+      <div class="metric-label">Dias · Sprint MSK</div>
+      <div class="metric-sub">06 de dezembro de 2026</div>
     </div>
 
     <div class="metric-card blue">
@@ -1450,17 +1555,17 @@
     </div>
 
     <div class="metric-card green">
-      <div class="metric-icon">📊</div>
-      <div class="metric-value">235<span style="font-size:1.2rem">h</span></div>
-      <div class="metric-label">Treino 2026 (pré-prova)</div>
-      <div class="metric-sub">🏊 53km · 🚴 638km · 🏃 609km</div>
+      <div class="metric-icon">🏆</div>
+      <div class="metric-value" style="font-size:1.5rem;color:#00e676">FEITO</div>
+      <div class="metric-label">IRONMAN 70.3 Rio 2026</div>
+      <div class="metric-sub">235h · 177 dias · 80% do ano</div>
     </div>
 
     <div class="metric-card purple">
-      <div class="metric-icon">📅</div>
-      <div class="metric-value">177</div>
-      <div class="metric-label">Dias treinados em 2026</div>
-      <div class="metric-sub">80% dos dias · 251 atividades</div>
+      <div class="metric-icon">🎯</div>
+      <div class="metric-value" style="font-size:1.4rem">3 PROVAS</div>
+      <div class="metric-label">Roadmap 2026–2029</div>
+      <div class="metric-sub">Sprint → 70.3 Aracaju → Full IM</div>
     </div>
 
   </div>
@@ -1469,7 +1574,7 @@
   <h2 class="section-title">CARGA DE TREINO (12 SEMANAS)</h2>
   <div class="chart-card">
     <div class="chart-header">
-      <div style="font-size:0.85rem;color:var(--muted)">Estimativa PMC · curvas suavizadas baseadas no plano · Fev–Mai 2026</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Estimativa PMC · curvas suavizadas · Set–Dez 2026 · Bloco Sprint MSK</div>
       <div class="chart-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>CTL (Fitness)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#e8501a"></div>ATL (Fadiga)</div>
@@ -1482,7 +1587,7 @@
   </div>
 
   <!-- WEEKLY PLAN -->
-  <h2 class="section-title">PLANO DE TREINO — 14 SEMANAS</h2>
+  <h2 class="section-title">PLANO DE TREINO SPRINT MSK — 14 SEMANAS</h2>
   <div class="week-nav-bar">
     <button class="week-nav-btn" id="btn-prev" onclick="shiftWeek(-1)">‹ Anterior</button>
     <div class="week-nav-info">
@@ -1827,76 +1932,90 @@
   </div><!-- /nutr-compras -->
 
   <!-- GARMIN STATUS -->
-  <h2 class="section-title">GARMIN — PÓS-PROVA · RECUPERAÇÃO</h2>
+  <h2 class="section-title">GARMIN — SPRINT MSK · FOCO</h2>
   <div class="gs-grid">
 
-    <!-- Card: protocolo de recuperação -->
+    <!-- Card: próximos treinos sprint -->
     <div class="gs-card">
       <div class="gs-card-hdr">
-        <span class="gs-badge ok" style="background:linear-gradient(135deg,#00c853,#00e676);color:#000">🏆 IRONMAN CONCLUÍDO</span>
-        <span class="gs-card-title">Protocolo de Recuperação Pós-70.3</span>
-        <span class="gs-card-sub">09 Ago 2026 · Rio de Janeiro · FEITO ✓</span>
+        <span class="gs-badge ok" style="background:linear-gradient(135deg,#0077ff,#00d4ff);color:#000">⚡ SPRINT MODE</span>
+        <span class="gs-card-title">Foco da semana atual</span>
+        <span class="gs-card-sub" id="gs-push-ts">Set–Out 2026 · Bloco Base → Build</span>
       </div>
       <div class="gs-workouts" id="gs-workouts">
-        <div class="gs-wo" style="border-left:3px solid #555">
-          <span class="gs-wo-date">S12</span>
-          <span class="gs-wo-icon">😴</span>
-          <span class="gs-wo-name">Recuperação Total — Sem corrida</span>
-          <span class="gs-wo-meta">10–16 Ago · Swim + Bike leve Z1</span>
-        </div>
-        <div class="gs-wo" style="border-left:3px solid #555">
-          <span class="gs-wo-date">S13</span>
+        <div class="gs-wo swim">
+          <span class="gs-wo-date">SWIM</span>
           <span class="gs-wo-icon">🏊</span>
-          <span class="gs-wo-name">Retorno à água e às rodas</span>
-          <span class="gs-wo-meta">17–23 Ago · Swim 3x + Bike 2x · Z1/Z2</span>
+          <span class="gs-wo-name">750m pace prova · séries Z3</span>
+          <span class="gs-wo-meta">100m < 1:50 · 3x750m progressivo</span>
         </div>
-        <div class="gs-wo run" style="border-left:3px solid #00e676">
-          <span class="gs-wo-date">S14</span>
+        <div class="gs-wo bike">
+          <span class="gs-wo-date">BIKE</span>
+          <span class="gs-wo-icon">🚴</span>
+          <span class="gs-wo-name">20km TT · potência Z3/Z4</span>
+          <span class="gs-wo-meta">Alvo < 35min · 34+ km/h</span>
+        </div>
+        <div class="gs-wo run">
+          <span class="gs-wo-date">RUN</span>
           <span class="gs-wo-icon">🏃</span>
-          <span class="gs-wo-name">🎯 Primeira corrida pós-prova · 20–25min Z1</span>
-          <span class="gs-wo-meta">26 Ago 2026 · FC &lt; 145 · Sem olhar pace</span>
+          <span class="gs-wo-name">5km pace prova · tiros Z3/Z4</span>
+          <span class="gs-wo-meta">Alvo < 25min · pace < 5:00/km</span>
+        </div>
+        <div class="gs-wo brick">
+          <span class="gs-wo-date">BRICK</span>
+          <span class="gs-wo-icon">🧱</span>
+          <span class="gs-wo-name">Simulação completa semanal</span>
+          <span class="gs-wo-meta">20km bike Z3 + 5km run · aos domingos</span>
         </div>
       </div>
-      <div class="gs-hint" style="color:#00e676">✓ Regra de ouro: sem corrida 14 dias · sem Z4/Z5 por 21 dias</div>
+      <div class="gs-hint" style="color:#00d4ff">Sprint = velocidade > volume · mais Z3/Z4 · menos distância</div>
     </div>
 
-    <!-- Card: estatísticas da preparação -->
+    <!-- Card: histórico de conquistas -->
     <div class="gs-card">
       <div class="gs-card-hdr">
-        <span class="gs-badge sync" style="background:#1a237e">📊 STATS 2026</span>
-        <span class="gs-card-title">Preparação IRONMAN 70.3 Rio</span>
-        <span class="gs-card-sub">Jan–Ago 2026 · Dados Strava</span>
+        <span class="gs-badge sync" style="background:#1a237e">🏆 CONQUISTAS</span>
+        <span class="gs-card-title">Histórico de Provas</span>
+        <span class="gs-card-sub">2023–2026 · 5 provas finalizadas</span>
       </div>
       <div class="gs-acts" id="gs-acts">
         <div class="gs-act">
-          <span class="gs-act-disc swim">🏊</span>
+          <span class="gs-act-disc swim">⚡</span>
           <div class="gs-act-info">
-            <div class="gs-act-name">Natação 2026</div>
-            <div class="gs-act-meta">53km nadados · preparação completa</div>
+            <div class="gs-act-name">Sprint MSK — 21/11/2023</div>
+            <div class="gs-act-meta">750m · 20km · 5km · 1ª prova</div>
           </div>
-          <span class="gs-act-tss">53km</span>
+          <span class="gs-act-tss">✅</span>
         </div>
         <div class="gs-act">
-          <span class="gs-act-disc bike">🚴</span>
+          <span class="gs-act-disc run">⚡</span>
           <div class="gs-act-info">
-            <div class="gs-act-name">Ciclismo 2026</div>
-            <div class="gs-act-meta">638km pedalados · pico julho</div>
+            <div class="gs-act-name">Metrópole Sprint — 20/03/2025 e 27/07/2025</div>
+            <div class="gs-act-meta">750m · 20km · 5km · 2 edições</div>
           </div>
-          <span class="gs-act-tss">638km</span>
+          <span class="gs-act-tss">✅✅</span>
         </div>
         <div class="gs-act">
-          <span class="gs-act-disc run">🏃</span>
+          <span class="gs-act-disc bike">🔴</span>
           <div class="gs-act-info">
-            <div class="gs-act-name">Corrida 2026</div>
-            <div class="gs-act-meta">609km corridos · 177 dias treinados</div>
+            <div class="gs-act-name">IRONMAN 70.3 Brasília 2026</div>
+            <div class="gs-act-meta">1,9km · 90km · 21,1km</div>
           </div>
-          <span class="gs-act-tss">609km</span>
+          <span class="gs-act-tss">✅</span>
+        </div>
+        <div class="gs-act">
+          <span class="gs-act-disc bike">🔴</span>
+          <div class="gs-act-info">
+            <div class="gs-act-name">IRONMAN 70.3 Rio — 09/08/2026</div>
+            <div class="gs-act-meta">235h de prep · 177 dias treinados</div>
+          </div>
+          <span class="gs-act-tss">✅</span>
         </div>
       </div>
       <div class="gs-total-tss" id="gs-total-tss">
-        <span>Total 2026:</span>
-        <strong>235h · 251 atividades · 80% dos dias</strong>
-        <span class="gs-tss-bar"><span style="width:80%"></span></span>
+        <span>Nível atual:</span>
+        <strong>70.3 completo → Sprint MSK 06/Dez</strong>
+        <span class="gs-tss-bar"><span style="width:65%"></span></span>
       </div>
     </div>
 
@@ -1910,7 +2029,7 @@
 //  COUNTDOWN
 // ════════════════════════════════════════════
 function updateCountdown() {
-  const race = new Date('2026-08-09T07:00:00');
+  const race = new Date('2026-12-06T07:00:00');
   const now = new Date();
   const diff = race - now;
   if (diff <= 0) {
@@ -1940,7 +2059,7 @@ const tbMins  = document.getElementById('tb-mins');
 const tbWeek  = document.getElementById('tb-week-name');
 
 function updateTopBar() {
-  const race = new Date('2026-08-09T07:00:00');
+  const race = new Date('2026-12-06T07:00:00');
   const diff = race - new Date();
   if (diff > 0) {
     tbDays.textContent  = Math.floor(diff / 86400000);
@@ -1960,223 +2079,226 @@ if (heroSec) heroObserver.observe(heroSec);
 //  WEEKLY PLAN DATA
 // ════════════════════════════════════════════
 const WEEKS = [
+  /* ── SP1: Retorno ao Ritmo (1–7 Set) ── */
   {
-    id:'w01',name:"S1 — Reativação",
-    range:"25–31 Mai 2026",
+    id:'w01',name:"SP1 — Retorno ao Ritmo",
+    range:"1–7 Set 2026",
     type:'build',label:'BASE',
-    swim:3.0,bike:80,run:25,
+    swim:2.5,bike:50,run:18,
     days:[
-      {id:'w01d01',dow:'Seg 25/05',disc:'strength',icon:'💪',name:"Força — Ativação Glúteo",detail:"45min | Glúteo médio D (déficit 11.5%): faixa lateral 3x15 + elevação lateral 3x20 | Rotadores externos Q.E (déficit moderado): clamshell 3x15 | Core: prancha 3x45s + bird-dog 3x12 | Mobilidade de quadril 10min",dur:'45min',zone:'Z1',meta:''},
-      {id:'w01d02',dow:'Ter 26/05',disc:'swim',icon:'🏊',name:"2.000m — Base Técnica",detail:"400m Br aquecimento | 6x100m A1 c/ 20s intervalo (foco: braçada longa) | 4x50m Braço | 200m Solto Cr | 400m contínuo A1 | 200m Br resfriamento | Total: 2.000m",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
-      {id:'w01d03',dow:'Ter 26/05',disc:'run',icon:'🏃',name:"8km — 50min Constante L2",detail:"10min aquecimento caminhada/trote | 50min Corrida Constante L2 (FC 148-165) | Passada larga — evitar crossover! Foco na largura da passada | 5min caminhada | Total: ~8km",dur:'65min',zone:'Z2',meta:'8km'},
-      {id:'w01d04',dow:'Qua 27/05',disc:'bike',icon:'🚴',name:"70km — Progressivo L2→L3",detail:"10min aquecimento L1 | 40min Constante L2 (FC 140-155) | 30min Progressivo L2→L3 | 3x5min estímulos L3 (FC 165-175) c/ 3min L1 | 10min solto L1 | Cruzeiro ou indoor | Total: ~70km",dur:'2h20',zone:'Z2/Z3',meta:'70km'},
-      {id:'w01d05',dow:'Qui 28/05',disc:'run',icon:'🏃',name:"12km — 2x Bloco L2+L3",detail:"10min aquecimento | Bloco 1: 3km L2 + 2km L3 (pace ~4:45-5:00/km) + 3min recuperação | Bloco 2: 3km L2 + 2km L3 | 5min trote L1 | Total: ~12km | FC média esperada: 158-165",dur:'75min',zone:'Z2/Z3',meta:'12km'},
-      {id:'w01d06',dow:'Sex 29/05',disc:'swim',icon:'🏊',name:"1.800m — Séries A1",detail:"300m Br aquecimento | 4x(200m Crawl A1 + 100m Crawl A3) c/ 30s intervalo | 200m Braço A1 | 200m Br resfriamento | Total: 1.800m | Foco: não forçar — sessão leve pré-long ride",dur:'40min',zone:'Z1/Z2',meta:'1.800m'},
-      {id:'w01d07',dow:'Sáb 30/05',disc:'bike',icon:'🚴',name:"80km — Long Ride L2 Constante",detail:"10min aquecimento | 1h20 Constante L2 (FC 140-155 — NÃO ultrapassar!) | 3x5min subidas em pé (L3/L4) | 15min solto L1 | Rota sugerida: Cruzeiro ou Lago Sul | Total: ~80km",dur:'2h45',zone:'Z2',meta:'80km'},
-      {id:'w01d08',dow:'Dom 31/05',disc:'run',icon:'🏃',name:"16km — Long Run L2",detail:"10min aquecimento trote | 1h30 Corrida Constante L2 (FC 148-165) | Pace esperado: 5:30-6:00/km | Foco: terminar forte, não morrer | 5min caminhada | Total: ~16km",dur:'1h50',zone:'Z2',meta:'16km'}
+      {id:'w01d01',dow:'Ter 01/09',disc:'swim',icon:'🏊',name:"1.500m — Retorno fácil",detail:"1.500m Z1. Sem cronômetro. Apenas soltar o corpo e sentir o prazer de treinar. FC < 130. Bem vindo de volta!",dur:'35min',zone:'Z1',meta:'1.500m'},
+      {id:'w01d02',dow:'Qua 02/09',disc:'run',icon:'🏃',name:"25min — Trote Suave Z1",detail:"25min trote leve. FC < 145. Observe como as pernas respondem após a recuperação. Sem pressão de pace.",dur:'25min',zone:'Z1',meta:'~3.5km'},
+      {id:'w01d03',dow:'Qui 03/09',disc:'bike',icon:'🚴',name:"45min — Cadência Alta Z1/Z2",detail:"45min bike indoor ou rua. Cadência 90rpm+. FC 130-148. Girar leve sem forçar. Objetivo: destravar a musculatura.",dur:'45min',zone:'Z1/Z2',meta:'~20km'},
+      {id:'w01d04',dow:'Sex 04/09',disc:'swim',icon:'🏊',name:"1.500m — Técnica",detail:"1.500m. Pode usar palmares na segunda metade. Foco em técnica: braçada longa, rolamento de quadril.",dur:'35min',zone:'Z1',meta:'1.500m'},
+      {id:'w01d05',dow:'Sáb 05/09',disc:'run',icon:'🏃',name:"8km — Z2 Constante",detail:"8km corrida Z2. FC 148-165. Pace livre — não force, deixe o corpo encontrar o ritmo.",dur:'45min',zone:'Z2',meta:'8km'},
+      {id:'w01d06',dow:'Dom 06/09',disc:'bike',icon:'🚴',name:"1h — Passeio Z1/Z2",detail:"1h bike de rua. Passeio tranquilo. FC < 150. Curtir o movimento.",dur:'1h',zone:'Z1/Z2',meta:'~30km'}
     ]
   },
+  /* ── SP2: Base Aeróbica (8–14 Set) ── */
   {
-    id:'w02',name:"S2 — Build 1",
-    range:"1–7 Jun 2026",
+    id:'w02',name:"SP2 — Base Aeróbica",
+    range:"8–14 Set 2026",
+    type:'build',label:'BASE',
+    swim:3.5,bike:65,run:25,
+    days:[
+      {id:'w02d01',dow:'Seg 08/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso ativo. Foam roller, mobilidade. Sono 8h+.",dur:'—',zone:'REST',meta:''},
+      {id:'w02d02',dow:'Ter 09/09',disc:'swim',icon:'🏊',name:"1.800m — Base + Técnica",detail:"400m aquecimento Br | 4x200m A1 c/ 20s intervalo | 4x50m sprints curtos | 200m resfriamento | FC < 145",dur:'40min',zone:'Z1/Z2',meta:'1.800m'},
+      {id:'w02d03',dow:'Ter 09/09',disc:'run',icon:'🏃',name:"8km — Z2 Constante",detail:"8km Z2. FC 148-165. Cadência 175-180ppm. Passada eficiente.",dur:'45min',zone:'Z2',meta:'8km'},
+      {id:'w02d04',dow:'Qua 10/09',disc:'bike',icon:'🚴',name:"1h — Z2 com estímulos",detail:"1h bike. 40min Z2 + 3x3min Z3 (FC 165-175) c/ 3min Z1 recuperação. Primeiros estímulos de intensidade.",dur:'1h',zone:'Z2/Z3',meta:'~35km'},
+      {id:'w02d05',dow:'Qui 11/09',disc:'swim',icon:'🏊',name:"2.000m — Volume Base",detail:"2.000m. 4x400m A2 c/ 30s intervalo. Boa referência de condicionamento aquático.",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w02d06',dow:'Sáb 13/09',disc:'run',icon:'🏃',name:"10km — Long Run Z2",detail:"10km Z2. Corrida contínua. FC 148-163. Foco em consistência e eficiência de passada.",dur:'55min',zone:'Z2',meta:'10km'},
+      {id:'w02d07',dow:'Dom 14/09',disc:'bike',icon:'🚴',name:"1h30 — Z2 Passeio",detail:"1h30 bike de rua. Z2 tranquilo. Semana de base sólida.",dur:'1h30',zone:'Z2',meta:'~45km'}
+    ]
+  },
+  /* ── SP3: Base + Velocidade (15–21 Set) ── */
+  {
+    id:'w03',name:"SP3 — Base + Velocidade",
+    range:"15–21 Set 2026",
+    type:'build',label:'BASE',
+    swim:4.0,bike:70,run:28,
+    days:[
+      {id:'w03d01',dow:'Seg 15/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Mobilidade 20min.",dur:'—',zone:'REST',meta:''},
+      {id:'w03d02',dow:'Ter 16/09',disc:'swim',icon:'🏊',name:"2.000m — 8x100m Rápido",detail:"400m Br aquecimento | 8x100m Z3 c/ 20s intervalo (ritmo 750m de sprint) | 400m cooldown | Primeira sessão de velocidade específica",dur:'45min',zone:'Z2/Z3',meta:'2.000m'},
+      {id:'w03d03',dow:'Qua 17/09',disc:'run',icon:'🏃',name:"8km + 4x400m Z3/Z4",detail:"2km aquecimento | 6km Z2 | 4x400m Z3/Z4 (pace 5km) c/ 400m trote recuperação | 1km cooldown | Total: ~10km",dur:'55min',zone:'Z2/Z3',meta:'10km'},
+      {id:'w03d04',dow:'Qui 18/09',disc:'bike',icon:'🚴',name:"1h + 3x5min Z3",detail:"30min Z2 | 3x5min Z3 (FC 165-175) c/ 5min Z1 | 15min Z2 cooldown | Primeiro estímulo de potência",dur:'1h',zone:'Z2/Z3',meta:'~38km'},
+      {id:'w03d05',dow:'Sex 19/09',disc:'swim',icon:'🏊',name:"2.000m — Técnica + Palmares",detail:"2.000m com palmares e pull buoy. Foco em braçada poderosa. Preparação para séries mais intensas.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w03d06',dow:'Sáb 20/09',disc:'run',icon:'🏃',name:"12km — Z2 + strides",detail:"10km Z2 + 4x100m strides ao final. Strides = aceleração progressiva até 90% por 100m.",dur:'65min',zone:'Z2',meta:'12km'},
+      {id:'w03d07',dow:'Dom 21/09',disc:'bike',icon:'🚴',name:"1h30 + 2x10min Z3",detail:"40min Z2 | 2x10min Z3 (FC 165-173) c/ 5min Z1 | 20min Z2 cooldown. Bike fica mais sério.",dur:'1h30',zone:'Z2/Z3',meta:'~50km'}
+    ]
+  },
+  /* ── SP4: Build 1 (22–28 Set) ── */
+  {
+    id:'w04',name:"SP4 — Build 1",
+    range:"22–28 Set 2026",
     type:'build',label:'BUILD',
-    swim:4.0,bike:120,run:28,
+    swim:4.5,bike:75,run:30,
     days:[
-      {id:'w02d01',dow:'Seg 01/06',disc:'rest',icon:'😴',name:"Descanso + Recuperação",detail:"Descanso total ou mobilidade leve 20min | Sono: prioridade absoluta — mínimo 8h | Hidratação e alimentação | Sem treino estruturado",dur:'—',zone:'REST',meta:''},
-      {id:'w02d02',dow:'Ter 02/06',disc:'swim',icon:'🏊',name:"2.300m — Séries Mistas",detail:"300m Br aquecimento | 4x(200m Crawl A1 + 100m Crawl A3) c/ 20s | 4x50m sprint total A5 c/ 45s | 300m Br contínuo A2 | 200m Br resfriamento | Total: 2.300m",dur:'55min',zone:'Z1/Z3',meta:'2.300m'},
-      {id:'w02d03',dow:'Ter 02/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"10min aquecimento | 50min Corrida Constante L2 (FC 148-165) | Pace alvo: 5:15-5:30/km | 5min caminhada | Total: ~10km | Esta é a sessão base do ciclo — consiste e sem ego",dur:'65min',zone:'Z2',meta:'10km'},
-      {id:'w02d04',dow:'Qua 03/06',disc:'bike',icon:'🚴',name:"100km — Progressivo + Blocos",detail:"10min aquecimento | 40min L2 constante | 3x8min L3 (FC 165-175) c/ 4min L2 | 40min L2 constante | Estímulos finais: 5x1min força em pé c/ 2min L1 | 10min solto | Total: ~100km",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
-      {id:'w02d05',dow:'Qui 04/06',disc:'run',icon:'🏃',name:"12km — Tempo Run L3",detail:"10min aquecimento | 2x(3km L3 pace ~4:40-4:55/km + 2min recuperação) | 3km L2 | 5min trote | Total: ~12km | FC média: 162-170 | Beba água nos retornos",dur:'70min',zone:'Z3',meta:'12km'},
-      {id:'w02d06',dow:'Sex 05/06',disc:'swim',icon:'🏊',name:"2.000m — 20x100m Pace Prova",detail:"300m Br aquecimento | 20x100m A2/A3 c/ 20s intervalo (pace alvo: 1:45-1:50/100m) | 200m Br resfriamento | Total: 2.300m | Sessão inspirada no treino de 25/03/25 que funcionou muito bem!",dur:'55min',zone:'Z2/Z3',meta:'2.300m'},
-      {id:'w02d07',dow:'Sáb 06/06',disc:'brick',icon:'🧱',name:"BRICK — 100km + 5km off bike",detail:"BIKE 100km: 10min Aq + 1h40 L2 constante + 20min progressivo L2→L3 | T2: 3min transição rápida | CORRIDA 5km: saída de bike L2/L3 (esperar FC cair para 165-170 antes de acelerar) | Foco: sentir a corrida pós-bike",dur:'3h30',zone:'Z2/Z3',meta:'100km+5km'},
-      {id:'w02d08',dow:'Dom 07/06',disc:'run',icon:'🏃',name:"18km — Long Run L2",detail:"10min aquecimento | 1h40 Corrida Constante L2 (FC 148-165) | Pace: 5:30-6:00/km | Nutrição em movimento: gel a cada 45min | Total: ~18km | Não force — chegue bem",dur:'2h00',zone:'Z2',meta:'18km'}
+      {id:'w04d01',dow:'Seg 22/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w04d02',dow:'Ter 23/09',disc:'swim',icon:'🏊',name:"2.200m — 10x100m Z3 Sprint",detail:"400m aquec | 10x100m Z3 c/ 15s intervalo (objetivo: < 1:50/100m) | 300m cooldown | Treino específico para ritmo da prova",dur:'50min',zone:'Z3',meta:'2.200m'},
+      {id:'w04d03',dow:'Qua 24/09',disc:'run',icon:'🏃',name:"10km + 6x400m Z3/Z4",detail:"2km aquec | 4km Z2 | 6x400m Z3/Z4 (< 2:00) c/ 400m recuperação | 2km cooldown | Estimula ritmo 5km de prova",dur:'65min',zone:'Z3',meta:'12km'},
+      {id:'w04d04',dow:'Qui 25/09',disc:'bike',icon:'🚴',name:"1h15 + 4x5min Z3/Z4",detail:"20min Z2 aquec | 4x5min Z3/Z4 (FC 170-180) c/ 5min Z1 | 15min Z2 cooldown | Potência de sprint",dur:'1h15',zone:'Z3/Z4',meta:'~42km'},
+      {id:'w04d05',dow:'Sex 26/09',disc:'swim',icon:'🏊',name:"1.500m — Recuperativo",detail:"1.500m Z1 leve. Recuperação ativa. Sem séries, sem intensidade.",dur:'30min',zone:'Z1',meta:'1.500m'},
+      {id:'w04d06',dow:'Sáb 27/09',disc:'run',icon:'🏃',name:"14km — Long Run Z2",detail:"14km Z2 constante. FC 148-163. Construindo resistência de corrida.",dur:'75min',zone:'Z2',meta:'14km'},
+      {id:'w04d07',dow:'Dom 28/09',disc:'brick',icon:'🧱',name:"🧱 1ª BRICK — 20km Bike Z2/Z3 + 3km Run",detail:"Primeira simulação de sprint! Bike 20km em Z2/Z3 (ritmo prova) | T2 rápido | Run 3km Z3 off bike | Sinta a transição. Sem buscar pace — apenas executar.",dur:'1h15',zone:'Z2/Z3',meta:'20km + 3km'}
     ]
   },
+  /* ── SP5: Build 2 (29 Set–5 Out) ── */
   {
-    id:'w03',name:"S3 — Build 1 cont.",
-    range:"8–14 Jun 2026",
+    id:'w05',name:"SP5 — Build 2",
+    range:"29 Set–5 Out 2026",
     type:'build',label:'BUILD',
-    swim:4.0,bike:120,run:30,
+    swim:5.0,bike:80,run:32,
     days:[
-      {id:'w03d01',dow:'Seg 08/06',disc:'strength',icon:'💪',name:"Força — Membros Inferiores",detail:"Agachamento búlgaro 3x10/lado | Deadlift romeno 3x12 | Leg press unilateral 3x12 | Elevação de panturrilha 3x20 | Rotadores externos (correia) 3x15 | Core plank lateral 3x30s | Total: 50min",dur:'50min',zone:'Z1',meta:''},
-      {id:'w03d02',dow:'Ter 09/06',disc:'swim',icon:'🏊',name:"2.500m — Séries Longas",detail:"300m Br aquecimento | 3x500m A2 c/ 45s intervalo (manter pace constante!) | 4x100m A3 c/ 30s | 200m Br resfriamento | Total: 2.500m | Foco: 500m contínuos sem cair o pace",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
-      {id:'w03d03',dow:'Ter 09/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"10min aquecimento | 50min Constante L2 | Foco: passada larga + cadência 170+ | 5min caminhada",dur:'65min',zone:'Z2',meta:'10km'},
-      {id:'w03d04',dow:'Qua 10/06',disc:'bike',icon:'🚴',name:"90km — Blocos Fortes L3",detail:"15min aquecimento | 5x8min L3 (FC 165-175) c/ 4min L2 entre | 30min L2 constante pós-blocos | 10min solto | Esta sessão replica \"Longo c/ estímulos\" do 08/03/25 que foi muito eficaz | Total: ~90km",dur:'3h00',zone:'Z2/Z3',meta:'90km'},
-      {id:'w03d05',dow:'Qui 11/06',disc:'run',icon:'🏃',name:"14km — 2x 6.5km L3",detail:"15min aquecimento | 6.5km L3 (pace 4:45-5:00/km) + 3min recuperação | 6.5km L3 | 5min trote L1 | Esta é a sessão \"2x (6.5km L3 + 3min L1)\" do 23/03/25 — treino chave! | FC esperada: 165-175 | Total: ~14km",dur:'90min',zone:'Z3',meta:'14km'},
-      {id:'w03d06',dow:'Sex 12/06',disc:'swim',icon:'🏊',name:"OWS 1.5km — Paranoá/Lago",detail:"Natação em águas abertas — Paranoá ou Lago Oeste | Sem pausas, contínuo | Foco: orientação (olhar pra frente a cada 6-8 braçadas) e respiração bilateral | Se não possível OWS: piscina 2.000m séries livres",dur:'35min',zone:'Z2',meta:'1.500m OWS'},
-      {id:'w03d07',dow:'Sáb 13/06',disc:'brick',icon:'🧱',name:"BRICK LONGO — 90km + 8km",detail:"BIKE 90km: 10min Aq + 1h30 L2 + 3x5min L3/L4 c/ 2min L2 + 15min solto | T2: transição completa (troca roupa, nutrição) | CORRIDA 8km: 5km L2 + 3km progressivo até L3 | Anote o pace de saída de bike para ter referência na prova",dur:'4h00',zone:'Z2/Z3',meta:'90km+8km'},
-      {id:'w03d08',dow:'Dom 14/06',disc:'run',icon:'🏃',name:"20km — Long Run L2 (maior da fase)",detail:"10min aquecimento | 1h50 Constante L2 (FC 148-165) | Pace: 5:20-5:45/km | Nutrição: gel a cada 40min + água a cada 20min | Total: ~20km | Esta é a maior corrida longa do Build 1 — comemore!",dur:'2h10',zone:'Z2',meta:'20km'}
+      {id:'w05d01',dow:'Seg 29/09',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w05d02',dow:'Ter 30/09',disc:'swim',icon:'🏊',name:"2.500m — 12x100m Z3",detail:"400m aquec | 12x100m Z3 c/ 15s intervalo | 100m sprint final (100%) | 400m cooldown | Volume e velocidade crescendo",dur:'55min',zone:'Z3',meta:'2.500m'},
+      {id:'w05d03',dow:'Qua 01/10',disc:'run',icon:'🏃',name:"10km + Fartlek 4min/2min",detail:"2km aquec | 5x(4min Z3 + 2min trote) | 2km cooldown | Fartlek estimula variação de pace",dur:'60min',zone:'Z2/Z3',meta:'12km'},
+      {id:'w05d04',dow:'Qui 02/10',disc:'bike',icon:'🚴',name:"1h20 + 5x4min Z4",detail:"20min Z2 | 5x4min Z4 (FC 175-185) c/ 4min Z1 | 15min Z2 cooldown | Alto estímulo de potência",dur:'1h20',zone:'Z3/Z4',meta:'~45km'},
+      {id:'w05d05',dow:'Sex 03/10',disc:'swim',icon:'🏊',name:"2.000m — Técnica",detail:"2.000m técnica. Palmares + pull buoy 1000m | 8x50m sprints | 400m cooldown",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w05d06',dow:'Sáb 04/10',disc:'run',icon:'🏃',name:"14km + 4x1km Z3",detail:"2km aquec | 10km Z2 | 4x1km Z3/Z4 (< 5:00/km) c/ 1min recuperação | 2km cooldown",dur:'80min',zone:'Z2/Z3',meta:'14km'},
+      {id:'w05d07',dow:'Dom 05/10',disc:'bike',icon:'🚴',name:"1h30 Z2 — Long Bike",detail:"1h30 bike Z2. Constante, sem forçar. Base de resistência.",dur:'1h30',zone:'Z2',meta:'~55km'}
     ]
   },
+  /* ── SP6: Build 3 (6–12 Out) ── */
   {
-    id:'w04',name:"S4 — Recovery",
-    range:"15–21 Jun 2026",
-    type:'recovery',label:'RECOVERY',
-    swim:2.5,bike:60,run:15,
-    days:[
-      {id:'w04d01',dow:'Seg 15/06',disc:'rest',icon:'😴',name:"Descanso Total",detail:"Seu corpo precisa absorver 3 semanas de carga. Sono 8-9h. Alimentação rica em proteína e carboidratos complexos. Sem treino — nem \"leve\". O descanso É o treino.",dur:'—',zone:'REST',meta:''},
-      {id:'w04d02',dow:'Ter 16/06',disc:'swim',icon:'🏊',name:"1.500m — Solto Regenerativo",detail:"300m Br | 6x100m A1 muito fácil (sem olhar o relógio) | 300m Br | Foco: sentir a água, nada de pressão | FC nunca acima de 130",dur:'35min',zone:'Z1',meta:'1.500m'},
-      {id:'w04d03',dow:'Qua 17/06',disc:'bike',icon:'🚴',name:"60km — 1h30 Regenerativo L1/L2",detail:"10min Aq muito leve | 1h30 Constante L1/L2 (FC máx 145) | Sem pressão, sem olhar velocidade | Roda a mais leve, não esmague o pedal | 10min solto | Replica \"1h30 Regenerativo\" do 02/04/25",dur:'2h00',zone:'Z1/Z2',meta:'60km'},
-      {id:'w04d04',dow:'Qui 18/06',disc:'run',icon:'🏃',name:"8km — Trote Fácil L1",detail:"Trote suave 8km (FC < 145) | Sem pace target | Fique no conforto — se houver desconforto, caminhe | Sapato confortável, não o de treino pesado",dur:'55min',zone:'Z1',meta:'8km'},
-      {id:'w04d05',dow:'Sex 19/06',disc:'swim',icon:'🏊',name:"1.000m — Técnica Pura",detail:"200m Br | 8x50m técnica: respiração unilateral alternada, pegada, rotação do quadril | 200m Br | Foco total em técnica, sem contar tempo",dur:'25min',zone:'Z1',meta:'1.000m'},
-      {id:'w04d06',dow:'Sáb 20/06',disc:'rest',icon:'😴',name:"Descanso ou Trilha Leve",detail:"Opcional: trilha/caminhada leve 1h a FC < 120 | Ou descanso total | Faça o que o corpo pede",dur:'—',zone:'REST',meta:''},
-      {id:'w04d07',dow:'Dom 21/06',disc:'run',icon:'🏃',name:"10km — Constante L2 (teste)",detail:"10min Aq | 50min L2 constante | Este é o \"teste\" pós-recovery: se sentir bem, é sinal que o corpo absorveu. Se pesado, mais 1-2 dias leves | Pace esperado: melhor que na S1 (fitness real cresce na recovery!)",dur:'65min',zone:'Z2',meta:'10km'}
-    ]
-  },
-  {
-    id:'w05',name:"S5 — Build 2",
-    range:"22–28 Jun 2026",
+    id:'w06',name:"SP6 — Build 3",
+    range:"6–12 Out 2026",
     type:'build',label:'BUILD',
-    swim:5.0,bike:150,run:35,
+    swim:5.0,bike:80,run:30,
     days:[
-      {id:'w05d01',dow:'Seg 22/06',disc:'strength',icon:'💪',name:"Força — Manutenção + Ativação",detail:"Glúteo médio D: monster walk 3x20 + elevação lateral resistida 3x15 | Agachamento unilateral 3x10/lado | Core: prancha + rotação 3x12 | Mobilidade 10min | Leve — não é semana de ganho muscular, é manutenção",dur:'40min',zone:'Z1',meta:''},
-      {id:'w05d02',dow:'Ter 23/06',disc:'swim',icon:'🏊',name:"2.500m — 1.900m pace prova",detail:"300m Br aquecimento | 1.900m contínuo A2/A3 (simulação distância da prova — 1.9km!) | 300m Br resfriamento | Este é SEU marco: primeiro 1.9km contínuo do ciclo. Pace alvo: 2:00-2:10/100m | Total: 2.500m",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
-      {id:'w05d03',dow:'Ter 23/06',disc:'run',icon:'🏃',name:"10km — 50min Constante L2",detail:"50min Constante L2 | Pace esperado: 5:00-5:15/km (veja a evolução desde S1!) | Total: ~10km",dur:'65min',zone:'Z2',meta:'10km'},
-      {id:'w05d04',dow:'Qua 24/06',disc:'bike',icon:'🚴',name:"100km — Cruzeiro Progressivo",detail:"10min Aq | 1h30 Progressivo L2→L3 (começa 135bpm, termina 165bpm) | 3x10min L3 c/ 5min L2 | 10min solto | Rota Cruzeiro recomendada | Total: ~100km",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
-      {id:'w05d05',dow:'Qui 25/06',disc:'run',icon:'🏃',name:"15km — 2x5km L3 Tempo Run",detail:"15min Aq | 5km L3 (pace 4:40-4:55/km) + 3min recuperação | 5km L3 | 3km L2 | 5min trote | FC esperada: 165-175 | Total: ~15km | Treino qualidade — o mais exigente da semana",dur:'90min',zone:'Z3',meta:'15km'},
-      {id:'w05d06',dow:'Sex 26/06',disc:'swim',icon:'🏊',name:"OWS 2km — Paranoá",detail:"Natação aberta contínua 2km | Orienta usando landmarks visuais | Respiração alternada (L e R) | FC controlada — se ofegar, reduza o ritmo | Se necessário: piscina 2.500m (8x200m A2)",dur:'45min',zone:'Z2',meta:'2km OWS'},
-      {id:'w05d07',dow:'Sáb 27/06',disc:'brick',icon:'🧱',name:"BRICK — 60km + 10km (1º BRICK estruturado)",detail:"BIKE 60km: 10min Aq | 1h30 Constante L2 (FC 140-155) | 10min solto | T2: transição rápida — troca tênis, 2-3min, não sente | CORRIDA 10km: 5km L2 + 5km progressivo até L3 | Anote o pace de saída da bike | Nutrição: gel aos 45min do bike, nada no run até 30min",dur:'2h50',zone:'Z2/Z3',meta:'60km+10km'},
-      {id:'w05d08',dow:'Dom 28/06',disc:'run',icon:'🏃',name:"22km — Long Run L2 (maior do ciclo)",detail:"10min Aq | 2h00 Constante L2 | Pace: 5:15-5:45/km | Gel cada 35-40min | Água a cada 20min | Total: ~22km | Você fez isso no 30/03/25 (22km forte) — repita! | FC média esperada: 155-165",dur:'2h20',zone:'Z2',meta:'22km'}
+      {id:'w06d01',dow:'Seg 06/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w06d02',dow:'Ter 07/10',disc:'swim',icon:'🏊',name:"2.500m — 3x750m Pace Prova",detail:"400m aquec | 3x750m Z3 c/ 2min intervalo (simular nado da prova) | 400m cooldown | Referência de pace para 06/Dez",dur:'55min',zone:'Z3',meta:'2.500m'},
+      {id:'w06d03',dow:'Qua 08/10',disc:'run',icon:'🏃',name:"10km + 8x400m Z4",detail:"2km aquec | 8x400m Z4 (< 1:55) c/ 400m recuperação | 2km cooldown | Velocidade específica 5km",dur:'65min',zone:'Z3/Z4',meta:'12km'},
+      {id:'w06d04',dow:'Qui 09/10',disc:'bike',icon:'🚴',name:"1h20 + 3x8min Z3/Z4",detail:"20min Z2 | 3x8min Z3/Z4 (FC 170-180) c/ 5min Z1 | 15min cooldown | Potência sustentada",dur:'1h20',zone:'Z3/Z4',meta:'~45km'},
+      {id:'w06d05',dow:'Sex 10/10',disc:'swim',icon:'🏊',name:"1.500m — Leve",detail:"1.500m recuperativo Z1/Z2.",dur:'30min',zone:'Z1/Z2',meta:'1.500m'},
+      {id:'w06d06',dow:'Sáb 11/10',disc:'run',icon:'🏃',name:"12km Z2 + 2km Z3",detail:"12km Z2 constante + 2km Z3 no final. Fartlek ao final é indicador de nível de forma.",dur:'75min',zone:'Z2/Z3',meta:'14km'},
+      {id:'w06d07',dow:'Dom 12/10',disc:'brick',icon:'🧱',name:"🧱 BRICK — 20km Z3 + 4km Run Z3",detail:"20km bike Z3 (ritmo prova real) | T2 < 30s | 4km corrida Z3/Z4 (< 5:00/km) | Segunda simulação: agora com intensidade real",dur:'1h20',zone:'Z3',meta:'20km + 4km'}
     ]
   },
+  /* ── SP7: Build 4 (13–19 Out) ── */
   {
-    id:'w06',name:"S6 — Build 2 Pico",
-    range:"29 Jun–5 Jul 2026",
+    id:'w07',name:"SP7 — Build 4",
+    range:"13–19 Out 2026",
+    type:'build',label:'BUILD',
+    swim:5.0,bike:85,run:32,
+    days:[
+      {id:'w07d01',dow:'Seg 13/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w07d02',dow:'Ter 14/10',disc:'swim',icon:'🏊',name:"2.500m — 15x100m Intervalado",detail:"400m aquec | 15x100m Z3 c/ 10s intervalo (VO2 swim) | 400m cooldown | Estímulo de alta qualidade",dur:'55min',zone:'Z3',meta:'2.500m'},
+      {id:'w07d03',dow:'Qua 15/10',disc:'run',icon:'🏃',name:"5km TT — Teste de Forma #1",detail:"2km aquec fácil | 5km TT (all out) | 2km cooldown | Referência de pace de prova — anote o tempo!",dur:'45min',zone:'Z4',meta:'5km TT'},
+      {id:'w07d04',dow:'Qui 16/10',disc:'bike',icon:'🚴',name:"1h + 20km TT",detail:"20min Z2 aquec | 20km TT (pace prova) — esforço real | 10min cooldown | Referência de tempo de bike",dur:'1h',zone:'Z3/Z4',meta:'20km TT'},
+      {id:'w07d05',dow:'Sex 17/10',disc:'swim',icon:'🏊',name:"2.000m — Técnica",detail:"2.000m técnica e recuperação.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w07d06',dow:'Sáb 18/10',disc:'run',icon:'🏃',name:"14km Z2",detail:"14km Z2 constante. Recuperação ativa da semana de testes.",dur:'75min',zone:'Z2',meta:'14km'},
+      {id:'w07d07',dow:'Dom 19/10',disc:'bike',icon:'🚴',name:"1h30 Z2 — Long Bike",detail:"1h30 Z2. Leve, consistente.",dur:'1h30',zone:'Z2',meta:'~55km'}
+    ]
+  },
+  /* ── SP8: Build 5 / Pico (20–26 Out) ── */
+  {
+    id:'w08',name:"SP8 — Build 5 / Pico de Carga",
+    range:"20–26 Out 2026",
     type:'peak',label:'PEAK',
-    swim:5.0,bike:160,run:38,
+    swim:5.5,bike:85,run:35,
     days:[
-      {id:'w06d01',dow:'Seg 29/06',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso total. Você terá a semana mais pesada do ciclo à frente. Sono prioritário.",dur:'—',zone:'REST',meta:''},
-      {id:'w06d02',dow:'Ter 30/06',disc:'swim',icon:'🏊',name:"2.500m — Séries A2/A3",detail:"300m Br | 4x(200m A2 + 100m A3) c/ 20s | 4x100m A2 sprint final | 300m Br | Total: 2.500m",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
-      {id:'w06d03',dow:'Ter 30/06',disc:'run',icon:'🏃',name:"10km — L2 Base",detail:"50min Constante L2 | Pace: 5:00-5:10/km | Conserva energia para o fim de semana",dur:'60min',zone:'Z2',meta:'10km'},
-      {id:'w06d04',dow:'Qua 01/07',disc:'bike',icon:'🚴',name:"100km — Blocos L3 + Base",detail:"10min Aq | 1h L2 constante | 5x8min L3 (FC 165-175) c/ 4min L2 | 30min L2 | 10min solto | Total: ~100km",dur:'3h10',zone:'Z2/Z3',meta:'100km'},
-      {id:'w06d05',dow:'Qui 02/07',disc:'run',icon:'🏃',name:"15km — 12km Forte L3",detail:"15min Aq | 12km L3 constante (pace 4:45-5:00/km, FC 165-175) | 3min recuperação | 3km trote L1 | Esta é a sessão \"15km (12km L3)\" do 09/03/25 — treino mais difícil da semana | Total: ~15km",dur:'95min',zone:'Z3',meta:'15km'},
-      {id:'w06d06',dow:'Sex 03/07',disc:'swim',icon:'🏊',name:"OWS 2km — Foco Orientação",detail:"2km contínuo em águas abertas | Praticar \"sighting\" (levantar cabeça) a cada 8 braçadas | Foco: nadar reto, sem ziguezague (economiza 100-200m de distância!) | Piscina alternativa: 2.500m contínuo",dur:'45min',zone:'Z2',meta:'2km OWS'},
-      {id:'w06d07',dow:'Sáb 04/07',disc:'brick',icon:'🧱',name:"BRICK MÁXIMO — 130km + 5km",detail:"BIKE 130km: maior pedalada do ciclo! 10min Aq + 2h10 L2 + estímulos finais 3x5min L3 | T2: transição completa com troca real de roupa e nutrição | CORRIDA 5km off bike L2 (espera FC estabilizar em ~165 antes de acelerar) | Anote o pace de saída",dur:'4h30',zone:'Z2/Z3',meta:'130km+5km'},
-      {id:'w06d08',dow:'Dom 05/07',disc:'run',icon:'🏃',name:"24km — Long Run L2 (MAIOR DO CICLO)",detail:"10min Aq | 2h10 Constante L2 | Pace: 5:10-5:40/km | Gel a cada 35min + água a cada 15min | Total: ~24km | MARCO DO CICLO — sua maior corrida longa | FC: 155-165",dur:'2h30',zone:'Z2',meta:'24km'}
+      {id:'w08d01',dow:'Seg 20/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w08d02',dow:'Ter 21/10',disc:'swim',icon:'🏊',name:"3.000m — 4x750m Pace Prova",detail:"400m aquec | 4x750m Z3/Z4 c/ 90s intervalo | 400m cooldown | 4x a distância real da prova em sequência",dur:'60min',zone:'Z3/Z4',meta:'3.000m'},
+      {id:'w08d03',dow:'Qua 22/10',disc:'run',icon:'🏃',name:"10x400m Z4 — Pico de Velocidade",detail:"2km aquec | 10x400m Z4 (< 1:55) c/ 400m trote | 1km cooldown | Pico de velocidade",dur:'65min',zone:'Z4',meta:'12km'},
+      {id:'w08d04',dow:'Qui 23/10',disc:'bike',icon:'🚴',name:"1h30 + 6x3min Z4",detail:"20min Z2 | 6x3min Z4 (FC 178-185) c/ 4min Z1 | 20min cooldown | Pico de potência",dur:'1h30',zone:'Z3/Z4',meta:'~50km'},
+      {id:'w08d05',dow:'Sex 24/10',disc:'swim',icon:'🏊',name:"2.000m — Leve",detail:"2.000m Z1/Z2. Recuperação.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w08d06',dow:'Sáb 25/10',disc:'run',icon:'🏃',name:"16km — Long Run Z2",detail:"16km Z2. Volume de resistência. Pico de kilometragem.",dur:'85min',zone:'Z2',meta:'16km'},
+      {id:'w08d07',dow:'Dom 26/10',disc:'brick',icon:'🧱',name:"🧱 BRICK COMPLETO — 20km Z3 + 5km Z3/Z4",detail:"SIMULAÇÃO COMPLETA! 20km bike Z3 (ritmo prova) | T2 < 30s | 5km run Z3/Z4 (pace meta prova) | Este brick é a referência da prova. Anote os splits!",dur:'1h30',zone:'Z3/Z4',meta:'20km + 5km'}
     ]
   },
+  /* ── SP9: Peak 1 (27 Out–2 Nov) ── */
   {
-    id:'w07',name:"S7 — Build 2 cont.",
-    range:"6–12 Jul 2026",
-    type:'build',label:'BUILD',
-    swim:4.5,bike:140,run:32,
-    days:[
-      {id:'w07d01',dow:'Seg 06/07',disc:'strength',icon:'💪',name:"Força — Manutenção",detail:"Circuito leve 40min: glúteo médio + core + mobilidade | Sem carga pesada — manutenção funcional apenas",dur:'40min',zone:'Z1',meta:''},
-      {id:'w07d02',dow:'Ter 07/07',disc:'swim',icon:'🏊',name:"2.500m — Pace Prova",detail:"300m Br | 1.900m pace de prova contínuo (alvo: 2:00/100m = 38min para 1.9km) | 300m Br | Compare com a S5 — o tempo deve ser melhor!",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
-      {id:'w07d03',dow:'Ter 07/07',disc:'run',icon:'🏃',name:"12km — L2 c/ strides",detail:"10min Aq | 8km L2 | 4x100m strides (aceleração suave até 85% esforço, 100m caminhada) | 2km L1 | Total: ~12km",dur:'70min',zone:'Z2',meta:'12km'},
-      {id:'w07d04',dow:'Qua 08/07',disc:'bike',icon:'🚴',name:"90km — L2 Constante",detail:"10min Aq | 2h L2 constante (FC 140-155) | 10min solto | Não force — semana de continuidade, não de destruição | Total: ~90km",dur:'2h30',zone:'Z2',meta:'90km'},
-      {id:'w07d05',dow:'Qui 09/07',disc:'run',icon:'🏃',name:"14km — Fartlek",detail:"10min Aq | 40min Fartlek: 3min L3 / 2min L1 (repete 8x) | 15min L2 | 5min trote | Total: ~14km | Fartlek é mais agradável que tempo run — deixe o terreno guiar o ritmo",dur:'80min',zone:'Z2/Z3',meta:'14km'},
-      {id:'w07d06',dow:'Sex 10/07',disc:'swim',icon:'🏊',name:"2.000m — Técnica + Velocidade",detail:"300m Br | 10x100m variado: 5x A2 (ritmo controlado) + 5x A3 (esforço real) c/ 30s | 300m Br | Bônus: se sentir bem, 2x200m A2 extras",dur:'50min',zone:'Z2/Z3',meta:'2.000m'},
-      {id:'w07d07',dow:'Sáb 11/07',disc:'bike',icon:'🚴',name:"100km — Long Ride L2 + Estímulos",detail:"10min Aq | 1h40 L2 | 5x5min L3 c/ 3min L2 | 20min solto | Total: ~100km | Semana levemente abaixo da S6 — intencional para absorção",dur:'3h15',zone:'Z2/Z3',meta:'100km'},
-      {id:'w07d08',dow:'Dom 12/07',disc:'run',icon:'🏃',name:"20km — Long Run L2",detail:"10min Aq | 1h50 Constante L2 | Pace: 5:10-5:35/km | Gel a cada 40min | Total: ~20km",dur:'2h10',zone:'Z2',meta:'20km'}
-    ]
-  },
-  {
-    id:'w08',name:"S8 — Peak Simulado I",
-    range:"13–19 Jul 2026",
+    id:'w09',name:"SP9 — Peak 1",
+    range:"27 Out–2 Nov 2026",
     type:'peak',label:'PEAK',
-    swim:4.0,bike:150,run:35,
+    swim:5.0,bike:80,run:32,
     days:[
-      {id:'w08d01',dow:'Seg 13/07',disc:'strength',icon:'💪',name:"Força — Pré-pico",detail:"40min leve: ativação glúteo + core planks | Sem excesso — próximo sábado é simulado de prova!",dur:'40min',zone:'Z1',meta:''},
-      {id:'w08d02',dow:'Ter 14/07',disc:'swim',icon:'🏊',name:"2.500m — Ritmo Prova",detail:"300m Br | 1.900m pace de prova (meta: completar abaixo de 36min!) | 300m Br | Marco: o 1.9km da prova em tempo real",dur:'60min',zone:'Z2/Z3',meta:'2.500m'},
-      {id:'w08d03',dow:'Ter 14/07',disc:'run',icon:'🏃',name:"10km — L2",detail:"50min Constante L2 | Preserva pernas para o fim de semana",dur:'60min',zone:'Z2',meta:'10km'},
-      {id:'w08d04',dow:'Qua 15/07',disc:'bike',icon:'🚴',name:"90km — L3 Sweetspot",detail:"10min Aq | 2x20min Sweetspot (L3/L4, FC 168-178) c/ 5min L2 | 30min L2 | 10min solto | Total: ~90km | Sweetspot = intensidade mais eficiente para ganho aeróbio",dur:'2h45',zone:'Z3',meta:'90km'},
-      {id:'w08d05',dow:'Qui 16/07',disc:'run',icon:'🏃',name:"12km — Progressivo",detail:"10min Aq | 3km L2 + 3km L2/L3 + 3km L3 + 3km L2 (progressivo e volta) | Total: ~12km | FC: começa 148, pico 172, termina 155",dur:'70min',zone:'Z2/Z3',meta:'12km'},
-      {id:'w08d06',dow:'Sex 17/07',disc:'swim',icon:'🏊',name:"1.500m — Solto Técnica",detail:"1.500m solto A1 — pré-simulado, sessão recuperativa | Foco: técnica de virada e saída de bloco",dur:'35min',zone:'Z1',meta:'1.500m'},
-      {id:'w08d07',dow:'Sáb 18/07',disc:'brick',icon:'🧱',name:"SIMULADO I — 90km Bike + 10km Run",detail:"SIMULADO DE PROVA: Bike 90km ao pace de prova (FC 145-160, 28-30km/h se possível) | T2: transição cronometrada — anote o tempo | CORRIDA 10km ao pace de prova (4:45-5:15/km, FC 165-172) | Este é o dia mais importante do ciclo! Use a nutrição que planeja usar na prova | Total: ~4h45 + transição",dur:'4h45',zone:'Z3',meta:'90km+10km'},
-      {id:'w08d08',dow:'Dom 19/07',disc:'run',icon:'🏃',name:"21km — Long Run L2 (Testando Half)",detail:"10min Aq | 21km L2 + últimos 3km progressivo | Pace: 5:00-5:30/km | FC: 155-168 | Marco: você vai saber se consegue terminar o half depois do bike | Compare com o 30/03/25 (22km forte, FC 167)",dur:'2h15',zone:'Z2/Z3',meta:'21km'}
+      {id:'w09d01',dow:'Seg 27/10',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. A carga das últimas semanas foi alta.",dur:'—',zone:'REST',meta:''},
+      {id:'w09d02',dow:'Ter 28/10',disc:'swim',icon:'🏊',name:"2.500m — 10x100m + 2x250m",detail:"2.500m. 10x100m Z3 c/ 15s intervalo + 2x250m pace prova. Mantenha a qualidade.",dur:'55min',zone:'Z3',meta:'2.500m'},
+      {id:'w09d03',dow:'Qua 29/10',disc:'run',icon:'🏃',name:"3km Z2 + 5km Pace Prova + 3km Z2",detail:"3km aquec | 5km ritmo de prova (pace alvo < 5:00/km) | 3km cooldown | Simula run da prova",dur:'60min',zone:'Z3/Z4',meta:'11km'},
+      {id:'w09d04',dow:'Qui 30/10',disc:'bike',icon:'🚴',name:"1h + 25km Z3 TT",detail:"10min Z1 | 25km Z3 TT (mais do que a prova) | 10min cooldown | Conforto em ritmo de prova por tempo maior",dur:'1h',zone:'Z3',meta:'~35km'},
+      {id:'w09d05',dow:'Sex 31/10',disc:'swim',icon:'🏊',name:"2.000m — Técnica",detail:"2.000m técnica leve. Recuperação.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w09d06',dow:'Sáb 01/11',disc:'run',icon:'🏃',name:"14km Z2",detail:"14km Z2 constante. Calmaria antes do pico final.",dur:'75min',zone:'Z2',meta:'14km'},
+      {id:'w09d07',dow:'Dom 02/11',disc:'bike',icon:'🚴',name:"1h20 Z2/Z3",detail:"1h20 bike. Z2 base com 2x10min Z3.",dur:'1h20',zone:'Z2/Z3',meta:'~50km'}
     ]
   },
+  /* ── SP10: Peak 2 (3–9 Nov) ── */
   {
-    id:'w09',name:"S9 — Peak Simulado II",
-    range:"20–26 Jul 2026",
+    id:'w10',name:"SP10 — Peak 2",
+    range:"3–9 Nov 2026",
     type:'peak',label:'PEAK',
-    swim:3.5,bike:130,run:28,
+    swim:5.0,bike:75,run:30,
     days:[
-      {id:'w09d01',dow:'Seg 20/07',disc:'rest',icon:'😴',name:"Descanso — Absorção do Simulado",detail:"Descanso OBRIGATÓRIO após o simulado. Sono 9h. Anti-inflamatório natural (cúrcuma, gelo nas pernas). Sem treino algum.",dur:'—',zone:'REST',meta:''},
-      {id:'w09d02',dow:'Ter 21/07',disc:'swim',icon:'🏊',name:"2.000m — Recuperativo",detail:"2.000m solto, sem séries — apenas nadar e sentir | FC < 130 | Ótimo para recuperação muscular ativa",dur:'45min',zone:'Z1',meta:'2.000m'},
-      {id:'w09d03',dow:'Ter 21/07',disc:'run',icon:'🏃',name:"10km — L2 Suave",detail:"50min L2 suave (FC < 158) | Se as pernas pesarem, reduza para 8km | Nunca force em dia de recuperação",dur:'60min',zone:'Z2',meta:'10km'},
-      {id:'w09d04',dow:'Qua 22/07',disc:'bike',icon:'🚴',name:"80km — Constante L2",detail:"10min Aq | 1h30 L2 constante | 10min solto | Volume reduzido vs S8 — intencional | Total: ~80km",dur:'2h10',zone:'Z2',meta:'80km'},
-      {id:'w09d05',dow:'Qui 23/07',disc:'run',icon:'🏃',name:"12km — Threshold",detail:"15min Aq | 3x(3km L3 pace 4:40-4:55/km + 2min L1) | 3min trote | Total: ~12km | Última sessão de qualidade antes do taper",dur:'80min',zone:'Z3',meta:'12km'},
-      {id:'w09d06',dow:'Sex 24/07',disc:'swim',icon:'🏊',name:"OWS 1.500m — Simulação Final",detail:"1.500m em águas abertas com wetsuit SE for usar na prova | Última sessão de águas abertas antes da prova | Foco: reconhecer a sensação e controlar ansiedade",dur:'35min',zone:'Z2',meta:'1.500m OWS'},
-      {id:'w09d07',dow:'Sáb 25/07',disc:'run',icon:'🏃',name:"15km — L2 Controlado",detail:"10min Aq | 1h20 L2 (NÃO force — taper começa em 6 dias!) | Total: ~15km | Esta é a última long run longa do ciclo",dur:'1h40',zone:'Z2',meta:'15km'},
-      {id:'w09d08',dow:'Dom 26/07',disc:'race',icon:'🏁',name:"PROVA — Triatlo Standard (simulação)",detail:"NADAR 1.500m | T1 | PEDALAR 40km | T2 | CORRER 10km | Simulação real de prova — execute como corrida oficial: pace de prova, nutrição de prova, ritmo de largada",dur:'em aberto',zone:'Z3/Z4',meta:'1.5km+40km+10km'}
+      {id:'w10d01',dow:'Seg 03/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w10d02',dow:'Ter 04/11',disc:'swim',icon:'🏊',name:"2.500m — 3x750m Z4 Pace Real",detail:"400m aquec | 3x750m Z4 c/ 2min intervalo (pace real de prova) | 400m cooldown | Sente a distância real com intensidade",dur:'55min',zone:'Z3/Z4',meta:'2.500m'},
+      {id:'w10d03',dow:'Qua 05/11',disc:'run',icon:'🏃',name:"5km TT #2 — Checar Evolução",detail:"2km aquec | 5km TT | 2km cooldown | Compare com o TT de outubro. Sua evolução em números.",dur:'45min',zone:'Z4',meta:'5km TT'},
+      {id:'w10d04',dow:'Qui 06/11',disc:'brick',icon:'🧱',name:"🧱 BRICK Intenso — 20km Z4 + 3km Z4",detail:"20km bike Z3/Z4 (acima do ritmo de prova) | T2 | 3km run rápido | Estimula adaptação metabólica da transição",dur:'1h15',zone:'Z4',meta:'20km + 3km'},
+      {id:'w10d05',dow:'Sex 07/11',disc:'swim',icon:'🏊',name:"2.000m — Leve",detail:"2.000m Z1/Z2.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w10d06',dow:'Sáb 08/11',disc:'run',icon:'🏃',name:"12km Z2",detail:"12km Z2 constante. Volume começa a cair levemente.",dur:'65min',zone:'Z2',meta:'12km'},
+      {id:'w10d07',dow:'Dom 09/11',disc:'bike',icon:'🚴',name:"1h Z2",detail:"1h bike Z2. Ligeiro.",dur:'1h',zone:'Z2',meta:'~35km'}
     ]
   },
+  /* ── SP11: Especificidade 1 (10–16 Nov) ── */
   {
-    id:'w10',name:"S10 — Taper",
-    range:"27 Jul–2 Ago 2026",
+    id:'w11',name:"SP11 — Especificidade 1",
+    range:"10–16 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:4.5,bike:70,run:28,
+    days:[
+      {id:'w11d01',dow:'Seg 10/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w11d02',dow:'Ter 11/11',disc:'swim',icon:'🏊',name:"2.200m — 8x100m Z4 + Sprints",detail:"400m aquec | 8x100m Z4 c/ 10s | 4x50m sprints máximos | 400m cooldown | Velocidade máxima na água",dur:'45min',zone:'Z3/Z4',meta:'2.200m'},
+      {id:'w11d03',dow:'Qua 12/11',disc:'run',icon:'🏃',name:"10km + 5x1km Z3",detail:"2km aquec | 5km Z2 | 5x1km Z3 c/ 1min recuperação | 1km cooldown | Resistência de velocidade",dur:'65min',zone:'Z2/Z3',meta:'12km'},
+      {id:'w11d04',dow:'Qui 13/11',disc:'bike',icon:'🚴',name:"1h + 30min Z3",detail:"30min Z2 | 30min Z3 contínuo | Resistência no limiar",dur:'1h',zone:'Z2/Z3',meta:'~40km'},
+      {id:'w11d05',dow:'Sex 14/11',disc:'swim',icon:'🏊',name:"2.000m — Técnica",detail:"2.000m técnica. Foco em rolamento, respiração bilateral.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w11d06',dow:'Sáb 15/11',disc:'run',icon:'🏃',name:"12km Z2",detail:"12km Z2. Volume controlado.",dur:'65min',zone:'Z2',meta:'12km'},
+      {id:'w11d07',dow:'Dom 16/11',disc:'bike',icon:'🚴',name:"1h Z2",detail:"1h bike Z2.",dur:'1h',zone:'Z2',meta:'~35km'}
+    ]
+  },
+  /* ── SP12: Especificidade 2 (17–23 Nov) ── */
+  {
+    id:'w12',name:"SP12 — Especificidade 2",
+    range:"17–23 Nov 2026",
+    type:'peak',label:'PEAK',
+    swim:4.0,bike:65,run:25,
+    days:[
+      {id:'w12d01',dow:'Seg 17/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso.",dur:'—',zone:'REST',meta:''},
+      {id:'w12d02',dow:'Ter 18/11',disc:'swim',icon:'🏊',name:"2.000m — Pace Prova",detail:"400m aquec | 2x750m pace prova c/ 3min intervalo | 400m cooldown | Confirmar que o pace está automatizado",dur:'40min',zone:'Z3',meta:'2.000m'},
+      {id:'w12d03',dow:'Qua 19/11',disc:'run',icon:'🏃',name:"8km + 5km Pace Meta",detail:"2km aquec | 5km pace meta (< 5:00/km) contínuo | 2km cooldown | Volume menor, qualidade mantida",dur:'55min',zone:'Z3',meta:'9km'},
+      {id:'w12d04',dow:'Qui 20/11',disc:'brick',icon:'🧱',name:"🧱 BRICK FINAL — 20km Z3 + 5km Z3",detail:"BRICK FINAL antes do taper! 20km bike Z3 | T2 | 5km run Z3 | Se saiu bem: você está pronto. Se saiu difícil: é o cansaço, não falta de preparo.",dur:'1h30',zone:'Z3',meta:'20km + 5km'},
+      {id:'w12d05',dow:'Sex 21/11',disc:'swim',icon:'🏊',name:"2.000m — Leve",detail:"2.000m Z1/Z2. Recuperação.",dur:'40min',zone:'Z1/Z2',meta:'2.000m'},
+      {id:'w12d06',dow:'Sáb 22/11',disc:'run',icon:'🏃',name:"10km Z2",detail:"10km Z2.",dur:'55min',zone:'Z2',meta:'10km'},
+      {id:'w12d07',dow:'Dom 23/11',disc:'bike',icon:'🚴',name:"1h Z2",detail:"1h bike Z2. Antes do taper começa.",dur:'1h',zone:'Z2',meta:'~35km'}
+    ]
+  },
+  /* ── SP13: Pré-Taper (24–30 Nov) ── */
+  {
+    id:'w13',name:"SP13 — Pré-Taper",
+    range:"24–30 Nov 2026",
     type:'taper',label:'TAPER',
-    swim:2.5,bike:80,run:18,
+    swim:3.0,bike:40,run:18,
     days:[
-      {id:'w10d01',dow:'Seg 27/07',disc:'strength',icon:'💪',name:"Força — Última Sessão",detail:"30min APENAS: ativação glúteo + core | Sem carga, sem fadiga | Esta é a ÚLTIMA sessão de força do ciclo",dur:'30min',zone:'Z1',meta:''},
-      {id:'w10d02',dow:'Ter 28/07',disc:'swim',icon:'🏊',name:"1.500m — Fácil",detail:"1.500m solto e fácil | Sem séries pesadas | Foco: sentir a técnica, relaxar | FC < 125",dur:'35min',zone:'Z1',meta:'1.500m'},
-      {id:'w10d03',dow:'Ter 28/07',disc:'run',icon:'🏃',name:"8km — L2 Suave",detail:"8km L2 constante | Pace: 5:20-5:40/km (sem correr rápido!) | As pernas devem começar a \"levitar\" esta semana",dur:'55min',zone:'Z2',meta:'8km'},
-      {id:'w10d04',dow:'Qua 29/07',disc:'bike',icon:'🚴',name:"50km — L2 c/ 2x10min Race Pace",detail:"15min Aq | 20min L2 | 2x10min pace de prova (FC 155-165) c/ 5min L2 | 15min solto | Volume -60% vs pico | Mas intensidade mantida — é isso que o taper faz! | Total: ~50km",dur:'1h30',zone:'Z2/Z3',meta:'50km'},
-      {id:'w10d05',dow:'Qui 30/07',disc:'run',icon:'🏃',name:"10km — Race Pace Test",detail:"10min Aq | 3km L2 | 3km race pace (alvo: 4:45-5:00/km off bike) | 2km L1 | 2km L2 | Total: ~10km | Último teste de pace antes da prova",dur:'60min',zone:'Z2/Z3',meta:'10km'},
-      {id:'w10d06',dow:'Sex 31/07',disc:'swim',icon:'🏊',name:"1.000m — Técnica Final",detail:"1.000m técnica: 4x100m foco braçada + 4x100m foco pernas + 200m pace prova | Sem cansaço — esta sessão é psicológica tanto quanto física",dur:'25min',zone:'Z1',meta:'1.000m'},
-      {id:'w10d07',dow:'Sáb 01/08',disc:'bike',icon:'🚴',name:"30km — Passeio L1",detail:"30km solto L1 (FC < 130) | Verificar equipamento: bike, pedais, sapatilhas, câmaras, nutrição | Reconhecimento da transição se possível",dur:'55min',zone:'Z1',meta:'30km'},
-      {id:'w10d08',dow:'Dom 02/08',disc:'run',icon:'🏃',name:"8km — Trote Descontraído",detail:"8km trote leve L1 | 4x100m strides para manter agilidade | Sem esforço! As pernas devem estar coçando para correr rápido — ÓTIMO sinal | Total: ~8km",dur:'50min',zone:'Z1',meta:'8km'}
+      {id:'w13d01',dow:'Seg 24/11',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. O volume cai, a intensidade se mantém.",dur:'—',zone:'REST',meta:''},
+      {id:'w13d02',dow:'Ter 25/11',disc:'swim',icon:'🏊',name:"1.500m — Qualidade",detail:"400m aquec | 6x100m Z3 c/ 15s | 200m pace prova | 300m cooldown | Metade do volume, toda a qualidade.",dur:'30min',zone:'Z3',meta:'1.500m'},
+      {id:'w13d03',dow:'Qua 26/11',disc:'run',icon:'🏃',name:"5km + 4x400m Z4 + strides",detail:"2km aquec | 2km Z2 | 4x400m Z4 c/ 400m trote | 4x100m strides | 1km cooldown | Pernas rápidas, volume baixo",dur:'40min',zone:'Z3/Z4',meta:'8km'},
+      {id:'w13d04',dow:'Qui 27/11',disc:'bike',icon:'🚴',name:"40min + 3x4min Z3",detail:"15min Z2 | 3x4min Z3 c/ 3min Z1 | 10min Z2 cooldown | Estímulo rápido, sessão curta",dur:'40min',zone:'Z2/Z3',meta:'~20km'},
+      {id:'w13d05',dow:'Sex 28/11',disc:'swim',icon:'🏊',name:"1.000m — Leve",detail:"1.000m leve Z1/Z2. Manutenção da sensação de água.",dur:'20min',zone:'Z1/Z2',meta:'1.000m'},
+      {id:'w13d06',dow:'Sáb 29/11',disc:'run',icon:'🏃',name:"6km suave + strides",detail:"6km muito suave Z1/Z2 + 4x100m strides. As pernas vão começar a se sentir leves.",dur:'30min',zone:'Z1/Z2',meta:'6km'},
+      {id:'w13d07',dow:'Dom 30/11',disc:'rest',icon:'😴',name:"Descanso Total",detail:"Descanso total. Mentalize a prova. Confirme logística: chip, kit, nutrição.",dur:'—',zone:'REST',meta:''}
     ]
   },
+  /* ── SP14: Race Week (1–6 Dez) ── */
   {
-    id:'w11',name:"S11 — Race Week",
-    range:"3–9 Ago 2026",
+    id:'w14',name:"SP14 — Race Week",
+    range:"1–6 Dez 2026",
     type:'taper',label:'RACE',
-    swim:1.0,bike:1.0,run:1.0,
+    swim:0.75,bike:20,run:5,
     days:[
-      {id:'w11d01',dow:'Seg 03/08',disc:'run',icon:'🏃',name:"20min — Trote Matinal",detail:"20min trote muito leve ao amanhecer | FC < 125 | Acorda o sistema cardiovascular para a semana | Nada mais",dur:'20min',zone:'Z1',meta:'~3km'},
-      {id:'w11d02',dow:'Ter 04/08',disc:'swim',icon:'🏊',name:"1km — Técnica + BIKE 30min",detail:"NATAÇÃO: 1.000m técnica muito leve (sem contar tempo) | BIKE: 30min passeio L1 | Checar equipamento: lubrificar corrente, verificar freios, calibrar pneus (6-7 bar)",dur:'1h00',zone:'Z1',meta:'1km + 30min'},
-      {id:'w11d03',dow:'Qua 05/08',disc:'run',icon:'🏃',name:"15min + Strides",detail:"15min trote L1 | 4x100m strides progressivos (termina em ~85% esforço) | As pernas devem estar EXPLOSIVAS — aproveite para confirmar",dur:'25min',zone:'Z1',meta:'~3km'},
-      {id:'w11d04',dow:'Qui 06/08',disc:'rest',icon:'😴',name:"DESCANSO TOTAL",detail:"Zero treino. Sem caminhadas longas. Pés no ar. Sono 9-10h. Hidratação 3L de água. Alimentação normal (sem excessos de pasta). Mentalize a prova.",dur:'—',zone:'REST',meta:''},
-      {id:'w11d05',dow:'Sex 07/08',disc:'bike',icon:'🚴',name:"Reconhecimento do percurso",detail:"20min bike no percurso ou na área de transição | 10min natação no percurso SE a água estiver aberta | Identifique: saídas e entradas T1/T2, posição da sua bike, marcações da corrida",dur:'30min',zone:'Z1',meta:'Reconhecimento'},
-      {id:'w11d06',dow:'Sáb 08/08',disc:'rest',icon:'😴',name:"DESCANSO TOTAL — Preparar transições",detail:"Monte as transições com calma: rack da bike, sacos T1 e T2, nutrição numerada por ordem | Refeição pré-corrida: jantar leve (arroz + frango + salada) às 19h | Durma às 21h | Acorde às 4:30h | Café da manhã às 5h: banana + aveia + café",dur:'—',zone:'REST',meta:'Logística'},
-      {id:'w11d07',dow:'Dom 09/08',disc:'race',icon:'🏁',name:"🏁 IRONMAN 70.3 RIO DE JANEIRO ✓ FEITO",detail:"Natação 1.9km ✓ | T1 ✓ | Ciclismo 90km ✓ | T2 ✓ | Corrida 21.1km ✓ | LINHA DE CHEGADA CRUZADA! | 235h de treino em 2026 · 177 dias treinados · 8 anos de esporte | VOCÊ É UM IRONMAN!",dur:'FEITO ✓',zone:'RACE',meta:'IRONMAN 70.3 ✓'}
-    ]
-  },
-  {
-    id:'w12',name:"S12 — Recuperação Total",
-    range:"10–16 Ago 2026",
-    type:'recovery',label:'RECOVERY',
-    swim:1.0,bike:1.0,run:0,
-    days:[
-      {id:'w12d01',dow:'Dom 10/08',disc:'rest',icon:'😴',name:"DESCANSO — Viagem de volta",detail:"Viagem de volta para Brasília. Apenas hidratação, proteína e sono. O corpo está em reparação.",dur:'—',zone:'REST',meta:''},
-      {id:'w12d02',dow:'Seg 11/08',disc:'rest',icon:'😴',name:"DESCANSO + Caminhada opcional",detail:"Descanso total. Opcional: caminhada leve 20min. Massagem esportiva se possível. FC de repouso ainda elevada — normal.",dur:'—',zone:'REST',meta:''},
-      {id:'w12d03',dow:'Ter 12/08',disc:'rest',icon:'😴',name:"Caminhada 30min",detail:"30min de caminhada tranquila. O corpo precisa de movimento leve, não de treino. Sem pressão alguma.",dur:'30min',zone:'Z1',meta:''},
-      {id:'w12d04',dow:'Qua 13/08',disc:'swim',icon:'🏊',name:"1.000m — Natação Regenerativa",detail:"1.000m muito leve. Sem palmares, sem cronômetro, sem pressão. Apenas para soltar o corpo. FC < 120.",dur:'25min',zone:'Z1',meta:'1.000m'},
-      {id:'w12d05',dow:'Qui 14/08',disc:'rest',icon:'😴',name:"DESCANSO — Foam roller + Alongamento",detail:"Descanso ativo: foam roller 20min nas coxas e panturrilhas. Alongamento estático 15min. Sono prioritário 8-9h.",dur:'—',zone:'REST',meta:''},
-      {id:'w12d06',dow:'Sex 15/08',disc:'swim',icon:'🏊',name:"1.200m — Leve",detail:"1.200m leve. Z1 apenas. Sem séries. Foco na técnica e no relaxamento.",dur:'25min',zone:'Z1',meta:'1.200m'},
-      {id:'w12d07',dow:'Sáb 16/08',disc:'bike',icon:'🚴',name:"Passeio bike 30–40min",detail:"Passeio de bike muito suave, Z1 absoluto (FC < 130). Apenas para movimentar as pernas. Sem cadência forçada.",dur:'40min',zone:'Z1',meta:'~15km'}
-    ]
-  },
-  {
-    id:'w13',name:"S13 — Retorno à Água e às Rodas",
-    range:"17–23 Ago 2026",
-    type:'recovery',label:'RECOVERY',
-    swim:3.0,bike:2.0,run:0,
-    days:[
-      {id:'w13d01',dow:'Dom 17/08',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. A corrida ainda NÃO retorna esta semana. Paciência.",dur:'—',zone:'REST',meta:''},
-      {id:'w13d02',dow:'Seg 18/08',disc:'swim',icon:'🏊',name:"1.500m — Técnica Z1",detail:"1.500m leve. Técnica, sem palmares, respiração bilateral. FC < 130. Sem séries cronometradas.",dur:'35min',zone:'Z1',meta:'1.500m'},
-      {id:'w13d03',dow:'Ter 19/08',disc:'bike',icon:'🚴',name:"45min — Cadência Alta Z1/Z2",detail:"45min bike. Cadência alta (90rpm+), sem força, apenas girar. FC < 145. Objetivo: destravar as pernas.",dur:'45min',zone:'Z1/Z2',meta:'~20km'},
-      {id:'w13d04',dow:'Qua 20/08',disc:'swim',icon:'🏊',name:"1.500m — Pode usar palmares",detail:"1.500m. Pode introduzir palmares na segunda metade. Ainda sem séries de intensidade.",dur:'35min',zone:'Z1',meta:'1.500m'},
-      {id:'w13d05',dow:'Qui 21/08',disc:'rest',icon:'😴',name:"Descanso — Foam roller",detail:"Descanso. Foam roller 20min. Monitorar FC de repouso: se > 7bpm acima do normal, sinal de fadiga residual.",dur:'—',zone:'REST',meta:''},
-      {id:'w13d06',dow:'Sex 22/08',disc:'swim',icon:'🏊',name:"2.000m — Primeiros metros com intenção",detail:"2.000m. Primeira sessão com um pouco mais de volume. 4x200m com 20s descanso na segunda metade.",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
-      {id:'w13d07',dow:'Sáb 23/08',disc:'bike',icon:'🚴',name:"1h — Passeio Z1/Z2",detail:"1h bike. Passeio longo sem ritmo forçado. Pode ser na rua. FC 130-145. Curtir o movimento sem pressão.",dur:'1h',zone:'Z1/Z2',meta:'~35km'}
-    ]
-  },
-  {
-    id:'w14',name:"S14 — Primeiros Passos de Volta",
-    range:"24–30 Ago 2026",
-    type:'recovery',label:'RECOVERY',
-    swim:4.0,bike:3.0,run:1.0,
-    days:[
-      {id:'w14d01',dow:'Dom 24/08',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso. Amanhã a corrida retorna.",dur:'—',zone:'REST',meta:''},
-      {id:'w14d02',dow:'Seg 25/08',disc:'swim',icon:'🏊',name:"2.000m — 4x200m Estímulo Leve",detail:"2.000m. 4x200m com 20s descanso — primeiro estímulo leve pós-prova. Compare com como se sentia antes da corrida.",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
-      {id:'w14d03',dow:'Ter 26/08',disc:'run',icon:'🏃',name:"🎯 PRIMEIRA CORRIDA PÓS-PROVA — 20min Z1",detail:"VOLTA AO RUN! 20-25min Z1 absoluto (FC < 145). Não olhe o pace. Sinta como as pernas respondem. Se pesadas: normal, é o processo. Se leves: ótimo sinal!",dur:'25min',zone:'Z1',meta:'~3km'},
-      {id:'w14d04',dow:'Qua 27/08',disc:'bike',icon:'🚴',name:"1h — Z1/Z2 c/ 2x10min Z2",detail:"1h bike. Pode incluir 2x10min em Z2 (FC 140-155) se sentir bem. Primeira sessão com leve intenção de intensidade.",dur:'1h',zone:'Z1/Z2',meta:'~35km'},
-      {id:'w14d05',dow:'Qui 28/08',disc:'swim',icon:'🏊',name:"2.000m — Séries Curtas",detail:"2.000m com séries curtas. Conforto na água. FC < 140. Corpo começa a acordar.",dur:'45min',zone:'Z1/Z2',meta:'2.000m'},
-      {id:'w14d06',dow:'Sex 29/08',disc:'run',icon:'🏃',name:"30min Z1 — Segunda corrida",detail:"30min Z1. Se as pernas pedirem mais, é bom sinal — mas segura até 30min. Paciência agora = performance depois.",dur:'30min',zone:'Z1',meta:'~4km'},
-      {id:'w14d07',dow:'Sáb 30/08',disc:'bike',icon:'🚴',name:"1h30 — Z1/Z2 Passeio",detail:"1h30 bike. Z1/Z2. Passeio na rua — domingo descansado. Você terminou a recuperação pós-prova. Nova temporada começa!",dur:'1h30',zone:'Z1/Z2',meta:'~50km'}
+      {id:'w14d01',dow:'Seg 01/12',disc:'rest',icon:'😴',name:"Descanso",detail:"Descanso total. Hidratação, sono 9h+. Zero treino.",dur:'—',zone:'REST',meta:''},
+      {id:'w14d02',dow:'Ter 02/12',disc:'swim',icon:'🏊',name:"750m — Distância da Prova",detail:"750m leve. Exata distância da prova. Sem esforço. Apenas para confirmar a sensação e lembrar a distância.",dur:'20min',zone:'Z1',meta:'750m'},
+      {id:'w14d03',dow:'Qua 03/12',disc:'run',icon:'🏃',name:"15min + 4 strides",detail:"15min trote Z1 + 4x100m strides. As pernas precisam sentir velocidade sem se cansar.",dur:'20min',zone:'Z1',meta:'~2km'},
+      {id:'w14d04',dow:'Qui 04/12',disc:'bike',icon:'🚴',name:"20min + 3 acelerações",detail:"20min bike leve + 3x30s aceleração forte (sem sustentar). Desperta a potência.",dur:'20min',zone:'Z1',meta:'~10km'},
+      {id:'w14d05',dow:'Sex 05/12',disc:'rest',icon:'😴',name:"DESCANSO TOTAL — Logística",detail:"Zero treino. Montar kit com calma. Jantar: macarrão + frango + salada (19h). Dormir às 21h30. Acordar às 5h. Café: banana + aveia + café às 5h30.",dur:'—',zone:'REST',meta:'Logística'},
+      {id:'w14d06',dow:'Dom 06/12',disc:'race',icon:'🏁',name:"🏁 SPRINT MSK — BRASÍLIA",detail:"Natação 750m · T1 · Ciclismo 20km · T2 · Corrida 5km | Alvo: ~1h10 | Swim < 14min | Bike < 35min | Run < 25min | VOCÊ ESTÁ PRONTO. GOOO DIEGO! 🚀",dur:'~1h10',zone:'RACE',meta:'SPRINT MSK'}
     ]
   }
 ];
@@ -2209,11 +2331,11 @@ let currentWeekIdx = 0;
   const today = new Date();
   // week start dates derived from ranges
   const starts = [
-    new Date('2026-05-25'), new Date('2026-06-01'), new Date('2026-06-08'),
-    new Date('2026-06-15'), new Date('2026-06-22'), new Date('2026-06-29'),
-    new Date('2026-07-06'), new Date('2026-07-13'), new Date('2026-07-20'),
-    new Date('2026-07-27'), new Date('2026-08-03'),
-    new Date('2026-08-10'), new Date('2026-08-17'), new Date('2026-08-24')
+    new Date('2026-09-01'), new Date('2026-09-08'), new Date('2026-09-15'),
+    new Date('2026-09-22'), new Date('2026-09-29'), new Date('2026-10-06'),
+    new Date('2026-10-13'), new Date('2026-10-20'), new Date('2026-10-27'),
+    new Date('2026-11-03'), new Date('2026-11-10'), new Date('2026-11-17'),
+    new Date('2026-11-24'), new Date('2026-12-01')
   ];
   for (let i = starts.length - 1; i >= 0; i--) {
     if (today >= starts[i]) { currentWeekIdx = i; break; }
@@ -2392,11 +2514,11 @@ updateWeekMetric();
 
   // Find which week contains today
   const starts = [
-    new Date('2026-05-25'), new Date('2026-06-01'), new Date('2026-06-08'),
-    new Date('2026-06-15'), new Date('2026-06-22'), new Date('2026-06-29'),
-    new Date('2026-07-06'), new Date('2026-07-13'), new Date('2026-07-20'),
-    new Date('2026-07-27'), new Date('2026-08-03'),
-    new Date('2026-08-10'), new Date('2026-08-17'), new Date('2026-08-24')
+    new Date('2026-09-01'), new Date('2026-09-08'), new Date('2026-09-15'),
+    new Date('2026-09-22'), new Date('2026-09-29'), new Date('2026-10-06'),
+    new Date('2026-10-13'), new Date('2026-10-20'), new Date('2026-10-27'),
+    new Date('2026-11-03'), new Date('2026-11-10'), new Date('2026-11-17'),
+    new Date('2026-11-24'), new Date('2026-12-01')
   ];
   let wIdx = 0;
   for (let i = starts.length - 1; i >= 0; i--) {
