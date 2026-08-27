@@ -2077,19 +2077,19 @@
           </div>
           <span class="gs-act-tss">✅</span>
         </div>
-        <div class="gs-act">
-          <span class="gs-act-disc bike">🔴</span>
+        <div class="gs-act" style="background:rgba(255,180,0,0.08);border-left:3px solid #ffc800">
+          <span class="gs-act-disc bike">🏅</span>
           <div class="gs-act-info">
             <div class="gs-act-name">IRONMAN 70.3 Rio — 09/08/2026</div>
-            <div class="gs-act-meta">235h de prep · 177 dias treinados</div>
+            <div class="gs-act-meta">⏱ 7:29:01 · 111,91km · 4.619 kcal · Rio de Janeiro</div>
           </div>
-          <span class="gs-act-tss">✅</span>
+          <span class="gs-act-tss" style="color:#ffc800;font-size:1.1em">✅</span>
         </div>
       </div>
       <div class="gs-total-tss" id="gs-total-tss">
-        <span>Nível atual:</span>
-        <strong>70.3 completo → Sprint MSK 06/Dez</strong>
-        <span class="gs-tss-bar"><span style="width:65%"></span></span>
+        <span>Próximo:</span>
+        <strong>⚡ Sprint MSK · 06 Dez 2026 · 100 dias</strong>
+        <span class="gs-tss-bar"><span style="width:72%"></span></span>
       </div>
     </div>
 
@@ -3224,10 +3224,77 @@ function populateGarminData(g) {
   }
 }
 
+// ── Render recent activities from garmin_data.json ──
+function renderRecentActivities(activities) {
+  const EMOJI = {
+    running:'🏃', treadmill_running:'🏃', cycling:'🚴', virtual_ride:'🚴',
+    lap_swimming:'🏊', open_water_swimming:'🏊', strength_training:'💪',
+    multi_sport:'🏅'
+  };
+  const COLOR = {
+    running:'run', treadmill_running:'run', cycling:'bike', virtual_ride:'bike',
+    lap_swimming:'swim', open_water_swimming:'swim', strength_training:'brick',
+    multi_sport:'brick'
+  };
+  const SPORT_PT = {
+    running:'Corrida', treadmill_running:'Corrida (est.)', cycling:'Ciclismo',
+    virtual_ride:'Ciclismo indoor', lap_swimming:'Natação piscina',
+    open_water_swimming:'Natação OWS', strength_training:'Força',
+    multi_sport:'Multiesporte'
+  };
+
+  // Find the recent-acts list in the first card (Sprint Mode card)
+  // Inject a "recent" section after gs-workouts if not already there
+  const existingRecent = document.getElementById('gs-recent-acts');
+  if (existingRecent) existingRecent.remove();
+
+  const container = document.getElementById('gs-workouts');
+  if (!container) return;
+
+  const div = document.createElement('div');
+  div.id = 'gs-recent-acts';
+  div.style.cssText = 'margin-top:12px;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px';
+
+  const title = document.createElement('div');
+  title.style.cssText = 'font-size:0.7rem;color:#888;letter-spacing:.08em;margin-bottom:8px;text-transform:uppercase';
+  title.textContent = '📡 Últimos treinos Garmin';
+  div.appendChild(title);
+
+  const list = activities.slice(0, 8);
+  list.forEach(a => {
+    const sport = a.activityType?.typeKey || 'running';
+    const emoji = EMOJI[sport] || '🏅';
+    const colorCls = COLOR[sport] || 'run';
+    const sportPt = SPORT_PT[sport] || sport;
+    const date = a.startTimeLocal ? a.startTimeLocal.slice(5,10).replace('-','/') : '';
+    const distKm = a.distance > 0 ? (a.distance/1000).toFixed(1)+'km' : '';
+    const durMin = a.duration > 0 ? Math.round(a.duration/60)+'min' : '';
+    const hr = a.averageHR ? a.averageHR+'bpm' : '';
+
+    const row = document.createElement('div');
+    row.className = 'gs-wo ' + colorCls;
+    row.style.cssText = 'padding:6px 10px;margin-bottom:4px;font-size:0.78rem';
+    row.innerHTML = `
+      <span class="gs-wo-date">${date}</span>
+      <span class="gs-wo-icon">${emoji}</span>
+      <span class="gs-wo-name">${a.activityName}</span>
+      <span class="gs-wo-meta">${[distKm, durMin, hr].filter(Boolean).join(' · ')}</span>
+    `;
+    if (a._race) row.style.background = 'rgba(255,200,0,0.1)';
+    div.appendChild(row);
+  });
+
+  container.parentElement.insertBefore(div, container.nextSibling);
+}
+
 // Try to load garmin_data.json (updated by garmin_daily_sync.py)
 fetch('garmin_data.json?t=' + Date.now())
   .then(r => r.ok ? r.json() : null)
-  .then(g => { if (g) populateGarminData(g); })
+  .then(g => {
+    if (!g) return;
+    populateGarminData(g);
+    if (g.recent_activities?.length) renderRecentActivities(g.recent_activities);
+  })
   .catch(() => {}); // silent fail if file doesn't exist yet
 
 // ════════════════════════════════════════════
